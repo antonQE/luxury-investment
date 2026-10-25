@@ -2,6 +2,7 @@ import { integer, jsonb, numeric, pgTable, text, timestamp, uuid } from 'drizzle
 
 export { auditEntries } from '../../modules/audit/repo/audit.schema.ts';
 export { inquiries } from '../../modules/inquiries/repo/inquiries.schema.ts';
+export { locations, translations } from '../../modules/locations/repo/locations.schema.ts';
 export {
   permissions,
   rolePermissions,

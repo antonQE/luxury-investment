@@ -109,7 +109,7 @@ The reference stack is Fantasy_Web / Fantasy_Web_Admin (Vite SPA, Chakra UI, Tan
   - B: Everything in one JSONB column. Simple, weak integrity.
   - C: Hybrid: universal and heavily filtered fields as real columns (transaction type, type, location, price, normalized price, built-up area, area with common parts, rooms, bedrooms, bathrooms, floor, construction stage, status, dates); admin-defined attributes in a JSONB column validated against `attribute_definitions`, with GIN indexes; select options as rows referenced by ID so archive/merge works.
 - Recommendation: C. Decided in the data model ADR together with the location hierarchy and translations.
-- Decision: pending
+- Decision: [ADR-0009](../adr/0009-catalog-data-model.md)
 
 ### R4: Media pipeline (new: the reference backend has no uploads)
 

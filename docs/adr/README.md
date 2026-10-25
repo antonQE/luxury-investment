@@ -18,6 +18,7 @@ Until an ADR says otherwise, the baseline in `.cursor/skills/luxury-investment-w
 | [0006](0006-staff-auth-email-password.md) | Staff authentication with email and password | Accepted | 2026-10-25 |
 | [0007](0007-public-search-postgres.md) | Public search with Postgres | Accepted | 2026-10-25 |
 | [0008](0008-public-form-bot-protection.md) | Public form bot protection (honeypot first) | Accepted (delegated) | 2026-10-25 |
+| [0009](0009-catalog-data-model.md) | Catalog data model (locations, taxonomies, attributes, translations) | Accepted (delegated) | 2026-10-25 |
 
 ## Pending decisions
 
@@ -26,7 +27,7 @@ Taken when the epic that needs them starts (details and options in the [requirem
 | Topic | Analysis | Needed by | Release |
 |---|---|---|---|
 | Staff authentication and 2FA | R7 | EPIC-02 | R1 — decided: [ADR-0006](0006-staff-auth-email-password.md) email+password; 2FA later |
-| Data model: dynamic attributes, locations, translations | R3, R10 | EPIC-03 | R1 |
+| Data model: dynamic attributes, locations, translations | R3, R10 | EPIC-03 | R1 — decided: [ADR-0009](0009-catalog-data-model.md) |
 | Media storage and processing | R4 | EPIC-05 | R1 |
 | Background jobs | R5 | EPIC-05 | R1 |
 | Headless UI primitives for the public site | ADR-0003 | EPIC-06 | R1 (Tailwind already; primitives as needed in LI-012) |

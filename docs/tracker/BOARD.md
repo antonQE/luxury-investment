@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-021`
+Next IDs: `EPIC-19`, `LI-026`
 
 ## Releases
 
@@ -26,7 +26,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 |---|---|---|---|
 | [EPIC-01](epics/EPIC-01-project-foundation.md) | Project foundation | P1 | Done |
 | [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Done |
-| [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | Backlog |
+| [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | In Progress |
 | [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Backlog |
 | [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Backlog |
 | [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
@@ -47,6 +47,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-023](tasks/LI-023-taxonomies-markets-seed.md) | Markets and core taxonomies schema + seed | EPIC-03 | M |
 
 ## Review
 
@@ -67,11 +68,15 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
+| [LI-024](tasks/LI-024-attribute-definitions-schema.md) | Attribute definitions schema + seed | EPIC-03 | P1 | M | LI-023 |
+| [LI-025](tasks/LI-025-admin-taxonomy-crud.md) | Admin taxonomy and location CRUD (basic) | EPIC-03 | P1 | L | LI-024, LI-019 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-022](tasks/LI-022-locations-schema-seed.md) | Locations schema and seed | EPIC-03 |
+| [LI-021](tasks/LI-021-catalog-data-model-adr.md) | Catalog data model ADR | EPIC-03 |
 | [LI-020](tasks/LI-020-audit-log-foundation.md) | Audit log foundation | EPIC-02 |
 | [LI-017](tasks/LI-017-inquiry-forms.md) | Inquiry and viewing request forms | EPIC-07 |
 | [LI-016](tasks/LI-016-maps-similar.md) | Maps link and similar properties | EPIC-07 |

@@ -43,6 +43,13 @@
       "when": 1792962521444,
       "tag": "0005_wooden_paibok",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792963039075,
+      "tag": "0006_strong_stardust",
+      "breakpoints": true
     }
   ]
 }

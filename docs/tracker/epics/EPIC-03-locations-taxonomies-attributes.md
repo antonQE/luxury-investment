@@ -1,6 +1,6 @@
 # EPIC-03: Locations, markets, taxonomies and dynamic attributes
 
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Source: 02 §1, §8, §9; 08 MARKET-001, MARKET-003; 03 SRCH-003; 11 B-01, B-02, B-04, H-04; FLOW-004
 
@@ -15,4 +15,10 @@ Admins manage every list the catalog uses (location hierarchy, markets, property
 
 ## Tasks
 
-Decomposed when the epic starts. First task: data model ADR (analysis R3, R10). Seed the reference lists from the public inventory of the current site ([02-current-site.analysis.md](../../requirements/02-current-site.analysis.md#inventory)), deduplicated.
+- LI-021: Catalog data model ADR (Done) — [ADR-0009](../../adr/0009-catalog-data-model.md)
+- LI-022: Locations schema and seed
+- LI-023: Markets and core taxonomies schema + seed
+- LI-024: Attribute definitions schema + seed
+- LI-025: Admin taxonomy and location CRUD (basic)
+
+Seed reference lists from the public inventory ([02-current-site.analysis.md](../../requirements/02-current-site.analysis.md#inventory)), deduplicated.
