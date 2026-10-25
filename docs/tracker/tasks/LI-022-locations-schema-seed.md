@@ -13,10 +13,10 @@ Postgres tables for the location hierarchy (country → region → city → dist
 
 ## Acceptance criteria
 
-- [ ] Drizzle schema + migration for `locations` (and translation usage per ADR-0009).
-- [ ] Seed Bulgaria + UAE + Greece + North Cyprus with key cities/districts from the inventory (deduped; fictional extras clearly marked if needed).
-- [ ] Soft archive column; no hard delete required yet.
-- [ ] Unit/integration check that seed is idempotent.
+- [x] Drizzle schema + migration for `locations` (and translation usage per ADR-0009).
+- [x] Seed Bulgaria + UAE + Greece + North Cyprus with key cities/districts from the inventory (deduped; fictional extras clearly marked if needed).
+- [x] Soft archive column; no hard delete required yet.
+- [x] Unit/integration check that seed is idempotent.
 
 ## Out of scope
 

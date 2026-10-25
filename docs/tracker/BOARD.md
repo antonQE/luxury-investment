@@ -47,7 +47,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
-| [LI-023](tasks/LI-023-taxonomies-markets-seed.md) | Markets and core taxonomies schema + seed | EPIC-03 | M |
 
 ## Review
 
@@ -58,6 +57,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
+| [LI-023](tasks/LI-023-taxonomies-markets-seed.md) | Markets and core taxonomies schema + seed | EPIC-03 | P1 | M |
 
 ## Blocked
 
