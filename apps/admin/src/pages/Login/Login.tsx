@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Input, Text, VStack } from '@chakra-ui/react';
-import { type SyntheticEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ export default function Login() {
     return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
 
-  async function onSubmit(event: SyntheticEvent<HTMLFormElement>) {
+  async function onSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setSubmitting(true);
@@ -55,10 +55,6 @@ export default function Login() {
       data-testid="login-page"
     >
       <Box
-        as="form"
-        onSubmit={(event: SyntheticEvent<HTMLFormElement>) => {
-          void onSubmit(event);
-        }}
         w="full"
         maxW="md"
         bg="background.panel"
@@ -66,50 +62,56 @@ export default function Login() {
         borderColor="border.default"
         p={8}
       >
-        <VStack align="stretch" gap={4}>
-          <Heading size="lg">{t('login.title')}</Heading>
-          <Text fontSize="sm" color="text.muted">
-            {t('login.lead')}
-          </Text>
-          <Box as="label" display="block">
-            <Text fontSize="sm" mb={1}>
-              {t('login.email')}
+        <form
+          onSubmit={(event) => {
+            void onSubmit(event);
+          }}
+        >
+          <VStack align="stretch" gap={4}>
+            <Heading size="lg">{t('login.title')}</Heading>
+            <Text fontSize="sm" color="text.muted">
+              {t('login.lead')}
             </Text>
-            <Input
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              data-testid="login-email"
-              required
-            />
-          </Box>
-          <Box as="label" display="block">
-            <Text fontSize="sm" mb={1}>
-              {t('login.password')}
-            </Text>
-            <Input
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              data-testid="login-password"
-              required
-            />
-          </Box>
-          {error !== null ? (
-            <Text color="status.down" fontSize="sm" data-testid="login-error">
-              {error}
-            </Text>
-          ) : null}
-          <Button type="submit" loading={submitting} data-testid="login-submit">
-            {t('login.submit')}
-          </Button>
-        </VStack>
+            <Box as="label" display="block">
+              <Text fontSize="sm" mb={1}>
+                {t('login.email')}
+              </Text>
+              <Input
+                type="email"
+                autoComplete="username"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+                data-testid="login-email"
+                required
+              />
+            </Box>
+            <Box as="label" display="block">
+              <Text fontSize="sm" mb={1}>
+                {t('login.password')}
+              </Text>
+              <Input
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+                data-testid="login-password"
+                required
+              />
+            </Box>
+            {error !== null ? (
+              <Text color="status.down" fontSize="sm" data-testid="login-error">
+                {error}
+              </Text>
+            ) : null}
+            <Button type="submit" loading={submitting} data-testid="login-submit">
+              {t('login.submit')}
+            </Button>
+          </VStack>
+        </form>
       </Box>
     </Box>
   );
