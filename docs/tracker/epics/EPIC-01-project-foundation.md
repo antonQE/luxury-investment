@@ -1,6 +1,6 @@
 # EPIC-01: Project foundation
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: [ADR-0001](../../adr/0001-public-web-nextjs-admin-vite.md), [ADR-0002](../../adr/0002-api-express-drizzle-postgres.md), [ADR-0003](../../adr/0003-ui-tailwind-web-chakra-admin.md), [ADR-0004](../../adr/0004-monorepo-local-first-hosting-deferred.md)
 

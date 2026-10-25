@@ -24,7 +24,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Name | Priority | Status |
 |---|---|---|---|
-| [EPIC-01](epics/EPIC-01-project-foundation.md) | Project foundation | P1 | In Progress |
+| [EPIC-01](epics/EPIC-01-project-foundation.md) | Project foundation | P1 | Done |
 | [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Backlog |
 | [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | Backlog |
 | [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Backlog |
@@ -52,7 +52,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
-| [LI-009](tasks/LI-009-ci-pipeline.md) | CI pipeline | EPIC-01 | S |
 
 ## Ready
 
@@ -82,3 +81,4 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [LI-007](tasks/LI-007-web-skeleton.md) | Public web app skeleton | EPIC-01 |
 | [LI-010](tasks/LI-010-first-public-catalog.md) | First public catalog and site | EPIC-07 |
 | [LI-008](tasks/LI-008-admin-skeleton.md) | Admin app skeleton | EPIC-01 |
+| [LI-009](tasks/LI-009-ci-pipeline.md) | CI pipeline | EPIC-01 |
