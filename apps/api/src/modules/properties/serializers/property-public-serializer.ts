@@ -18,6 +18,8 @@ export function serializeProperty(row: PropertyRow, locale: Locale): PublicPrope
     country: row.country,
     city: row.city,
     district: row.district,
+    locationPrecision: 'approximate',
+    mapQuery: [row.district, row.city, row.country].filter(Boolean).join(', '),
     price: Number(row.price),
     currency: row.currency,
     vatLabel: row.vatLabel,

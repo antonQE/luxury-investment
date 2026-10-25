@@ -1,5 +1,6 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { type Express, type Router } from 'express';
+import express, { type Express, type RequestHandler, type Router } from 'express';
 import helmet from 'helmet';
 import { pinoHttp } from 'pino-http';
 
@@ -17,6 +18,11 @@ export interface AppDependencies {
   logger: Logger;
   healthChecks?: HealthCheck[];
   publicRouters?: Router[];
+  /** Mounted before the auth gate (e.g. login). */
+  adminPublicRouters?: Router[];
+  /** Runs after public admin routes; typically session verification. */
+  adminAuthGate?: RequestHandler;
+  /** Mounted after the auth gate (authenticated admin APIs). */
   adminRouters?: Router[];
 }
 
@@ -31,6 +37,7 @@ export function createApp(deps: AppDependencies): Express {
     pinoHttp({ logger: deps.logger, autoLogging: { ignore: (req) => req.url === '/health' } }),
   );
   app.use(express.json({ limit: '1mb' }));
+  app.use(cookieParser());
 
   app.use(healthRouter(deps.healthChecks));
 
@@ -40,6 +47,8 @@ export function createApp(deps: AppDependencies): Express {
   app.use('/v1/public', publicApi);
 
   const adminApi = express.Router();
+  for (const router of deps.adminPublicRouters ?? []) adminApi.use(router);
+  if (deps.adminAuthGate) adminApi.use(deps.adminAuthGate);
   for (const router of deps.adminRouters ?? []) adminApi.use(router);
   app.use('/v1/admin', adminApi);
 

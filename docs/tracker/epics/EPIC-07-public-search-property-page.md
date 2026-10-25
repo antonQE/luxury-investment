@@ -1,6 +1,6 @@
 # EPIC-07: Home page, search, results and property page
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: 01 §2; 03 SRCH-001..SRCH-004, PROP-PAGE-001..PROP-PAGE-003; 07 MEDIA-004; 11 A-02, C-01..C-04; FLOW-001, FLOW-002, FLOW-006, FLOW-007
 
@@ -15,4 +15,8 @@ A visitor picks Sofia, Black Sea or Dubai & abroad, searches, filters and opens 
 
 ## Tasks
 
-- LI-010: First public catalog and site (basic home, list, property page, chrome)
+- LI-010: First public catalog and site (basic home, list, property page, chrome) — Done
+- LI-015: Property page enrichment
+- LI-016: Maps link and similar properties
+- LI-017: Inquiry and viewing request forms
+- (later) advanced filters / free text once EPIC-03 attributes exist

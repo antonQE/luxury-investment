@@ -46,3 +46,14 @@ export async function fetchProperty(locale: Locale, slug: string): Promise<Publi
   );
   return body.data;
 }
+
+export async function fetchSimilarProperties(
+  locale: Locale,
+  slug: string,
+): Promise<PublicProperty[]> {
+  const body = await apiGet<{ data: PublicProperty[] }>(
+    `/v1/public/properties/${encodeURIComponent(slug)}/similar${queryString({ lang: locale })}`,
+    { revalidate: false },
+  );
+  return body.data;
+}

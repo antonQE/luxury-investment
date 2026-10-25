@@ -9,8 +9,19 @@
   },
   "header": {
     "language": "Език",
-    "userPlaceholder": "Служител (вход идва в EPIC-02)"
+    "userPlaceholder": "Служител",
+    "logout": "Изход"
   },
+  "login": {
+    "title": "Вход",
+    "lead": "Служебен достъп с имейл и парола.",
+    "email": "Имейл",
+    "password": "Парола",
+    "submit": "Влез",
+    "invalid": "Грешен имейл или парола.",
+    "error": "Неуспешен вход. Опитайте отново."
+  },
+
   "dashboard": {
     "title": "Табло",
     "apiStatus": "Състояние на API",

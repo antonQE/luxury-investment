@@ -110,8 +110,8 @@ src/
 ├── components/             shared UI by domain (layout, property, search, team, forms, ui)
 ├── lib/
 │   ├── api/                typed server-side client for /v1/public
-│   ├── seo/                metadata, JSON-LD, hreflang helpers
-│   └── config/             env schema (zod)
+│   ├── seo/                metadata, JSON-LD, hreflang helpers (`buildPageMetadata`, LI-013)
+│   └── config/             env schema (zod); `SITE_URL` is the canonical origin
 ├── i18n/                   next-intl routing and request config
 ├── messages/               bg.json, en.json
 ├── styles/                 Tailwind entry and theme tokens

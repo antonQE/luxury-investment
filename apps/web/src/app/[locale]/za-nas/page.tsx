@@ -1,9 +1,17 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('About');
-  return { title: t('title'), description: t('lead') };
+  const locale = await getLocale();
+  return buildPageMetadata({
+    locale,
+    path: '/za-nas',
+    title: t('title'),
+    description: t('lead'),
+  });
 }
 
 export default async function AboutPage() {

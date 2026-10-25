@@ -98,9 +98,41 @@ describe('GET /v1/public/properties/:slug', () => {
     const found = await request(app)
       .get('/v1/public/properties/demo-test-apartment?lang=bg')
       .expect(200);
-    expect((found.body as ItemBody).data.title).toBe('Demo: Тестов апартамент');
+    const item = (found.body as ItemBody).data;
+    expect(item.title).toBe('Demo: Тестов апартамент');
+    expect(item.locationPrecision).toBe('approximate');
+    expect(item.mapQuery).toContain('София');
+    expect(item).not.toHaveProperty('latitude');
 
     const missing = await request(app).get('/v1/public/properties/no-such-listing').expect(404);
     expect((missing.body as ErrorBody).error.code).toBe('NOT_FOUND');
+  });
+});
+
+describe('GET /v1/public/properties/:slug/similar', () => {
+  it('returns same market and type excluding self', async () => {
+    await connection.db.insert(properties).values({
+      ...sample,
+      referenceNumber: 'DEMO-TEST-2',
+      slug: 'demo-test-apartment-2',
+      titleBg: 'Demo: Втори апартамент',
+      titleEn: 'Demo: Second apartment',
+      publishedAt: new Date('2026-10-02T10:00:00Z'),
+    });
+    await connection.db.insert(properties).values({
+      ...sample,
+      referenceNumber: 'DEMO-TEST-3',
+      slug: 'demo-test-house',
+      propertyType: 'house',
+      titleBg: 'Demo: Къща',
+      titleEn: 'Demo: House',
+    });
+
+    const res = await request(app)
+      .get('/v1/public/properties/demo-test-apartment/similar?lang=en')
+      .expect(200);
+    const body = res.body as ListBody;
+    expect(body.data).toHaveLength(1);
+    expect(body.data[0]?.slug).toBe('demo-test-apartment-2');
   });
 });

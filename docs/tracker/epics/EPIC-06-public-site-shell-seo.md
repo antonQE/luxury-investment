@@ -1,6 +1,6 @@
 # EPIC-06: Public site shell, design system and SEO foundation
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 01 §3, §6, §7; 06 SEO-001; 09 LANG-001; 11 A-01, A-03, A-05, F-01; FLOW-005
 
@@ -15,7 +15,10 @@ The public site has its design tokens, layout, navigation, footer and language s
 
 ## Tasks
 
-Decomposed when the epic starts. First task: design direction (moodboard, typography, colors, key page wireframes) for approval.
+- LI-011: Public site design direction (approval gate)
+- LI-012: Design tokens and public chrome
+- LI-013: SEO metadata foundation
+- LI-014: Sitemap, robots and redirect skeleton
 
 ## Notes
 

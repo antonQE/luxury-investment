@@ -16,18 +16,18 @@ export function LanguageSwitcher() {
       <Link
         href={pathname}
         locale="bg"
-        className={locale === 'bg' ? 'text-gold' : 'text-cream/70 hover:text-cream'}
+        className={locale === 'bg' ? 'text-brass' : 'text-stone/70 transition hover:text-stone'}
         data-testid="lang-bg"
       >
         BG
       </Link>
-      <span className="text-cream/40" aria-hidden>
+      <span className="text-stone/40" aria-hidden>
         /
       </span>
       <Link
         href={pathname}
         locale="en"
-        className={locale === 'en' ? 'text-gold' : 'text-cream/70 hover:text-cream'}
+        className={locale === 'en' ? 'text-brass' : 'text-stone/70 transition hover:text-stone'}
         data-testid="lang-en"
       >
         EN

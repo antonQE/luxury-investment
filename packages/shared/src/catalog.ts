@@ -35,6 +35,13 @@ export interface PublicProperty {
   country: string;
   city: string;
   district: string | null;
+  /**
+   * R1 always `approximate` (city/district query only). Exact coordinates
+   * stay internal until the locations epic exposes a public flag.
+   */
+  locationPrecision: 'approximate' | 'exact';
+  /** Safe text for a Maps search URL — never raw lat/lng when approximate. */
+  mapQuery: string;
   price: number;
   currency: string;
   vatLabel: string | null;

@@ -1,10 +1,11 @@
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AppShellProps {
   children?: ReactNode;
@@ -12,6 +13,13 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const { t } = useTranslation();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function onLogout() {
+    await logout();
+    void navigate(ROUTES.LOGIN, { replace: true });
+  }
 
   return (
     <Flex minH="100dvh" bg="background.page" data-testid="app-shell">
@@ -66,10 +74,20 @@ export function AppShell({ children }: AppShellProps) {
           bg="background.panel"
           data-testid="admin-header"
         >
-          <Text fontSize="sm" color="text.muted">
-            {t('header.userPlaceholder')}
+          <Text fontSize="sm" color="text.muted" data-testid="header-user">
+            {user?.displayName ?? t('header.userPlaceholder')}
           </Text>
-          <LanguageSwitcher />
+          <HStack gap={3}>
+            <LanguageSwitcher />
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => void onLogout()}
+              data-testid="logout"
+            >
+              {t('header.logout')}
+            </Button>
+          </HStack>
         </HStack>
         <Box as="main" flex={1} p={8} overflow="auto">
           {children ?? <Outlet />}

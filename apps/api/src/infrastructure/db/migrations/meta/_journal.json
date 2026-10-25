@@ -15,6 +15,34 @@
       "when": 1792959042005,
       "tag": "0001_exotic_supernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792961908335,
+      "tag": "0002_supreme_dorian_gray",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792962155261,
+      "tag": "0003_outgoing_gideon",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792962453345,
+      "tag": "0004_quick_black_bird",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792962521444,
+      "tag": "0005_wooden_paibok",
+      "breakpoints": true
     }
   ]
 }

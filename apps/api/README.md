@@ -64,6 +64,30 @@ For SQL that drizzle-kit cannot generate (extensions, triggers, data fixes): `np
 | `API_LOG_LEVEL` | `info` | pino level |
 | `API_CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Allowed browser origins (web, admin) |
 
+## Staff users (LI-018)
+
+Tables: `users`, `roles`, `permissions`, `role_permissions` (ADR-0006 email + password). Shared permission keys live in `@luxury-investment/shared`.
+
+Local seed creates role templates from ROLE-001 and one demo admin:
+
+| Field | Value |
+|---|---|
+| Email | `admin@example.com` |
+| Password | `DemoAdmin!234` |
+
+Fictional only — never use outside local/test.
+
+### Auth endpoints (LI-019)
+
+| Method | Path | Notes |
+|---|---|---|
+| POST | `/v1/admin/auth/login` | Sets httpOnly `li_session` cookie |
+| POST | `/v1/admin/auth/logout` | Clears session |
+| GET | `/v1/admin/auth/me` | Current user + permissions (auth required) |
+| GET | `/v1/admin/ping` | Auth smoke check |
+
+Env: `AUTH_SESSION_SECRET`, `AUTH_COOKIE_NAME`, `AUTH_SESSION_TTL_HOURS` (see root `.env.example`).
+
 ## Scripts
 
 `npm run dev` (watch mode, pretty logs, reads the root `.env`), `npm start`, `npm run typecheck`, `npm test`.

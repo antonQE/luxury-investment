@@ -1,5 +1,15 @@
 import { integer, jsonb, numeric, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
+export { auditEntries } from '../../modules/audit/repo/audit.schema.ts';
+export { inquiries } from '../../modules/inquiries/repo/inquiries.schema.ts';
+export {
+  permissions,
+  rolePermissions,
+  roles,
+  sessions,
+  users,
+} from '../../modules/users/repo/users.schema.ts';
+
 /** Denormalized listing snapshot (ADR-0005). Replaced by the configurable catalog in EPIC-03/04. */
 export const properties = pgTable('properties', {
   id: uuid().defaultRandom().primaryKey(),

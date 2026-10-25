@@ -1,6 +1,6 @@
 # EPIC-02: Identity, roles, permissions and audit log
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 09 ROLE-001, SEC-001; 04 ADMIN-001; 11 D-01, I-01; FLOW-015
 
@@ -15,4 +15,7 @@ Staff log in to the admin panel; every API request is authorized on the server b
 
 ## Tasks
 
-Decomposed when the epic starts. First task: ADR for staff authentication (analysis R7).
+- LI-018: Auth ADR acceptance and users/roles schema
+- LI-019: Admin login and API auth middleware
+- LI-020: Audit log foundation
+- (later) users/roles admin screens, 2FA enrollment polish, field-level helpers — split when LI-019 is done

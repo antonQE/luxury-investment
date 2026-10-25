@@ -9,8 +9,19 @@
   },
   "header": {
     "language": "Language",
-    "userPlaceholder": "Staff (login arrives in EPIC-02)"
+    "userPlaceholder": "Staff",
+    "logout": "Log out"
   },
+  "login": {
+    "title": "Sign in",
+    "lead": "Staff access with email and password.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "invalid": "Invalid email or password.",
+    "error": "Could not sign in. Try again."
+  },
+
   "dashboard": {
     "title": "Dashboard",
     "apiStatus": "API status",

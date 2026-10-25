@@ -1,11 +1,19 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
+
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 const SERVICE_KEYS = ['finance', 'legal', 'analysis', 'invest', 'manage'] as const;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Services');
-  return { title: t('title'), description: t('lead') };
+  const locale = await getLocale();
+  return buildPageMetadata({
+    locale,
+    path: '/uslugi',
+    title: t('title'),
+    description: t('lead'),
+  });
 }
 
 export default async function ServicesPage() {
@@ -17,7 +25,7 @@ export default async function ServicesPage() {
       <p className="mt-4 max-w-2xl text-lg text-ink-soft">{t('lead')}</p>
       <ul className="mt-10 grid gap-4 md:grid-cols-2">
         {SERVICE_KEYS.map((key) => (
-          <li key={key} className="border border-cream-dark bg-paper p-6">
+          <li key={key} className="border border-line bg-paper p-6">
             <h2 className="font-serif text-2xl">{t(`items.${key}`)}</h2>
           </li>
         ))}

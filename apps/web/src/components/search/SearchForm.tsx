@@ -37,7 +37,7 @@ export function SearchForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-3 rounded-sm bg-paper/95 p-4 shadow-lg md:grid-cols-4"
+      className="grid gap-3 border border-line bg-paper p-4 md:grid-cols-4"
       data-testid={testId}
     >
       <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
@@ -45,7 +45,7 @@ export function SearchForm({
         <select
           name="transactionType"
           defaultValue={values.transactionType ?? ''}
-          className="border border-cream-dark bg-paper px-3 py-2 text-sm text-ink"
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
           data-testid="filter-transaction"
         >
           <option value="">{t('any')}</option>
@@ -61,7 +61,7 @@ export function SearchForm({
         <select
           name="propertyType"
           defaultValue={values.propertyType ?? ''}
-          className="border border-cream-dark bg-paper px-3 py-2 text-sm text-ink"
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
           data-testid="filter-type"
         >
           <option value="">{t('any')}</option>
@@ -77,7 +77,7 @@ export function SearchForm({
         <select
           name="market"
           defaultValue={values.market ?? ''}
-          className="border border-cream-dark bg-paper px-3 py-2 text-sm text-ink"
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
           data-testid="filter-market"
         >
           <option value="">{t('any')}</option>
@@ -90,7 +90,7 @@ export function SearchForm({
       </label>
       <button
         type="submit"
-        className="self-end bg-ink px-4 py-2 text-sm tracking-[0.15em] uppercase text-cream hover:bg-gold-dark"
+        className="self-end bg-ink px-4 py-2 text-sm tracking-[0.15em] uppercase text-stone transition hover:bg-brass-dark"
         data-testid="search-submit"
       >
         {t('submit')}

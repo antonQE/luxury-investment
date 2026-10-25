@@ -3,20 +3,35 @@ import process from 'node:process';
 import { createApp } from './app.ts';
 import { parseEnv } from './config/env.ts';
 import { connectDatabase } from './infrastructure/db/client.ts';
+import { AuditService } from './modules/audit/app/audit-service.ts';
+import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
+import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
+import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
 import { propertyPublicRouter } from './modules/properties/handlers/property-public-handlers.ts';
 import { PropertyRepo } from './modules/properties/repo/property-repo.ts';
+import { AuthService } from './modules/users/app/auth-service.ts';
+import { mountAdminAuth } from './modules/users/handlers/auth-handlers.ts';
+import { UserRepo } from './modules/users/repo/user-repo.ts';
 import { createLogger } from './utils/logger.ts';
 
 const env = parseEnv(process.env);
 const logger = createLogger(env);
 const database = connectDatabase(env.DATABASE_URL);
 const propertyRepo = new PropertyRepo(database.db);
+const inquiryRepo = new InquiryRepo(database.db);
+const userRepo = new UserRepo(database.db);
+const auditService = new AuditService(database.db);
+const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS);
+const adminAuth = mountAdminAuth(authService, env, auditService);
 
 const app = createApp({
   env,
   logger,
   healthChecks: [{ name: 'database', check: database.ping }],
-  publicRouters: [propertyPublicRouter(propertyRepo)],
+  publicRouters: [propertyPublicRouter(propertyRepo), inquiryPublicRouter(inquiryRepo)],
+  adminPublicRouters: [adminAuth.publicRouter],
+  adminAuthGate: adminAuth.gate,
+  adminRouters: [adminAuth.protectedRouter, auditAdminRouter(auditService)],
 });
 
 const server = app.listen(env.API_PORT, () => {

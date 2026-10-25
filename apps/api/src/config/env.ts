@@ -15,6 +15,10 @@ const envSchema = z.object({
     .default('info'),
   API_CORS_ORIGINS: csv.default(['http://localhost:3000', 'http://localhost:5173']),
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
+  /** Random string used to name/document session cookies; opaque tokens live in Postgres. */
+  AUTH_SESSION_SECRET: z.string().min(16).default('local-dev-session-secret'),
+  AUTH_COOKIE_NAME: z.string().min(1).default('li_session'),
+  AUTH_SESSION_TTL_HOURS: z.coerce.number().int().positive().default(168),
 });
 
 export type Env = z.infer<typeof envSchema>;

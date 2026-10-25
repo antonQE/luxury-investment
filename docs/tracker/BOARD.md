@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-011`
+Next IDs: `EPIC-19`, `LI-021`
 
 ## Releases
 
@@ -25,12 +25,12 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | ID | Name | Priority | Status |
 |---|---|---|---|
 | [EPIC-01](epics/EPIC-01-project-foundation.md) | Project foundation | P1 | Done |
-| [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Backlog |
+| [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Done |
 | [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | Backlog |
 | [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Backlog |
 | [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Backlog |
-| [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Backlog |
-| [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | In Progress |
+| [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
+| [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
 | [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Backlog |
 | [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | Backlog |
 | [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
@@ -72,6 +72,16 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-020](tasks/LI-020-audit-log-foundation.md) | Audit log foundation | EPIC-02 |
+| [LI-017](tasks/LI-017-inquiry-forms.md) | Inquiry and viewing request forms | EPIC-07 |
+| [LI-016](tasks/LI-016-maps-similar.md) | Maps link and similar properties | EPIC-07 |
+| [LI-019](tasks/LI-019-admin-login-api-auth.md) | Admin login and API auth middleware | EPIC-02 |
+| [LI-015](tasks/LI-015-property-page-enrichment.md) | Property page enrichment | EPIC-07 |
+| [LI-014](tasks/LI-014-sitemap-robots-redirects.md) | Sitemap, robots and redirect skeleton | EPIC-06 |
+| [LI-018](tasks/LI-018-auth-adr-users-schema.md) | Auth ADR + users/roles schema | EPIC-02 |
+| [LI-013](tasks/LI-013-seo-foundation.md) | SEO metadata foundation | EPIC-06 |
+| [LI-012](tasks/LI-012-design-tokens-chrome.md) | Design tokens and public chrome | EPIC-06 |
+| [LI-011](tasks/LI-011-design-direction.md) | Public site design direction | EPIC-06 |
 | [LI-001](tasks/LI-001-monorepo-root.md) | Monorepo root and workspace conventions | EPIC-01 |
 | [LI-002](tasks/LI-002-lint-format-git-hooks.md) | Lint, format and Git hooks | EPIC-01 |
 | [LI-003](tasks/LI-003-shared-package.md) | Shared package skeleton | EPIC-01 |

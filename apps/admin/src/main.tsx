@@ -10,6 +10,7 @@ import { queryClient } from '@/api/clients';
 import App from '@/App';
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import { theme } from '@/config/theme';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const rootElement = document.getElementById('root');
 if (rootElement === null) {
@@ -21,9 +22,11 @@ createRoot(rootElement).render(
     <ErrorBoundary>
       <ChakraProvider value={theme}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <AuthProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </AuthProvider>
         </QueryClientProvider>
       </ChakraProvider>
     </ErrorBoundary>

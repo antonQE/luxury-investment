@@ -9,6 +9,7 @@ import type { ReactNode } from 'react';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { routing } from '@/i18n/routing';
+import { serverEnv } from '@/lib/config/env';
 
 const display = Source_Serif_4({
   subsets: ['latin', 'cyrillic'],
@@ -29,6 +30,7 @@ export function generateStaticParams() {
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Meta');
   return {
+    metadataBase: new URL(serverEnv().SITE_URL),
     title: { default: t('defaultTitle'), template: `%s | ${t('siteName')}` },
     description: t('defaultDescription'),
   };

@@ -51,5 +51,19 @@ export function propertyPublicRouter(repo: PropertyRepo): Router {
     ),
   );
 
+  router.get(
+    '/properties/:slug/similar',
+    withValidation(
+      { params: slugParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const row = await repo.getBySlug(params.slug);
+        if (row === undefined) throw new AppError('NOT_FOUND');
+        const locale = localeFrom(query.lang);
+        const items = await repo.findSimilar(row);
+        res.json({ data: items.map((item) => serializeProperty(item, locale)) });
+      },
+    ),
+  );
+
   return router;
 }

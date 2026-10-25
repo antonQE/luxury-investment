@@ -1,5 +1,5 @@
 import type { PropertyListQuery } from '@luxury-investment/shared';
-import { and, count, desc, eq, type SQL } from 'drizzle-orm';
+import { and, count, desc, eq, ne, type SQL } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
 import { properties } from '../../../infrastructure/db/schema.ts';
@@ -36,6 +36,21 @@ export class PropertyRepo {
       .where(eq(properties.slug, slug))
       .limit(1);
     return row;
+  }
+
+  async findSimilar(row: PropertyRow, limit = 4): Promise<PropertyRow[]> {
+    return this.#db
+      .select()
+      .from(properties)
+      .where(
+        and(
+          eq(properties.market, row.market),
+          eq(properties.propertyType, row.propertyType),
+          ne(properties.id, row.id),
+        ),
+      )
+      .orderBy(desc(properties.publishedAt))
+      .limit(limit);
   }
 
   private filters(query: PropertyListQuery): SQL[] {

@@ -1,5 +1,6 @@
 import type { Database } from '../client.ts';
 import { propertiesSeed } from './properties.ts';
+import { usersSeed } from './users.ts';
 
 export interface SeedModule {
   name: string;
@@ -8,4 +9,4 @@ export interface SeedModule {
 }
 
 /** Seed modules in the order they run. Reference data first, then content that points to it. */
-export const SEED_MODULES: SeedModule[] = [propertiesSeed];
+export const SEED_MODULES: SeedModule[] = [usersSeed, propertiesSeed];

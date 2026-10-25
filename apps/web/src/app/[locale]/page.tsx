@@ -1,10 +1,23 @@
 import { MARKETS } from '@luxury-investment/shared';
+import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
 import { Link } from '@/i18n/navigation';
 import { fetchProperties } from '@/lib/api/catalog';
+import { buildPageMetadata } from '@/lib/seo/metadata';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Meta');
+  const locale = await getLocale();
+  return buildPageMetadata({
+    locale,
+    path: '/',
+    title: t('defaultTitle'),
+    description: t('defaultDescription'),
+  });
+}
 
 export default async function HomePage() {
   const t = await getTranslations('Home');
@@ -22,15 +35,18 @@ export default async function HomePage() {
 
   return (
     <main>
-      <section className="bg-ink px-6 py-20 text-cream md:py-28" data-testid="home-hero">
+      <section
+        className="animate-fade-up bg-void px-6 py-20 text-stone md:py-28"
+        data-testid="home-hero"
+      >
         <div className="mx-auto max-w-6xl">
-          <p className="text-xs tracking-[0.3em] uppercase text-gold">{t('eyebrow')}</p>
-          <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">
+          <p className="text-xs tracking-[0.3em] uppercase text-brass">{t('eyebrow')}</p>
+          <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl md:leading-[1.1]">
             {t('title')}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-cream/75">{t('lead')}</p>
+          <p className="mt-6 max-w-2xl text-lg text-stone/75">{t('lead')}</p>
           <div className="mt-10 max-w-4xl">
-            <p className="mb-3 text-xs tracking-[0.2em] uppercase text-cream/60">
+            <p className="mb-3 text-xs tracking-[0.2em] uppercase text-stone/60">
               {t('searchTitle')}
             </p>
             <SearchForm />
@@ -38,14 +54,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16" data-testid="home-markets">
+      <section
+        className="mx-auto max-w-6xl px-6 py-16 animate-fade-up"
+        style={{ animationDelay: '120ms' }}
+        data-testid="home-markets"
+      >
         <h2 className="font-serif text-3xl">{t('marketsTitle')}</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {MARKETS.map((market) => (
             <Link
               key={market}
               href={`/obiavi?market=${market}`}
-              className="border border-cream-dark bg-paper p-6 transition hover:border-gold"
+              className="border border-line bg-paper p-6 transition hover:border-brass"
               data-testid={`market-${market}`}
             >
               <h3 className="font-serif text-2xl">{markets(market)}</h3>
@@ -63,7 +83,8 @@ export default async function HomePage() {
           </div>
           <Link
             href="/obiavi"
-            className="text-sm tracking-wide uppercase text-gold-dark hover:text-gold"
+            className="text-sm tracking-wide uppercase text-brass-dark transition hover:text-brass"
+            data-testid="home-view-all"
           >
             {t('viewAll')}
           </Link>

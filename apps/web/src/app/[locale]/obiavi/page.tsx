@@ -5,6 +5,7 @@ import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
 import { Link } from '@/i18n/navigation';
 import { type CatalogFilters, fetchProperties } from '@/lib/api/catalog';
+import { buildPageMetadata } from '@/lib/seo/metadata';
 
 interface ListingsPageProps {
   searchParams: Promise<CatalogFilters>;
@@ -12,7 +13,14 @@ interface ListingsPageProps {
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Listings');
-  return { title: t('title') };
+  const meta = await getTranslations('Meta');
+  const locale = await getLocale();
+  return buildPageMetadata({
+    locale,
+    path: '/obiavi',
+    title: t('title'),
+    description: meta('defaultDescription'),
+  });
 }
 
 export default async function ListingsPage({ searchParams }: ListingsPageProps) {
