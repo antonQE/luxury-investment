@@ -1,0 +1,120 @@
+{
+  "Meta": {
+    "siteName": "Luxury Investment",
+    "defaultTitle": "Luxury Investment – boutique real estate agency",
+    "defaultDescription": "Properties for sale and rent in Sofia, on the Black Sea coast, in Dubai and abroad."
+  },
+  "Nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "about": "About us",
+    "services": "Services",
+    "contact": "Contacts",
+    "phone": "+359 2 000 00 00",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "Footer": {
+    "tagline": "A boutique agency for selected properties in Bulgaria and abroad.",
+    "office": "Sofia office",
+    "address": "Cherni Vrah Blvd, Sofia",
+    "email": "hello@example.com",
+    "rights": "© {year} Luxury Investment. Demo site with fictional listings.",
+    "legal": "Legal",
+    "privacy": "Privacy"
+  },
+  "Home": {
+    "eyebrow": "Boutique agency",
+    "title": "Properties in Sofia, the Black Sea, Dubai and abroad",
+    "lead": "Selected listings for sale and rent. This is the first working version of the new site — the listings are demonstrational.",
+    "searchTitle": "Find a property",
+    "newestTitle": "Newest listings",
+    "newestLead": "Listings start right after the first screen, newest first.",
+    "viewAll": "All properties",
+    "marketsTitle": "Markets",
+    "error": "The catalogue is temporarily unavailable. Please try again shortly."
+  },
+  "Markets": {
+    "sofia": "Sofia",
+    "sofiaLead": "Apartments, houses and offices in the capital.",
+    "black_sea": "Black Sea",
+    "black_seaLead": "Houses, apartments and plots on the coast.",
+    "dubai_abroad": "Dubai and abroad",
+    "dubai_abroadLead": "Investment properties outside Bulgaria."
+  },
+  "Search": {
+    "transaction": "Deal",
+    "type": "Property type",
+    "market": "Market",
+    "any": "All",
+    "submit": "Search",
+    "sale": "Sale",
+    "rent": "Rent",
+    "apartment": "Apartment",
+    "house": "House",
+    "plot": "Plot",
+    "office": "Office",
+    "hotel": "Hotel"
+  },
+  "Listings": {
+    "title": "Properties",
+    "lead": "{count} listings",
+    "empty": "No listings match these filters.",
+    "emptyHint": "Change the filters or write to us — we will search for you.",
+    "error": "We could not load the listings.",
+    "retry": "Clear filters",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "Property": {
+    "notFound": "This listing was not found.",
+    "reference": "Ref. {id}",
+    "area": "{label}: {value}",
+    "bedrooms": "{count, plural, one {# bedroom} other {# bedrooms}}",
+    "bathrooms": "{count, plural, one {# bathroom} other {# bathrooms}}",
+    "description": "Description",
+    "details": "Details",
+    "agent": "Responsible agent",
+    "call": "Call",
+    "viber": "Viber",
+    "whatsapp": "WhatsApp",
+    "back": "Back to listings",
+    "gallery": "Gallery",
+    "prevImage": "Previous image",
+    "nextImage": "Next image",
+    "badge_new": "New offer",
+    "badge_exclusive": "Exclusive",
+    "badge_investment": "Investment",
+    "stage_act_14": "Act 14",
+    "stage_act_16": "Act 16",
+    "vat": "VAT: {label}",
+    "perMonth": "/ month"
+  },
+  "About": {
+    "title": "About us",
+    "lead": "Luxury Investment is a boutique agency. This page is the basic version — the full team and offices follow in later tasks.",
+    "body": "We work with selected properties in Sofia, on the Black Sea coast and in markets outside Bulgaria. The new site replaces the current WordPress with a platform where every listing has clear data, history and a responsible agent."
+  },
+  "Services": {
+    "title": "Services",
+    "lead": "Financial and legal advice, analysis, investments, management and resale.",
+    "items": {
+      "finance": "Financial advice",
+      "legal": "Legal advice",
+      "analysis": "Property analysis",
+      "invest": "Investment properties",
+      "manage": "Management and rental"
+    }
+  },
+  "Contact": {
+    "title": "Contacts",
+    "lead": "Call or write to us. Inquiry forms that store a request for the responsible agent come in a later task.",
+    "office": "Office",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "Errors": {
+    "notFoundTitle": "This page does not exist",
+    "notFoundBody": "Check the address or return to the home page."
+  }
+}

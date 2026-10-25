@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "Luxury Investment Admin",
+    "tagline": "Internal panel"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "placeholder": "Modules come after EPIC-02"
+  },
+  "header": {
+    "language": "Language",
+    "userPlaceholder": "Staff (login arrives in EPIC-02)"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "apiStatus": "API status",
+    "status": "Status",
+    "version": "Version",
+    "components": "Components",
+    "loading": "Loading…",
+    "error": "API is unreachable"
+  },
+  "notFound": {
+    "title": "This page does not exist",
+    "body": "Check the address or return to the dashboard.",
+    "back": "Back to dashboard"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "Refresh the page. If it keeps happening, check the console.",
+    "refresh": "Refresh"
+  }
+}

@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-body), 'Segoe UI', sans-serif;
+  --font-serif: var(--font-display), 'Times New Roman', serif;
+  --color-ink: #1c1916;
+  --color-ink-soft: #3f3a34;
+  --color-cream: #f6f1e8;
+  --color-cream-dark: #e8dfd0;
+  --color-gold: #b08d4d;
+  --color-gold-dark: #8c6e35;
+  --color-paper: #fffdf8;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body), 'Segoe UI', sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-serif {
+  font-family: var(--font-display), 'Times New Roman', serif;
+}

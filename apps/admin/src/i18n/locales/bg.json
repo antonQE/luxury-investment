@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "Luxury Investment Admin",
+    "tagline": "Вътрешен панел"
+  },
+  "nav": {
+    "dashboard": "Табло",
+    "placeholder": "Модулите идват след EPIC-02"
+  },
+  "header": {
+    "language": "Език",
+    "userPlaceholder": "Служител (вход идва в EPIC-02)"
+  },
+  "dashboard": {
+    "title": "Табло",
+    "apiStatus": "Състояние на API",
+    "status": "Статус",
+    "version": "Версия",
+    "components": "Компоненти",
+    "loading": "Зареждане…",
+    "error": "API не е достъпно"
+  },
+  "notFound": {
+    "title": "Страницата не съществува",
+    "body": "Проверете адреса или се върнете към таблото.",
+    "back": "Към таблото"
+  },
+  "error": {
+    "title": "Нещо се обърка",
+    "body": "Опреснете страницата. Ако проблемът продължи, проверете конзолата.",
+    "refresh": "Опресни"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+coverage
+.next
+package-lock.json
+
+# Markdown is hand-maintained; docs/requirements contains verbatim client input that must never be reformatted.
+*.md
