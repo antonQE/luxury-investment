@@ -58,11 +58,12 @@ jobs:
       - name: Check formatting
         run: npm run format:check
 
-      - name: Lint
-        run: npm run lint
-
+      # next-intl root-params types come from `next typegen` (part of web typecheck).
       - name: Typecheck
         run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
 
       - name: Test
         run: npm test

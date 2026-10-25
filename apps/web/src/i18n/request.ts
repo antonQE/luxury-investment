@@ -7,6 +7,7 @@ import { routing } from './routing';
 
 export default getRequestConfig(async ({ locale: override }) => {
   // Route Handlers and Server Actions cannot read root params yet; they pass the locale explicitly.
+  // Typed by `next typegen` (`.next/types`); CI runs typecheck before lint so these exist.
   const requested = override ?? (await rootParams.locale());
   if (!hasLocale(routing.locales, requested)) notFound();
 
