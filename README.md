@@ -47,6 +47,10 @@ API tests need the database running (`npm run db:up`); they use `luxury_test` an
 
 Port 54329 is used so that a PostgreSQL already running on 5432 does not clash.
 
+## Continuous integration
+
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push to `master` and on pull requests: `npm ci`, dependency audit (high+), Prettier check, ESLint, typecheck, tests (with Postgres 18), and production build. The workflow only reports status; it never approves or merges.
+
 ## Scripts
 
 Run from the repository root. `dev`, `build`, `typecheck` and `test` run the same-named script in every workspace that defines it; `lint` and `format` run once over the whole repository.

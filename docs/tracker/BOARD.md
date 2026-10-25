@@ -52,6 +52,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-009](tasks/LI-009-ci-pipeline.md) | CI pipeline | EPIC-01 | S |
 
 ## Ready
 
@@ -67,7 +68,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-009](tasks/LI-009-ci-pipeline.md) | CI pipeline | EPIC-01 | P1 | S | LI-006, LI-007, LI-008, remote repository |
 
 ## Done
 

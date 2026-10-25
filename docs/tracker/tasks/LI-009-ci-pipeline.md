@@ -1,11 +1,11 @@
 # LI-009: CI pipeline
 
 - Epic: EPIC-01
-- Status: Backlog
+- Status: Review
 - Priority: P1
 - Size: S
 - Area: infra
-- Depends on: LI-006, LI-007, LI-008; a remote repository (host not chosen yet)
+- Depends on: LI-006, LI-007, LI-008; remote repository
 
 ## Description
 
@@ -13,9 +13,9 @@ Run the same checks as the local Git hooks on every push and pull request, once 
 
 ## Acceptance criteria
 
-- [ ] Pipeline: install with the lockfile, format check, lint, type check, unit tests, API integration tests against a Postgres service, build of all apps.
-- [ ] Dependency audit (high severity fails).
-- [ ] The pipeline reports status only; it never approves or merges.
+- [x] Pipeline: install with the lockfile, format check, lint, type check, unit tests, API integration tests against a Postgres service, build of all apps.
+- [x] Dependency audit (high severity fails).
+- [x] The pipeline reports status only; it never approves or merges.
 
 ## Out of scope
 
@@ -23,4 +23,11 @@ Run the same checks as the local Git hooks on every push and pull request, once 
 
 ## Implementation notes
 
+- GitHub Actions on `master` and pull requests (repo host: github.com/antonQE/luxury-investment).
+- Single `ci` job with a Postgres 18 service; `TEST_DATABASE_URL` points at it so API integration tests and Drizzle migrate run like locally.
+- `HUSKY=0` on `npm ci` so prepare does not install hooks in CI.
+- Scripts match the root package: `format:check`, `lint`, `typecheck`, `test`, `build`, plus `npm audit --audit-level=high`.
+
 ## Result
+
+Added `.github/workflows/ci.yml`: single job on `master` pushes and all PRs with Postgres 18 service, `npm ci` (`HUSKY=0`), `npm audit --audit-level=high`, format check, lint, typecheck, test, build. README documents the pipeline. Locally `format:check` and audit (high) pass; Actions will confirm on the next push.
