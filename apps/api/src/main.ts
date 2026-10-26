@@ -6,6 +6,8 @@ import { connectDatabase } from './infrastructure/db/client.ts';
 import { LoggingMailer } from './infrastructure/mailer/logging-mailer.ts';
 import { AuditService } from './modules/audit/app/audit-service.ts';
 import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
+import { calculatorAdminRouter } from './modules/calculators/handlers/calculator-admin-handlers.ts';
+import { CalculatorRulesRepo } from './modules/calculators/repo/calculator-rules-repo.ts';
 import { catalogAdminRouter } from './modules/catalog/handlers/catalog-admin-handlers.ts';
 import { CatalogRepo } from './modules/catalog/repo/catalog-repo.ts';
 import { ContentAdminService } from './modules/content/app/content-admin-service.ts';
@@ -76,6 +78,7 @@ const viewingRepo = new ViewingRepo(database.db);
 const crmTaskRepo = new CrmTaskRepo(database.db);
 const offerRepo = new OfferRepo(database.db);
 const dealRepo = new DealRepo(database.db);
+const calculatorRulesRepo = new CalculatorRulesRepo(database.db);
 
 const app = createApp({
   env,
@@ -102,6 +105,7 @@ const app = createApp({
     crmTaskAdminRouter(crmTaskRepo),
     offerAdminRouter(offerRepo),
     dealAdminRouter(dealRepo),
+    calculatorAdminRouter(calculatorRulesRepo, auditService),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

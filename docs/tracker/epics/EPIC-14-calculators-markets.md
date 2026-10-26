@@ -16,8 +16,8 @@ On a property page a visitor estimates acquisition costs by country, sees the de
 ## Tasks
 
 - LI-069: Calculator rules schema + seed — Done
-- LI-070: Calculator rules admin API + audit — In Progress
-- LI-071: Acquisition cost calculator (API + property page) — Backlog
+- LI-070: Calculator rules admin API + audit — Done
+- LI-071: Acquisition cost calculator (API + property page) — Ready
 - LI-072: Deposit calculator (no double-counting) — Backlog
 - LI-073: Mortgage estimate + consultant CTA — Backlog
 - LI-074: Exchange rates for normalized prices — Backlog

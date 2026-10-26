@@ -66,3 +66,32 @@ export const createCalculatorRuleLineSchema = z.object({
 });
 
 export type CreateCalculatorRuleLineInput = z.infer<typeof createCalculatorRuleLineSchema>;
+
+export const updateCalculatorRuleSetSchema = createCalculatorRuleSetSchema.partial();
+export type UpdateCalculatorRuleSetInput = z.infer<typeof updateCalculatorRuleSetSchema>;
+
+export const updateCalculatorRuleLineSchema = createCalculatorRuleLineSchema.partial();
+export type UpdateCalculatorRuleLineInput = z.infer<typeof updateCalculatorRuleLineSchema>;
+
+export const upsertCalculatorToggleSchema = z.object({
+  kind: calculatorKindSchema,
+  countryCode: calculatorCountrySchema,
+  propertyType: z.string().trim().max(80).optional().default(''),
+  enabled: z.boolean(),
+});
+
+export type UpsertCalculatorToggleInput = z.infer<typeof upsertCalculatorToggleSchema>;
+
+export const listCalculatorRuleSetsQuerySchema = z
+  .object({
+    countryCode: calculatorCountrySchema.optional(),
+    kind: calculatorKindSchema.optional(),
+    includeArchived: z.union([z.boolean(), z.enum(['true', 'false'])]).optional(),
+  })
+  .transform((query) => ({
+    countryCode: query.countryCode,
+    kind: query.kind,
+    includeArchived: query.includeArchived === true || query.includeArchived === 'true',
+  }));
+
+export type ListCalculatorRuleSetsQuery = z.infer<typeof listCalculatorRuleSetsQuerySchema>;
