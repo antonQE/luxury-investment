@@ -1,6 +1,6 @@
 # EPIC-08: Team, offices and partners
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 01 §2, §5; 04 ADMIN-003; 06 CONTENT-003; 11 A-04
 
@@ -15,4 +15,10 @@ Admins manage team members (agents, staff, lawyers, external partners), offices 
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-035: Team, offices and partners schema + seed — Done
+- LI-036: Public team/offices/partners API and pages — Done
+- LI-037: Admin team, offices and partners CRUD (basic) — Done
+
+## Notes
+
+Basic R1: URL-based photos/logos; media pipeline can attach later. Qualifications stored as text on the member for now. Offices admin UI deferred (API ready); Team + Partners screens ship for R1.

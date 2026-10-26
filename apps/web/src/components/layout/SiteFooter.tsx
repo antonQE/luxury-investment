@@ -49,7 +49,7 @@ export async function SiteFooter() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/stranici/privacy"
             className="mt-2 text-xs tracking-[0.15em] uppercase text-stone/50 transition hover:text-brass"
             data-testid="footer-privacy"
           >

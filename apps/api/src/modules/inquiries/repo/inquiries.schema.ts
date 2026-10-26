@@ -9,5 +9,7 @@ export const inquiries = pgTable('inquiries', {
   phone: text().notNull(),
   message: text().notNull(),
   consent: boolean().notNull(),
+  status: text().notNull().default('new'),
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
 });

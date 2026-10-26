@@ -13,6 +13,9 @@
     "businesses": "Businesses",
     "legalServices": "Legal services",
     "about": "About us",
+    "team": "Team",
+    "articles": "Articles",
+    "sellWithUs": "Sell with us",
     "services": "Services",
     "contact": "Contacts",
     "phone": "+359 2 000 00 00",
@@ -37,6 +40,8 @@
     "newestLead": "Listings start right after the first screen, newest first.",
     "viewAll": "All properties",
     "marketsTitle": "Markets",
+    "partnersTitle": "Partners",
+    "partnersLead": "Demo partner logos — fictional links for local development.",
     "error": "The catalogue is temporarily unavailable. Please try again shortly."
   },
   "Markets": {
@@ -109,8 +114,31 @@
   },
   "About": {
     "title": "About us",
-    "lead": "Luxury Investment is a boutique agency. This page is the basic version — the full team and offices follow in later tasks.",
-    "body": "We work with selected properties in Sofia, on the Black Sea coast and in markets outside Bulgaria. The new site replaces the current WordPress with a platform where every listing has clear data, history and a responsible agent."
+    "lead": "Luxury Investment is a boutique agency for selected properties.",
+    "body": "We work with selected properties in Sofia, on the Black Sea coast and in markets outside Bulgaria. Meet the team on the Team page and find every office under Contacts."
+  },
+  "Team": {
+    "title": "Team",
+    "lead": "Agents, staff and legal counsel. Demo profiles with fictional data.",
+    "error": "The team list is temporarily unavailable.",
+    "notFound": "This profile was not found.",
+    "back": "All team members",
+    "email": "Email",
+    "phone": "Phone",
+    "qualifications": "Qualifications"
+  },
+  "Articles": {
+    "title": "Articles",
+    "lead": "Insights and market notes. Demo content with fictional data.",
+    "error": "Articles are temporarily unavailable.",
+    "empty": "No articles yet.",
+    "notFound": "This article was not found.",
+    "back": "All articles",
+    "by": "By"
+  },
+  "CmsPage": {
+    "lead": "Content page",
+    "notFound": "This page was not found."
   },
   "Services": {
     "title": "Services",
@@ -146,12 +174,52 @@
     "success": "Thank you. We received your enquiry and will get back to you soon.",
     "error": "We could not send the enquiry. Please try again."
   },
+  "SellWithUs": {
+    "title": "Sell with us",
+    "lead": "A clear path from preparation to closing. Demo outline until the handbook ships.",
+    "body": "We guide sellers through preparation, marketing, viewings and negotiation, then the sale.",
+    "formTitle": "Request a consultation",
+    "formLead": "Tell us about your property. We reply with next steps.",
+    "steps": {
+      "prepare": {
+        "title": "Preparation",
+        "body": "Valuation, documents and positioning."
+      },
+      "market": {
+        "title": "Marketing",
+        "body": "Photography, portals and targeted outreach."
+      },
+      "viewings": {
+        "title": "Viewings & negotiation",
+        "body": "Qualified buyers, feedback and offers."
+      },
+      "sale": {
+        "title": "Sale",
+        "body": "Closing support with legal partners."
+      }
+    }
+  },
+  "Consultation": {
+    "title": "Consultation",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "consent": "I agree that my personal data may be processed for this consultation request.",
+    "submit": "Send request",
+    "submitting": "Sending…",
+    "success": "Thank you. We received your request and will get back to you soon.",
+    "error": "We could not send the request. Please try again."
+  },
   "Contact": {
     "title": "Contacts",
-    "lead": "Call or write to us. Inquiry forms that store a request for the responsible agent come in a later task.",
+    "lead": "Our offices — addresses, hours and a map link for each location.",
     "office": "Office",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "hours": "Hours",
+    "map": "Open in Maps",
+    "empty": "No offices are published yet."
   },
 
   "Errors": {

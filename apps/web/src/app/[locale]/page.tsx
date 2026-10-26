@@ -1,4 +1,4 @@
-import { MARKETS } from '@luxury-investment/shared';
+import { MARKETS, type PublicPartner } from '@luxury-investment/shared';
 import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
@@ -6,6 +6,7 @@ import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
 import { Link } from '@/i18n/navigation';
 import { fetchProperties } from '@/lib/api/catalog';
+import { fetchPartners } from '@/lib/api/team';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,11 +27,17 @@ export default async function HomePage() {
 
   let newest;
   let loadError = false;
+  let partners: PublicPartner[] = [];
   try {
     newest = await fetchProperties(locale, { limit: '6' });
   } catch {
     newest = { data: [], total: 0, offset: 0, limit: 6 };
     loadError = true;
+  }
+  try {
+    partners = await fetchPartners(locale);
+  } catch {
+    /* keep empty */
   }
 
   return (
@@ -97,6 +104,35 @@ export default async function HomePage() {
           <PropertyGrid items={newest.data} />
         )}
       </section>
+
+      {partners.length > 0 ? (
+        <section className="border-t border-line bg-paper px-6 py-16" data-testid="home-partners">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="font-serif text-3xl">{t('partnersTitle')}</h2>
+            <p className="mt-2 text-sm text-ink-soft">{t('partnersLead')}</p>
+            <ul className="mt-10 flex flex-wrap items-center gap-8">
+              {partners.map((partner) => (
+                <li key={partner.id}>
+                  <a
+                    href={partner.websiteUrl ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block opacity-80 transition hover:opacity-100"
+                    data-testid={`partner-${partner.slug}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element -- partner logos are remote URLs */}
+                    <img
+                      src={partner.logoUrl}
+                      alt={partner.name}
+                      className="h-12 w-auto max-w-[160px] object-contain"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

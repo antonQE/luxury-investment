@@ -3,10 +3,16 @@ import process from 'node:process';
 import { createApp } from './app.ts';
 import { parseEnv } from './config/env.ts';
 import { connectDatabase } from './infrastructure/db/client.ts';
+import { LoggingMailer } from './infrastructure/mailer/logging-mailer.ts';
 import { AuditService } from './modules/audit/app/audit-service.ts';
 import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
 import { catalogAdminRouter } from './modules/catalog/handlers/catalog-admin-handlers.ts';
 import { CatalogRepo } from './modules/catalog/repo/catalog-repo.ts';
+import { ContentAdminService } from './modules/content/app/content-admin-service.ts';
+import { ContentPublicService } from './modules/content/app/content-public-service.ts';
+import { contentAdminRouter } from './modules/content/handlers/content-admin-handlers.ts';
+import { contentPublicRouter } from './modules/content/handlers/content-public-handlers.ts';
+import { inquiryAdminRouter } from './modules/inquiries/handlers/inquiry-admin-handlers.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
 import { MediaService } from './modules/media/app/media-service.ts';
@@ -18,6 +24,10 @@ import { PropertyHistoryService } from './modules/properties/app/property-histor
 import { propertyAdminRouter } from './modules/properties/handlers/property-admin-handlers.ts';
 import { propertyPublicRouter } from './modules/properties/handlers/property-public-handlers.ts';
 import { PropertyRepo } from './modules/properties/repo/property-repo.ts';
+import { TeamAdminService } from './modules/team/app/team-admin-service.ts';
+import { TeamPublicService } from './modules/team/app/team-public-service.ts';
+import { teamAdminRouter } from './modules/team/handlers/team-admin-handlers.ts';
+import { teamPublicRouter } from './modules/team/handlers/team-public-handlers.ts';
 import { AuthService } from './modules/users/app/auth-service.ts';
 import { mountAdminAuth } from './modules/users/handlers/auth-handlers.ts';
 import { UserRepo } from './modules/users/repo/user-repo.ts';
@@ -32,7 +42,12 @@ const propertyRepo = new PropertyRepo(database.db);
 const propertyHistory = new PropertyHistoryService(database.db);
 const propertyAdmin = new PropertyAdminService(database.db, propertyHistory);
 const inquiryRepo = new InquiryRepo(database.db);
+const mailer = new LoggingMailer(logger);
 const catalogRepo = new CatalogRepo(database.db);
+const teamPublic = new TeamPublicService(database.db);
+const teamAdmin = new TeamAdminService(database.db);
+const contentPublic = new ContentPublicService(database.db);
+const contentAdmin = new ContentAdminService(database.db);
 const userRepo = new UserRepo(database.db);
 const auditService = new AuditService(database.db);
 const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS);
@@ -44,8 +59,10 @@ const app = createApp({
   healthChecks: [{ name: 'database', check: database.ping }],
   publicRouters: [
     propertyPublicRouter(propertyRepo, mediaService),
-    inquiryPublicRouter(inquiryRepo),
+    inquiryPublicRouter(inquiryRepo, mailer, env.INQUIRY_NOTIFY_TO, logger),
     mediaPublicRouter(mediaService),
+    teamPublicRouter(teamPublic),
+    contentPublicRouter(contentPublic),
   ],
   adminPublicRouters: [adminAuth.publicRouter],
   adminAuthGate: adminAuth.gate,
@@ -55,6 +72,9 @@ const app = createApp({
     catalogAdminRouter(catalogRepo),
     propertyAdminRouter(propertyAdmin),
     mediaAdminRouter(mediaService),
+    teamAdminRouter(teamAdmin),
+    inquiryAdminRouter(inquiryRepo),
+    contentAdminRouter(contentAdmin),
   ],
 });
 

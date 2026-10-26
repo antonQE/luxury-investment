@@ -12,6 +12,9 @@ export const PRIMARY_NAV = [
     ],
   },
   { href: '/za-nas', key: 'about' },
+  { href: '/ekip', key: 'team' },
+  { href: '/stati', key: 'articles' },
+  { href: '/prodai-s-nas', key: 'sellWithUs' },
   { href: '/uslugi', key: 'services' },
   { href: '/contact', key: 'contact' },
 ] as const;

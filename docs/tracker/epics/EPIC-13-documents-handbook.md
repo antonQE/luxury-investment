@@ -1,6 +1,6 @@
 # EPIC-13: Document library, seller handbook and download counters
 
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Source: 06 DOC-001; 09 OPS-001; 11 F-04; FLOW-010
 
@@ -10,13 +10,16 @@ Admins upload and version public and private documents; the current seller handb
 
 ## Scope
 
-- In: documents with category, language, versions, editor, source, access level, related pages; replace with a new version without losing statistics; archive; legal templates group with date and "sample document" notice; download events separate from page views (attempt vs success); access revoked means old download links stop working.
+- In (R1 basic): seller handbook as a versioned document — upload/publish current version, public download, counters (total, per version, per day).
+- In (R2 rest): full document library with categories, languages, access levels, legal templates, revoke old links.
 - Out: client-specific documents inside CRM (EPIC-09).
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-045: Documents schema + download events + seed
+- LI-046: Public handbook download API + page
+- LI-047: Admin handbook upload/version UI (basic)
 
 ## Notes
 
-Release 1 needs only the seller handbook: versioned upload, public download, counters (total, per version, per period). The library, categories and legal templates are Release 2.
+Release 1 needs only the seller handbook. Library and legal templates wait for R2.

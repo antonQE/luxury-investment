@@ -7,6 +7,10 @@ export const ROUTES = {
   PROPERTIES: '/properties',
   PROPERTY_NEW: '/properties/new',
   PROPERTY_EDIT: '/properties/:id',
+  TEAM: '/team',
+  PARTNERS: '/partners',
+  INQUIRIES: '/inquiries',
+  ARTICLES: '/articles',
   NOT_FOUND: '*',
 } as const;
 

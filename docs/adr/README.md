@@ -20,6 +20,7 @@ Until an ADR says otherwise, the baseline in `.cursor/skills/luxury-investment-w
 | [0008](0008-public-form-bot-protection.md) | Public form bot protection (honeypot first) | Accepted (delegated) | 2026-10-25 |
 | [0009](0009-catalog-data-model.md) | Catalog data model (locations, taxonomies, attributes, translations) | Accepted (delegated) | 2026-10-25 |
 | [0010](0010-media-storage-and-jobs.md) | Media storage interface and background jobs | Accepted (delegated) | 2026-10-26 |
+| [0011](0011-transactional-email.md) | Transactional email (inquiry notifications) | Accepted (delegated) | 2026-10-26 |
 
 ## Pending decisions
 
@@ -34,7 +35,7 @@ Taken when the epic that needs them starts (details and options in the [requirem
 | Headless UI primitives for the public site | ADR-0003 | EPIC-06 | R1 (Tailwind already; primitives as needed in LI-012) |
 | Search and map (Postgres search, Google Maps usage and API key) | R11, R12 | EPIC-07 | R1 — see [ADR-0007](0007-public-search-postgres.md) |
 | Bot protection for public forms | R12 | EPIC-07 | R1 — decided: [ADR-0008](0008-public-form-bot-protection.md) |
-| Transactional email provider (inquiry notifications to agents) | R12 | EPIC-09 | R1 |
+| Transactional email provider (inquiry notifications to agents) | R12 | EPIC-09 | R1 — decided: [ADR-0011](0011-transactional-email.md) log stub first |
 | Consent management and GA4 | R12 | EPIC-16 | R1 |
 | Error monitoring (e.g. Sentry) | | first deployment | R1 |
 | Hosting | R8 | first deployment | R1 |

@@ -1,0 +1,44 @@
+import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+
+/** Logical document (EPIC-13). Labels via `translations` (title). */
+export const documents = pgTable('documents', {
+  id: uuid().defaultRandom().primaryKey(),
+  slug: text().notNull().unique(),
+  /** seller_handbook | … */
+  kind: text().notNull(),
+  /** public | internal */
+  accessLevel: text().notNull().default('public'),
+  currentVersionId: uuid(),
+  archivedAt: timestamp({ withTimezone: true }),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const documentVersions = pgTable('document_versions', {
+  id: uuid().defaultRandom().primaryKey(),
+  documentId: uuid()
+    .notNull()
+    .references(() => documents.id),
+  versionLabel: text().notNull(),
+  /** Storage key under MEDIA_LOCAL_ROOT or absolute path key. */
+  storageKey: text().notNull(),
+  fileName: text().notNull(),
+  contentType: text().notNull().default('application/pdf'),
+  byteSize: integer().notNull().default(0),
+  publishedAt: timestamp({ withTimezone: true }),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const downloadEvents = pgTable('download_events', {
+  id: uuid().defaultRandom().primaryKey(),
+  documentId: uuid()
+    .notNull()
+    .references(() => documents.id),
+  versionId: uuid()
+    .notNull()
+    .references(() => documentVersions.id),
+  success: boolean().notNull().default(true),
+  source: text(),
+  referrer: text(),
+  occurredAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});

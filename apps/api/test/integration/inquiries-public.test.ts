@@ -4,15 +4,26 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { createApp } from '../../src/app.ts';
 import { inquiries } from '../../src/infrastructure/db/schema.ts';
+import type { MailerPort } from '../../src/infrastructure/mailer/mailer-port.ts';
 import { inquiryPublicRouter } from '../../src/modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from '../../src/modules/inquiries/repo/inquiry-repo.ts';
 import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 
 const connection = connectTestDatabase();
+const logger = pino({ level: 'silent' });
+const sent: { to: string; subject: string }[] = [];
+const mailer: MailerPort = {
+  send(message) {
+    sent.push({ to: message.to, subject: message.subject });
+    return Promise.resolve();
+  },
+};
 const app = createApp({
   env: { API_CORS_ORIGINS: [] },
-  logger: pino({ level: 'silent' }),
-  publicRouters: [inquiryPublicRouter(new InquiryRepo(connection.db))],
+  logger,
+  publicRouters: [
+    inquiryPublicRouter(new InquiryRepo(connection.db), mailer, 'agent@example.com', logger),
+  ],
 });
 
 const validBody = {
@@ -27,6 +38,7 @@ const validBody = {
 };
 
 beforeEach(async () => {
+  sent.length = 0;
   await resetDatabase(connection);
 });
 
@@ -42,6 +54,9 @@ describe('POST /v1/public/inquiries', () => {
     const rows = await connection.db.select().from(inquiries);
     expect(rows).toHaveLength(1);
     expect(rows[0]?.email).toBe('visitor@example.com');
+    expect(sent).toEqual([
+      { to: 'agent@example.com', subject: '[LI] New inquiry: demo-test-apartment' },
+    ]);
   });
 
   it('rejects a filled honeypot', async () => {

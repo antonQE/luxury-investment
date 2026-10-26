@@ -1,26 +1,16 @@
 'use client';
 
-import { INQUIRY_TYPES, type InquiryType } from '@luxury-investment/shared';
+import { PROPERTY_INQUIRY_TYPES, type PropertyInquiryType } from '@luxury-investment/shared';
 import { useTranslations } from 'next-intl';
 import { type SyntheticEvent, useState } from 'react';
 
-type Status = 'idle' | 'submitting' | 'success' | 'error';
+import { postInquiry } from '@/lib/api/post-inquiry';
 
-async function postInquiry(body: Record<string, unknown>) {
-  const base = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
-  const response = await fetch(`${base}/v1/public/inquiries`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', accept: 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!response.ok) {
-    throw new Error(`inquiry_failed_${String(response.status)}`);
-  }
-}
+type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function InquiryForm({ propertySlug }: { propertySlug: string }) {
   const t = useTranslations('Inquiry');
-  const [type, setType] = useState<InquiryType>('inquiry');
+  const [type, setType] = useState<PropertyInquiryType>('inquiry');
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
 
@@ -67,7 +57,7 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
     >
       <p className="text-xs tracking-[0.2em] uppercase text-brass">{t('title')}</p>
       <div className="flex flex-wrap gap-3 text-sm">
-        {INQUIRY_TYPES.map((value) => (
+        {PROPERTY_INQUIRY_TYPES.map((value) => (
           <label key={value} className="flex items-center gap-2">
             <input
               type="radio"

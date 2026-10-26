@@ -9,11 +9,16 @@ const STATIC_PATHS = [
   '/',
   '/obiavi/',
   '/za-nas/',
+  '/ekip/',
+  '/stati/',
+  '/prodai-s-nas/',
   '/uslugi/',
   '/contact/',
   '/investicii/',
   '/investicii/biznesi/',
   '/advokatski-uslugi/',
+  '/stranici/privacy/',
+  '/stranici/terms/',
 ] as const;
 
 async function allPublishedProperties(locale: Locale): Promise<PublicProperty[]> {

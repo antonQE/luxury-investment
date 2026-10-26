@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-035`
+Next IDs: `EPIC-19`, `LI-048`
 
 
 ## Releases
@@ -32,12 +32,12 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Done |
 | [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
 | [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
-| [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Backlog |
-| [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | Backlog |
+| [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Done |
+| [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | Done |
 | [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
-| [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Backlog |
-| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Backlog |
+| [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
+| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | In Progress |
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Backlog |
@@ -58,6 +58,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
+| [LI-046](tasks/LI-046-public-handbook-download.md) | Public handbook download API + page | EPIC-13 | P1 | M |
 
 ## Blocked
 
@@ -68,11 +69,22 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-
+| [LI-047](tasks/LI-047-admin-handbook-upload.md) | Admin handbook upload/version UI (basic) | EPIC-13 | P1 | M | LI-045, LI-033 |
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-045](tasks/LI-045-documents-schema-seed.md) | Documents schema + download events + seed | EPIC-13 |
+| [LI-044](tasks/LI-044-admin-content-crud.md) | Admin articles/pages CRUD (basic) | EPIC-12 |
+| [LI-043](tasks/LI-043-sell-with-us-consultation.md) | Sell with us page + consultation form | EPIC-12 |
+| [LI-042](tasks/LI-042-public-articles-pages.md) | Public articles and pages API + site routes | EPIC-12 |
+| [LI-041](tasks/LI-041-articles-pages-schema.md) | Articles and pages schema + seed | EPIC-12 |
+| [LI-040](tasks/LI-040-email-notification-adr-stub.md) | Transactional email ADR + notification stub | EPIC-09 |
+| [LI-039](tasks/LI-039-admin-inquiries-inbox-ui.md) | Admin inquiries inbox UI | EPIC-09 |
+| [LI-038](tasks/LI-038-inquiry-status-admin-api.md) | Inquiry status fields + admin list API | EPIC-09 |
+| [LI-037](tasks/LI-037-team-admin-crud.md) | Admin team, offices and partners CRUD (basic) | EPIC-08 |
+| [LI-036](tasks/LI-036-team-public-api-pages.md) | Public team/offices/partners API and pages | EPIC-08 |
+| [LI-035](tasks/LI-035-team-offices-partners-schema.md) | Team, offices and partners schema + seed | EPIC-08 |
 | [LI-034](tasks/LI-034-admin-property-gallery-ui.md) | Admin property gallery UI | EPIC-05 |
 | [LI-033](tasks/LI-033-media-upload-renditions.md) | Media upload API + sharp renditions | EPIC-05 |
 | [LI-032](tasks/LI-032-media-assets-schema.md) | Media assets schema + local storage port | EPIC-05 |

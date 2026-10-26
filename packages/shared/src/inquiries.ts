@@ -1,7 +1,14 @@
 import { z } from 'zod';
 
-export const INQUIRY_TYPES = ['inquiry', 'viewing'] as const;
+export const PROPERTY_INQUIRY_TYPES = ['inquiry', 'viewing'] as const;
+export type PropertyInquiryType = (typeof PROPERTY_INQUIRY_TYPES)[number];
+
+export const INQUIRY_TYPES = [...PROPERTY_INQUIRY_TYPES, 'consultation'] as const;
 export type InquiryType = (typeof INQUIRY_TYPES)[number];
+
+export const INQUIRY_STATUSES = ['new', 'in_progress', 'closed'] as const;
+export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
+export const inquiryStatusSchema = z.enum(INQUIRY_STATUSES);
 
 export const createInquirySchema = z.object({
   type: z.enum(INQUIRY_TYPES),
@@ -16,3 +23,9 @@ export const createInquirySchema = z.object({
 });
 
 export type CreateInquiryInput = z.infer<typeof createInquirySchema>;
+
+export const updateInquiryStatusSchema = z.object({
+  status: inquiryStatusSchema,
+});
+
+export type UpdateInquiryStatusInput = z.infer<typeof updateInquiryStatusSchema>;

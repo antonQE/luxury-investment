@@ -13,6 +13,10 @@ const NotFound = lazy(() => import('@/pages/NotFound/NotFound'));
 const PropertiesList = lazy(() => import('@/pages/Properties/PropertiesList'));
 const PropertyEditor = lazy(() => import('@/pages/Properties/PropertyEditor'));
 const PropertyTypes = lazy(() => import('@/pages/PropertyTypes/PropertyTypes'));
+const ArticlesList = lazy(() => import('@/pages/Articles/ArticlesList'));
+const InquiriesInbox = lazy(() => import('@/pages/Inquiries/InquiriesInbox'));
+const PartnersList = lazy(() => import('@/pages/Partners/PartnersList'));
+const TeamList = lazy(() => import('@/pages/Team/TeamList'));
 
 function PageFallback() {
   return (
@@ -36,6 +40,10 @@ export default function App() {
             <Route path={ROUTES.PROPERTY_EDIT} element={<PropertyEditor />} />
             <Route path={ROUTES.LOCATIONS} element={<Locations />} />
             <Route path={ROUTES.PROPERTY_TYPES} element={<PropertyTypes />} />
+            <Route path={ROUTES.TEAM} element={<TeamList />} />
+            <Route path={ROUTES.PARTNERS} element={<PartnersList />} />
+            <Route path={ROUTES.INQUIRIES} element={<InquiriesInbox />} />
+            <Route path={ROUTES.ARTICLES} element={<ArticlesList />} />
           </Route>
         </Route>
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />

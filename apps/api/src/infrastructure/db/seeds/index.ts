@@ -1,8 +1,12 @@
 import type { Database } from '../client.ts';
 import { attributesSeed } from './attributes.ts';
+import { contentSeed } from './content.ts';
+import { documentsSeed } from './documents.ts';
+import { inquiriesSeed } from './inquiries.ts';
 import { locationsSeed } from './locations.ts';
 import { propertiesSeed } from './properties.ts';
 import { taxonomiesSeed } from './taxonomies.ts';
+import { teamSeed } from './team.ts';
 import { usersSeed } from './users.ts';
 
 export interface SeedModule {
@@ -17,5 +21,9 @@ export const SEED_MODULES: SeedModule[] = [
   locationsSeed,
   taxonomiesSeed,
   attributesSeed,
+  teamSeed,
   propertiesSeed,
+  inquiriesSeed,
+  contentSeed,
+  documentsSeed,
 ];
