@@ -14,6 +14,12 @@ describe('lookupRedirect', () => {
     expect(lookupRedirect('/en/oferti/')).toBe('/en/obiavi/');
   });
 
+  it('maps agent and novini section aliases', () => {
+    expect(lookupRedirect('/agent/')).toBe('/ekip/');
+    expect(lookupRedirect('/novini/')).toBe('/stati/');
+    expect(lookupRedirect('/en/novini/')).toBe('/en/stati/');
+  });
+
   it('returns null for unknown paths', () => {
     expect(lookupRedirect('/obiavi/')).toBeNull();
   });

@@ -1,6 +1,6 @@
 # EPIC-17: Migration and launch
 
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Source: 09 MIG-001, MIG-002, OPS-001; 11 I-03..I-05; FLOW-014
 
@@ -15,8 +15,10 @@ All content of luxuryinvestment.bg (properties, images, IDs, taxonomies, attribu
 
 ## Tasks
 
-Decomposed when the epic starts. Needs a database dump and the uploads folder (analysis Q2, Q9), which the product owner sends later; until then all epics use dummy seed data. The theme's built-in CRM is not used, so there are no leads or contacts to migrate.
+- LI-050: Migration runbook and launch checklist — Done ([runbook](../../migration/runbook.md))
+- LI-051: WordPress/data import scripts — **Blocked** on dump
+- LI-052: Expand redirect map from current-site inventory — Done
 
 ## Notes
 
-Public inventory, URL patterns and data quality issues already collected: [02-current-site.analysis.md](../../requirements/02-current-site.analysis.md).
+Public inventory, URL patterns and data quality issues already collected: [02-current-site.analysis.md](../../requirements/02-current-site.analysis.md). Needs a database dump and the uploads folder (analysis Q2, Q9) before LI-051 can leave Blocked and EPIC-17 can finish.
