@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-085`
+Next IDs: `EPIC-19`, `LI-084`
 
 
 ## Releases
@@ -34,7 +34,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
 | [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Done |
 | [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | Done |
-| [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
+| [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | In Progress |
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
 | [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
@@ -48,6 +48,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-081](tasks/LI-081-marketing-portals-admin-ui.md) | Marketing + portals admin UI (basic) | EPIC-10 | M |
 
 ## Review
 
@@ -58,6 +59,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
+| [LI-082](tasks/LI-082-property-events-schema.md) | Property event tracking schema + ingest | EPIC-11 | P1 | M |
 
 ## Blocked
 
@@ -68,11 +70,14 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
+| [LI-083](tasks/LI-083-owner-reports-basic.md) | Owner report basic (JSON + admin) | EPIC-11 | P1 | M | LI-082 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-080](tasks/LI-080-marketing-portals-admin-api.md) | Marketing + portals admin API | EPIC-10 |
+| [LI-079](tasks/LI-079-marketing-portals-schema.md) | Marketing plan + portal measurements schema | EPIC-10 |
 | [LI-078](tasks/LI-078-document-download-analytics.md) | Document download analytics by period/source | EPIC-13 |
 | [LI-077](tasks/LI-077-document-library-admin-ui-public.md) | Document library admin UI + public list | EPIC-13 |
 | [LI-076](tasks/LI-076-document-library-admin-api.md) | Document library admin API | EPIC-13 |

@@ -199,6 +199,29 @@ export {
 export type { Locale } from './locales.ts';
 export { DEFAULT_LOCALE, LOCALES, localeSchema } from './locales.ts';
 export type {
+  CreateMarketingActivityInput,
+  CreatePortalListingInput,
+  CreatePortalMeasurementInput,
+  ListMarketingQuery,
+  MarketingActivityStatus,
+  PortalListingStatus,
+  UpdateMarketingActivityInput,
+  UpdatePortalListingInput,
+} from './marketing.ts';
+export {
+  buildUtmUrl,
+  createMarketingActivitySchema,
+  createPortalListingSchema,
+  createPortalMeasurementSchema,
+  listMarketingQuerySchema,
+  MARKETING_ACTIVITY_STATUSES,
+  marketingActivityStatusSchema,
+  PORTAL_LISTING_STATUSES,
+  portalListingStatusSchema,
+  updateMarketingActivitySchema,
+  updatePortalListingSchema,
+} from './marketing.ts';
+export type {
   CreateOfferInput,
   ListOffersQuery,
   OfferStatus,

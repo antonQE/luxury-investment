@@ -39,6 +39,8 @@ import { ExchangeRatesRepo } from './modules/exchange-rates/repo/exchange-rates-
 import { inquiryAdminRouter } from './modules/inquiries/handlers/inquiry-admin-handlers.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
+import { marketingAdminRouter } from './modules/marketing/handlers/marketing-admin-handlers.ts';
+import { MarketingRepo } from './modules/marketing/repo/marketing-repo.ts';
 import { MediaService } from './modules/media/app/media-service.ts';
 import { mediaAdminRouter } from './modules/media/handlers/media-admin-handlers.ts';
 import { mediaPublicRouter } from './modules/media/handlers/media-public-handlers.ts';
@@ -86,6 +88,7 @@ const offerRepo = new OfferRepo(database.db);
 const dealRepo = new DealRepo(database.db);
 const calculatorRulesRepo = new CalculatorRulesRepo(database.db);
 const exchangeRatesRepo = new ExchangeRatesRepo(database.db);
+const marketingRepo = new MarketingRepo(database.db);
 const acquisitionEstimate = new AcquisitionEstimateService(database.db);
 const depositEstimate = new DepositEstimateService(database.db);
 const mortgageEstimate = new MortgageEstimateService(database.db, env.CREDIT_CONSULTANT_TEAM_SLUG);
@@ -122,6 +125,7 @@ const app = createApp({
     dealAdminRouter(dealRepo),
     calculatorAdminRouter(calculatorRulesRepo, auditService),
     exchangeRatesAdminRouter(exchangeRatesRepo, auditService),
+    marketingAdminRouter(marketingRepo),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

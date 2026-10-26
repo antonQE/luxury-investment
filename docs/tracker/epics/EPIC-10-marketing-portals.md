@@ -1,6 +1,6 @@
 # EPIC-10: Marketing plan and external portal tracking
 
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Source: 05 MKT-001..MKT-003; 07 INT-002 (manual path); 11 E-01, E-02; FLOW-008
 
@@ -15,4 +15,10 @@ For each property the team records planned and done marketing activities and an 
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-079: Marketing plan + portal measurements schema — Done
+- LI-080: Marketing + portals admin API — Done
+- LI-081: Marketing + portals admin UI (basic) — Ready
+
+## Notes
+
+R2 basic decomposition 2026-10-26. Evidence as URL/notes first.

@@ -9,6 +9,7 @@ import { documentsSeed } from './documents.ts';
 import { exchangeRatesSeed } from './exchange-rates.ts';
 import { inquiriesSeed } from './inquiries.ts';
 import { locationsSeed } from './locations.ts';
+import { marketingSeed } from './marketing.ts';
 import { offersSeed } from './offers.ts';
 import { propertiesSeed } from './properties.ts';
 import { taxonomiesSeed } from './taxonomies.ts';
@@ -30,6 +31,7 @@ export const SEED_MODULES: SeedModule[] = [
   attributesSeed,
   teamSeed,
   propertiesSeed,
+  marketingSeed,
   contactsSeed,
   inquiriesSeed,
   viewingsSeed,

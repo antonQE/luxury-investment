@@ -10,9 +10,14 @@ Views and events for properties and articles are measured internally with a docu
 
 ## Scope
 
-- In: event collection (views, contact clicks, form submits, gallery, PDF, share, calculator, viewing requests) with bot and internal traffic filtering and consent; daily rollups; publication periods and price history in reports; public view counter toggle; GA4 and Search Console connection (where access exists); owner report templates (short, detailed), section toggles, comment, archived versions; PDF and image rendering ADR (analysis R6); per-property view combining statistics, manual results, portals, campaigns, inquiries, viewings and offers; performance by agent, property, market and source (permission-controlled); dashboard KPIs.
-- Out: alerts, forecasts, agency analytics, campaign cost per lead (EPIC-18).
+- In: event collection, daily rollups, owner report snapshots (basic JSON), permission-controlled property stats.
+- Out (later tasks): GA4/Search Console live wiring, PDF/image rendering polish, alerts/forecasts (EPIC-18).
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-082: Property event tracking schema + ingest — Backlog
+- LI-083: Owner report basic (JSON + admin) — Backlog
+
+## Notes
+
+R2 basic decomposition 2026-10-26.
