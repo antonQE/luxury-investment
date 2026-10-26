@@ -25,7 +25,7 @@ describe('team seed', () => {
     await teamSeed.run(connection.db);
     await teamSeed.run(connection.db);
 
-    expect((await connection.db.select({ total: count() }).from(teamMembers))[0]?.total).toBe(3);
+    expect((await connection.db.select({ total: count() }).from(teamMembers))[0]?.total).toBe(4);
     expect((await connection.db.select({ total: count() }).from(offices))[0]?.total).toBe(2);
     expect((await connection.db.select({ total: count() }).from(partners))[0]?.total).toBe(2);
 
@@ -42,5 +42,12 @@ describe('team seed', () => {
       .from(translations)
       .where(eq(translations.entityId, member.id));
     expect(names.some((row) => row.field === 'name' && row.locale === 'en')).toBe(true);
+
+    const [consultant] = await connection.db
+      .select()
+      .from(teamMembers)
+      .where(eq(teamMembers.slug, 'demo-credit-consultant'))
+      .limit(1);
+    expect(consultant?.qualifications).toMatch(/Credit consultant/i);
   });
 });
