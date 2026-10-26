@@ -169,6 +169,13 @@
       "when": 1793011476447,
       "tag": "0023_simple_captain_marvel",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793011818392,
+      "tag": "0024_flawless_lady_mastermind",
+      "breakpoints": true
     }
   ]
 }

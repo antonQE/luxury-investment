@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-069`
+Next IDs: `EPIC-19`, `LI-075`
 
 
 ## Releases
@@ -38,7 +38,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
 | [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
-| [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
+| [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | In Progress |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
 | [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Done |
@@ -48,6 +48,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-070](tasks/LI-070-calculator-rules-admin-api.md) | Calculator rules admin API + audit | EPIC-14 | M |
 
 ## Review
 
@@ -68,11 +69,16 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
+| [LI-071](tasks/LI-071-acquisition-cost-calculator.md) | Acquisition cost calculator (API + property page) | EPIC-14 | P1 | M | LI-069 |
+| [LI-072](tasks/LI-072-deposit-calculator.md) | Deposit calculator (no double-counting) | EPIC-14 | P1 | M | LI-071 |
+| [LI-073](tasks/LI-073-mortgage-estimate-cta.md) | Mortgage estimate + consultant CTA | EPIC-14 | P1 | M | LI-069 |
+| [LI-074](tasks/LI-074-exchange-rates-normalized-prices.md) | Exchange rates for normalized prices | EPIC-14 | P1 | M | — |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-069](tasks/LI-069-calculator-rules-schema-seed.md) | Calculator rules schema + seed | EPIC-14 |
 | [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 |
 | [LI-067](tasks/LI-067-offers-basic.md) | Offers register (basic) | EPIC-09 |
 | [LI-066](tasks/LI-066-crm-tasks-basic.md) | CRM tasks schema + basic admin | EPIC-09 |

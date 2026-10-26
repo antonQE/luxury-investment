@@ -1,6 +1,6 @@
 # EPIC-14: Calculators and market rules
 
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Source: 08 CALC-001..CALC-003, CALC-ADMIN, MARKET-002; 03 PROP-PAGE-004; 11 H-01..H-03; FLOW-013
 
@@ -15,4 +15,13 @@ On a property page a visitor estimates acquisition costs by country, sees the de
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-069: Calculator rules schema + seed — Done
+- LI-070: Calculator rules admin API + audit — In Progress
+- LI-071: Acquisition cost calculator (API + property page) — Backlog
+- LI-072: Deposit calculator (no double-counting) — Backlog
+- LI-073: Mortgage estimate + consultant CTA — Backlog
+- LI-074: Exchange rates for normalized prices — Backlog
+
+## Notes
+
+Decomposed 2026-10-26 for R2. Demo rates in seed are fictional only.

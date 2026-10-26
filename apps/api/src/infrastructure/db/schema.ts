@@ -3,6 +3,11 @@ export {
   attributeOptions,
 } from '../../modules/attributes/repo/attributes.schema.ts';
 export { auditEntries } from '../../modules/audit/repo/audit.schema.ts';
+export {
+  calculatorRuleLines,
+  calculatorRuleSets,
+  calculatorToggles,
+} from '../../modules/calculators/repo/calculators.schema.ts';
 export { articles, pages } from '../../modules/content/repo/content.schema.ts';
 export { contactRoles, contacts } from '../../modules/crm/repo/contacts.schema.ts';
 export { crmTasks } from '../../modules/crm/repo/crm-tasks.schema.ts';

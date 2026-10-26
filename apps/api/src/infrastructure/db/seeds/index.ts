@@ -1,5 +1,6 @@
 import type { Database } from '../client.ts';
 import { attributesSeed } from './attributes.ts';
+import { calculatorsSeed } from './calculators.ts';
 import { contactsSeed } from './contacts.ts';
 import { contentSeed } from './content.ts';
 import { crmTasksSeed } from './crm-tasks.ts';
@@ -34,6 +35,7 @@ export const SEED_MODULES: SeedModule[] = [
   crmTasksSeed,
   offersSeed,
   dealsSeed,
+  calculatorsSeed,
   contentSeed,
   documentsSeed,
 ];
