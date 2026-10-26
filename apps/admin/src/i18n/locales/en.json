@@ -9,6 +9,18 @@
     "locations": "Locations",
     "propertyTypes": "Property types"
   },
+  "media": {
+    "title": "Gallery",
+    "lead": "Upload JPEG/PNG/WebP. Originals are kept; web, thumb and social sizes are generated.",
+    "altBg": "Alt text (BG)",
+    "altEn": "Alt text (EN)",
+    "primary": "Primary",
+    "setPrimary": "Set primary",
+    "archive": "Archive",
+    "empty": "No images yet.",
+    "loadError": "Could not load media.",
+    "uploadError": "Upload failed."
+  },
   "properties": {
     "title": "Properties",
     "lead": "Draft, publish and archive listings.",

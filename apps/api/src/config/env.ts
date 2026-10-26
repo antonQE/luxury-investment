@@ -19,6 +19,10 @@ const envSchema = z.object({
   AUTH_SESSION_SECRET: z.string().min(16).default('local-dev-session-secret'),
   AUTH_COOKIE_NAME: z.string().min(1).default('li_session'),
   AUTH_SESSION_TTL_HOURS: z.coerce.number().int().positive().default(168),
+  /** Local media root (ADR-0010). Relative paths resolve from the monorepo root when started via npm. */
+  MEDIA_LOCAL_ROOT: z.string().min(1).default('.data/media'),
+  /** Public base URL used to build media links (no trailing slash). */
+  MEDIA_PUBLIC_BASE_URL: z.string().min(1).default('http://localhost:4000/v1/public/media'),
 });
 
 export type Env = z.infer<typeof envSchema>;

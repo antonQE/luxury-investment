@@ -110,6 +110,18 @@ Requires `catalog:read` / `catalog:write`. Soft archive only (`archived_at`); no
 | PATCH | `/v1/admin/taxonomies/:kind/:id` | Update key / labels |
 | POST | `/v1/admin/taxonomies/:kind/:id/archive` | Soft archive |
 
+### Media (LI-032 / LI-033)
+
+Local disk storage (`MEDIA_LOCAL_ROOT`, ADR-0010). Sharp generates web / thumb / social (1200×630) in-process after upload.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/v1/public/media/:assetId/:variant` | Public assets only (`web`/`thumb`/`social`/`original`) |
+| GET | `/v1/admin/properties/:id/media` | List gallery |
+| POST | `/v1/admin/properties/:id/media` | Multipart field `file` |
+| PATCH | `/v1/admin/properties/:id/media/:assetId` | Alt, primary, visibility |
+| POST | `/v1/admin/media/:assetId/archive` | Soft archive |
+
 ### Properties admin (LI-028)
 
 Requires `properties:read` / `properties:write` / `properties:publish`. Drafts are created unpublished; publish fails without `responsibleAgentUserId`.

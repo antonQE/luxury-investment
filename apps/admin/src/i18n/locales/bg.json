@@ -9,6 +9,18 @@
     "locations": "Локации",
     "propertyTypes": "Типове имоти"
   },
+  "media": {
+    "title": "Галерия",
+    "lead": "Качване на JPEG/PNG/WebP. Оригиналът се пази; генерират се web, thumb и social размери.",
+    "altBg": "Alt текст (BG)",
+    "altEn": "Alt текст (EN)",
+    "primary": "Основна",
+    "setPrimary": "Направи основна",
+    "archive": "Архивирай",
+    "empty": "Все още няма снимки.",
+    "loadError": "Медията не можа да се зареди.",
+    "uploadError": "Качването не успя."
+  },
   "properties": {
     "title": "Имоти",
     "lead": "Чернови, публикуване и архивиране на обяви.",

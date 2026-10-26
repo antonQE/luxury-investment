@@ -116,14 +116,14 @@ The reference stack is Fantasy_Web / Fantasy_Web_Admin (Vite SPA, Chakra UI, Tan
 - Why it matters: originals must be kept, derivatives generated (web sizes, thumbnails, social JPEG 1200x630 from a 7000x5000 PNG, optional watermark), private files must not be publicly reachable, archived documents must stop downloading (MEDIA-001..003, DOC-001, 09).
 - Options: A: GCS (public and private buckets) + sharp in a background job + CDN in front of public derivatives, private files only via short-lived signed URLs after a permission check. B: a managed image service (Cloudinary, imgix). Faster to start, monthly cost, data outside our storage.
 - Recommendation: A, with direct-to-storage uploads through signed URLs.
-- Decision: pending
+- Decision: [ADR-0010](../adr/0010-media-storage-and-jobs.md) — storage port with local adapter first; GCS later. Multipart upload for R1 local.
 
 ### R5: Background jobs
 
 - Why it matters: image derivatives, PDF rendering, analytics rollups, reminders and task rules, exchange rates, sitemap refresh. The reference runs node-schedule inside the API process, which breaks on Cloud Run (instances scale to zero and run in parallel).
 - Options: A: pg-boss (queue in Postgres, no extra infrastructure) + Cloud Scheduler for cron triggers. B: Cloud Tasks / Pub/Sub. C: Redis-based BullMQ.
 - Recommendation: A.
-- Decision: pending
+- Decision: [ADR-0010](../adr/0010-media-storage-and-jobs.md) — in-process job runner for R1 local; pg-boss when hosting lands.
 
 ### R6: PDF and image rendering (brochures, owner reports, marketing studio)
 

@@ -9,7 +9,9 @@ import { z } from 'zod';
 
 import { AppError } from '../../../errors/app-error.ts';
 import { withValidation } from '../../../infrastructure/server/middleware/validate.ts';
+import type { MediaService } from '../../media/app/media-service.ts';
 import type { PropertyRepo } from '../repo/property-repo.ts';
+import type { PropertyRow } from '../repo/property-repo.ts';
 import { serializeProperty } from '../serializers/property-public-serializer.ts';
 
 const localeQuery = z.object({ lang: localeSchema.optional() });
@@ -19,7 +21,21 @@ function localeFrom(lang: Locale | undefined): Locale {
   return lang ?? DEFAULT_LOCALE;
 }
 
-export function propertyPublicRouter(repo: PropertyRepo): Router {
+async function imageUrlsFor(
+  media: MediaService | undefined,
+  row: PropertyRow,
+): Promise<string[] | undefined> {
+  if (media === undefined) return undefined;
+  const assets = await media.listPublicForProperty(row.id);
+  if (assets.length === 0) return undefined;
+  const ordered = [
+    ...assets.filter((asset) => asset.isPrimary),
+    ...assets.filter((asset) => !asset.isPrimary),
+  ];
+  return ordered.map((asset) => media.urlFor(asset.id, 'web'));
+}
+
+export function propertyPublicRouter(repo: PropertyRepo, media?: MediaService): Router {
   const router = Router();
 
   router.get(
@@ -29,8 +45,13 @@ export function propertyPublicRouter(repo: PropertyRepo): Router {
       async ({ query }, _req, res) => {
         const { items, total } = await repo.getPage(query);
         const locale = localeFrom(query.lang);
+        const data = await Promise.all(
+          items.map(async (row) =>
+            serializeProperty(row, locale, { imageUrls: await imageUrlsFor(media, row) }),
+          ),
+        );
         res.json({
-          data: items.map((row) => serializeProperty(row, locale)),
+          data,
           total,
           offset: query.offset,
           limit: query.limit,
@@ -46,7 +67,11 @@ export function propertyPublicRouter(repo: PropertyRepo): Router {
       async ({ params, query }, _req, res) => {
         const row = await repo.getBySlug(params.slug);
         if (row === undefined) throw new AppError('NOT_FOUND');
-        res.json({ data: serializeProperty(row, localeFrom(query.lang)) });
+        res.json({
+          data: serializeProperty(row, localeFrom(query.lang), {
+            imageUrls: await imageUrlsFor(media, row),
+          }),
+        });
       },
     ),
   );
@@ -60,7 +85,12 @@ export function propertyPublicRouter(repo: PropertyRepo): Router {
         if (row === undefined) throw new AppError('NOT_FOUND');
         const locale = localeFrom(query.lang);
         const items = await repo.findSimilar(row);
-        res.json({ data: items.map((item) => serializeProperty(item, locale)) });
+        const data = await Promise.all(
+          items.map(async (item) =>
+            serializeProperty(item, locale, { imageUrls: await imageUrlsFor(media, item) }),
+          ),
+        );
+        res.json({ data });
       },
     ),
   );

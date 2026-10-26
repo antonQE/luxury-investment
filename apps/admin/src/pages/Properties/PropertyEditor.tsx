@@ -27,6 +27,7 @@ import {
 } from '@/api/endpoints/properties';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/contexts/AuthContext';
+import { PropertyGallery } from '@/pages/Properties/PropertyGallery';
 import { ApiError } from '@/types/api';
 
 const emptyForm: PropertyWriteBody = {
@@ -416,6 +417,8 @@ function PropertyEditorForm({
           </VStack>
         </form>
       </Box>
+
+      {propertyId !== null ? <PropertyGallery propertyId={propertyId} /> : null}
     </VStack>
   );
 }

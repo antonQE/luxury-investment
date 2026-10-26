@@ -1,6 +1,6 @@
 # EPIC-05: Media pipeline
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 07 MEDIA-001, MEDIA-002, MEDIA-003; 11 G-01, G-02; MEDIA-ACCEPT 1, 2
 
@@ -15,4 +15,11 @@ Photos, videos, plans and files are uploaded to properties (and later articles a
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-031: Media storage and jobs ADR — Done ([ADR-0010](../../adr/0010-media-storage-and-jobs.md))
+- LI-032: Media assets schema + local storage port — Done
+- LI-033: Media upload API + sharp renditions — Done
+- LI-034: Admin property gallery UI — Done
+
+## Notes
+
+Basic R1 delivered: local disk + in-process sharp. Watermark, video/3D links UI, GCS + pg-boss remain follow-ups when hosting lands.

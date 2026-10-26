@@ -9,6 +9,10 @@ import { catalogAdminRouter } from './modules/catalog/handlers/catalog-admin-han
 import { CatalogRepo } from './modules/catalog/repo/catalog-repo.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
+import { MediaService } from './modules/media/app/media-service.ts';
+import { mediaAdminRouter } from './modules/media/handlers/media-admin-handlers.ts';
+import { mediaPublicRouter } from './modules/media/handlers/media-public-handlers.ts';
+import { LocalStorage } from './modules/media/storage/local-storage.ts';
 import { PropertyAdminService } from './modules/properties/app/property-admin-service.ts';
 import { PropertyHistoryService } from './modules/properties/app/property-history-service.ts';
 import { propertyAdminRouter } from './modules/properties/handlers/property-admin-handlers.ts';
@@ -22,6 +26,8 @@ import { createLogger } from './utils/logger.ts';
 const env = parseEnv(process.env);
 const logger = createLogger(env);
 const database = connectDatabase(env.DATABASE_URL);
+const storage = new LocalStorage(env.MEDIA_LOCAL_ROOT, env.MEDIA_PUBLIC_BASE_URL);
+const mediaService = new MediaService(database.db, storage, env.MEDIA_PUBLIC_BASE_URL);
 const propertyRepo = new PropertyRepo(database.db);
 const propertyHistory = new PropertyHistoryService(database.db);
 const propertyAdmin = new PropertyAdminService(database.db, propertyHistory);
@@ -36,7 +42,11 @@ const app = createApp({
   env,
   logger,
   healthChecks: [{ name: 'database', check: database.ping }],
-  publicRouters: [propertyPublicRouter(propertyRepo), inquiryPublicRouter(inquiryRepo)],
+  publicRouters: [
+    propertyPublicRouter(propertyRepo, mediaService),
+    inquiryPublicRouter(inquiryRepo),
+    mediaPublicRouter(mediaService),
+  ],
   adminPublicRouters: [adminAuth.publicRouter],
   adminAuthGate: adminAuth.gate,
   adminRouters: [
@@ -44,6 +54,7 @@ const app = createApp({
     auditAdminRouter(auditService),
     catalogAdminRouter(catalogRepo),
     propertyAdminRouter(propertyAdmin),
+    mediaAdminRouter(mediaService),
   ],
 });
 

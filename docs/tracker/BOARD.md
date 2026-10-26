@@ -6,9 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-031`
-
-Working note: EPIC-03 and EPIC-04 basic R1 scope are Done. Next backlog epic by dependency order is EPIC-05 (media) or EPIC-08 (team) — pick up when continuing.
+Next IDs: `EPIC-19`, `LI-035`
 
 
 ## Releases
@@ -31,7 +29,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Done |
 | [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | Done |
 | [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Done |
-| [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Backlog |
+| [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Done |
 | [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
 | [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
 | [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Backlog |
@@ -75,6 +73,10 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-034](tasks/LI-034-admin-property-gallery-ui.md) | Admin property gallery UI | EPIC-05 |
+| [LI-033](tasks/LI-033-media-upload-renditions.md) | Media upload API + sharp renditions | EPIC-05 |
+| [LI-032](tasks/LI-032-media-assets-schema.md) | Media assets schema + local storage port | EPIC-05 |
+| [LI-031](tasks/LI-031-media-storage-jobs-adr.md) | Media storage and jobs ADR | EPIC-05 |
 | [LI-030](tasks/LI-030-property-duplicate.md) | Duplicate property | EPIC-04 |
 | [LI-029](tasks/LI-029-admin-property-editor-ui.md) | Admin property list and editor UI (basic) | EPIC-04 |
 | [LI-028](tasks/LI-028-admin-properties-api.md) | Admin properties API (CRUD + publish) | EPIC-04 |

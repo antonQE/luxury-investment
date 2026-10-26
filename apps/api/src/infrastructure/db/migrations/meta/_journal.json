@@ -85,6 +85,13 @@
       "when": 1792997668956,
       "tag": "0011_shiny_hellfire_club",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792998565866,
+      "tag": "0012_modern_magik",
+      "breakpoints": true
     }
   ]
 }

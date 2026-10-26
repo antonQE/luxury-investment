@@ -23,7 +23,11 @@ function primaryAreaLabels(row: PropertyRow, isBg: boolean): string {
   return isBg ? 'Застроена площ' : 'Built-up area';
 }
 
-export function serializeProperty(row: PropertyRow, locale: Locale): PublicProperty {
+export function serializeProperty(
+  row: PropertyRow,
+  locale: Locale,
+  options?: { imageUrls?: string[] },
+): PublicProperty {
   const isBg = locale === 'bg';
   const publishedAt = row.publishedAt;
   return {
@@ -50,7 +54,7 @@ export function serializeProperty(row: PropertyRow, locale: Locale): PublicPrope
     primaryAreaLabel: primaryAreaLabels(row, isBg),
     constructionStage: row.constructionStage,
     badges: row.badges,
-    imageUrls: row.imageUrls,
+    imageUrls: options?.imageUrls ?? row.imageUrls,
     agentName: row.agentName,
     agentPhone: row.agentPhone,
     publishedAt: (publishedAt ?? row.createdAt).toISOString(),
