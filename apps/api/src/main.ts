@@ -7,6 +7,7 @@ import { LoggingMailer } from './infrastructure/mailer/logging-mailer.ts';
 import { AuditService } from './modules/audit/app/audit-service.ts';
 import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
 import { AcquisitionEstimateService } from './modules/calculators/app/acquisition-estimate-service.ts';
+import { DepositEstimateService } from './modules/calculators/app/deposit-estimate-service.ts';
 import { calculatorAdminRouter } from './modules/calculators/handlers/calculator-admin-handlers.ts';
 import { calculatorPublicRouter } from './modules/calculators/handlers/calculator-public-handlers.ts';
 import { CalculatorRulesRepo } from './modules/calculators/repo/calculator-rules-repo.ts';
@@ -82,6 +83,7 @@ const offerRepo = new OfferRepo(database.db);
 const dealRepo = new DealRepo(database.db);
 const calculatorRulesRepo = new CalculatorRulesRepo(database.db);
 const acquisitionEstimate = new AcquisitionEstimateService(database.db);
+const depositEstimate = new DepositEstimateService(database.db);
 
 const app = createApp({
   env,
@@ -89,7 +91,7 @@ const app = createApp({
   healthChecks: [{ name: 'database', check: database.ping }],
   publicRouters: [
     propertyPublicRouter(propertyRepo, mediaService),
-    calculatorPublicRouter(acquisitionEstimate),
+    calculatorPublicRouter({ acquisition: acquisitionEstimate, deposit: depositEstimate }),
     inquiryPublicRouter(inquiryRepo, mailer, env.INQUIRY_NOTIFY_TO, logger),
     mediaPublicRouter(mediaService),
     teamPublicRouter(teamPublic),

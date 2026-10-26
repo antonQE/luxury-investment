@@ -144,6 +144,21 @@
       "assumed": "assumed",
       "unknown": "—",
       "disclaimer": "Indicative only — not a binding financial or legal offer."
+    },
+    "depositCalculator": {
+      "title": "Deposit and initial funds",
+      "lead": "The deposit is part of the purchase price — never added twice.",
+      "loading": "Calculating…",
+      "loadError": "Could not load the deposit estimate.",
+      "disabled": "This calculator is disabled for this market.",
+      "insufficientData": "Not enough configured rates to show a reliable deposit estimate.",
+      "purchasePrice": "Purchase price",
+      "deposit": "Deposit needed upfront",
+      "remaining": "Remaining purchase price",
+      "extraCosts": "Extra deal costs",
+      "initialFunds": "Indicative initial funds",
+      "unknown": "—",
+      "disclaimer": "Indicative only. The deposit is part of the agreed price, not an extra cost."
     }
   },
   "About": {

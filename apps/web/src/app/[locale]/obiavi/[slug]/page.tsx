@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { AcquisitionCalculator } from '@/components/property/AcquisitionCalculator';
+import { DepositCalculator } from '@/components/property/DepositCalculator';
 import { InquiryForm } from '@/components/property/InquiryForm';
 import { MobileAgentBar } from '@/components/property/MobileAgentBar';
 import { PrintButton } from '@/components/property/PrintButton';
@@ -182,11 +183,18 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             <InquiryForm propertySlug={property.slug} />
           </div>
           {property.transactionType === 'sale' ? (
-            <AcquisitionCalculator
-              slug={property.slug}
-              price={property.price}
-              currency={property.currency}
-            />
+            <>
+              <AcquisitionCalculator
+                slug={property.slug}
+                price={property.price}
+                currency={property.currency}
+              />
+              <DepositCalculator
+                slug={property.slug}
+                price={property.price}
+                currency={property.currency}
+              />
+            </>
           ) : null}
         </aside>
       </div>

@@ -1,7 +1,7 @@
 # LI-073: Mortgage estimate + consultant CTA
 
 - Epic: EPIC-14
-- Status: Backlog
+- Status: Ready
 - Priority: P1
 - Size: M
 - Area: web

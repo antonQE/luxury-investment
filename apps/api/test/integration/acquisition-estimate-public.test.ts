@@ -5,6 +5,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '../../src/app.ts';
 import { SEED_MODULES } from '../../src/infrastructure/db/seeds/index.ts';
 import { AcquisitionEstimateService } from '../../src/modules/calculators/app/acquisition-estimate-service.ts';
+import { DepositEstimateService } from '../../src/modules/calculators/app/deposit-estimate-service.ts';
 import { calculatorPublicRouter } from '../../src/modules/calculators/handlers/calculator-public-handlers.ts';
 import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 
@@ -13,7 +14,12 @@ const logger = pino({ level: 'silent' });
 const app = createApp({
   env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
   logger,
-  publicRouters: [calculatorPublicRouter(new AcquisitionEstimateService(connection.db))],
+  publicRouters: [
+    calculatorPublicRouter({
+      acquisition: new AcquisitionEstimateService(connection.db),
+      deposit: new DepositEstimateService(connection.db),
+    }),
+  ],
 });
 
 beforeEach(async () => {

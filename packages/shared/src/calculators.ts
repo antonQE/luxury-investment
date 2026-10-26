@@ -126,3 +126,31 @@ export const acquisitionEstimateSchema = z.object({
 });
 
 export type AcquisitionEstimate = z.infer<typeof acquisitionEstimateSchema>;
+
+export const depositEstimateQuerySchema = z.object({
+  /** Override price; defaults to the property listing price when slug is used. */
+  price: z.coerce.number().positive().optional(),
+  /** Override deposit %; defaults to the active deposit rule for the country. */
+  depositPercent: z.coerce.number().positive().max(100).optional(),
+});
+
+export type DepositEstimateQuery = z.infer<typeof depositEstimateQuerySchema>;
+
+export const depositEstimateSchema = z.object({
+  status: z.enum(['ok', 'disabled', 'insufficient_data']),
+  countryCode: z.string().nullable(),
+  currency: z.string(),
+  /** Agreed purchase price — deposit is part of this, never added on top. */
+  purchasePrice: z.number(),
+  depositPercent: z.number().nullable(),
+  depositAmount: z.number().nullable(),
+  remainingPrice: z.number().nullable(),
+  extraCosts: z.array(acquisitionCostLineSchema),
+  extraCostsTotal: z.number().nullable(),
+  /** Deposit + known accompanying costs due around the preliminary stage. */
+  initialFunds: z.number().nullable(),
+  warning: z.string().nullable(),
+  disclaimer: z.string(),
+});
+
+export type DepositEstimate = z.infer<typeof depositEstimateSchema>;
