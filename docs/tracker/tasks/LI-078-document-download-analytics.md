@@ -1,7 +1,7 @@
 # LI-078: Document download analytics by period/source
 
 - Epic: EPIC-13
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Size: S
 - Area: api
@@ -13,10 +13,14 @@ Admin can see download totals filtered by period and traffic source, without res
 
 ## Acceptance criteria
 
-- [ ] Admin endpoint: totals for a document by date range and optional source.
-- [ ] Page-view vs download attempt/success remain distinguishable via existing events.
-- [ ] Test: two versions’ downloads sum correctly across a date range.
+- [x] Admin endpoint: totals for a document by date range and optional source.
+- [x] Page-view vs download attempt/success remain distinguishable via existing events.
+- [x] Test: two versions’ downloads sum correctly across a date range.
 
 ## Out of scope
 
 - Fancy charts; CRM client documents.
+
+## Result
+
+`GET /v1/admin/documents/:id/download-stats` with success/attempt totals, byVersion and bySource; integration test green.

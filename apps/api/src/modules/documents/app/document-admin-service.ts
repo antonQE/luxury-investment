@@ -6,7 +6,7 @@ import type {
   UpdateDocumentInput,
 } from '@luxury-investment/shared';
 import { SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
-import { and, asc, count, desc, eq, inArray, isNull } from 'drizzle-orm';
+import { and, asc, count, desc, eq, gte, inArray, isNull, lte } from 'drizzle-orm';
 
 import { AppError } from '../../../errors/app-error.ts';
 import type { Database } from '../../../infrastructure/db/client.ts';
@@ -290,6 +290,69 @@ export class DocumentAdminService {
       .limit(1);
     if (doc === undefined) throw new AppError('NOT_FOUND');
     return this.publishVersion(doc.id, versionId);
+  }
+
+  async downloadStats(documentId: string, query: { from?: string; to?: string; source?: string }) {
+    const [doc] = await this.#db
+      .select({ id: documents.id })
+      .from(documents)
+      .where(eq(documents.id, documentId))
+      .limit(1);
+    if (doc === undefined) throw new AppError('NOT_FOUND');
+
+    const clauses = [eq(downloadEvents.documentId, documentId)];
+    if (query.from !== undefined) {
+      clauses.push(gte(downloadEvents.occurredAt, new Date(query.from)));
+    }
+    if (query.to !== undefined) {
+      clauses.push(lte(downloadEvents.occurredAt, new Date(query.to)));
+    }
+    if (query.source !== undefined && query.source !== '') {
+      clauses.push(eq(downloadEvents.source, query.source));
+    }
+    const where = and(...clauses);
+
+    const [successRow] = await this.#db
+      .select({ total: count() })
+      .from(downloadEvents)
+      .where(and(where, eq(downloadEvents.success, true)));
+
+    const [attemptRow] = await this.#db
+      .select({ total: count() })
+      .from(downloadEvents)
+      .where(where);
+
+    const byVersion = await this.#db
+      .select({
+        versionId: downloadEvents.versionId,
+        total: count(),
+      })
+      .from(downloadEvents)
+      .where(and(where, eq(downloadEvents.success, true)))
+      .groupBy(downloadEvents.versionId);
+
+    const bySource = await this.#db
+      .select({
+        source: downloadEvents.source,
+        total: count(),
+      })
+      .from(downloadEvents)
+      .where(and(where, eq(downloadEvents.success, true)))
+      .groupBy(downloadEvents.source);
+
+    return {
+      documentId,
+      successTotal: successRow?.total ?? 0,
+      attemptTotal: attemptRow?.total ?? 0,
+      byVersion: byVersion.map((row) => ({
+        versionId: row.versionId,
+        total: row.total,
+      })),
+      bySource: bySource.map((row) => ({
+        source: row.source,
+        total: row.total,
+      })),
+    };
   }
 
   async #detailFor(doc: typeof documents.$inferSelect) {

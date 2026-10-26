@@ -10,8 +10,10 @@ import { createApp } from '../../src/app.ts';
 import { SEED_MODULES } from '../../src/infrastructure/db/seeds/index.ts';
 import { DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD } from '../../src/infrastructure/db/seeds/users.ts';
 import { DocumentAdminService } from '../../src/modules/documents/app/document-admin-service.ts';
+import { DocumentPublicService } from '../../src/modules/documents/app/document-public-service.ts';
 import { DEMO_PDF_BYTES } from '../../src/modules/documents/demo-pdf.ts';
 import { documentAdminRouter } from '../../src/modules/documents/handlers/document-admin-handlers.ts';
+import { documentPublicRouter } from '../../src/modules/documents/handlers/document-public-handlers.ts';
 import { LocalStorage } from '../../src/modules/media/storage/local-storage.ts';
 import { AuthService } from '../../src/modules/users/app/auth-service.ts';
 import { mountAdminAuth } from '../../src/modules/users/handlers/auth-handlers.ts';
@@ -103,6 +105,70 @@ describe('admin seller handbook API', () => {
 
     const after = await agent.get('/v1/admin/documents/seller-handbook').expect(200);
     expect((after.body as { data: { currentVersionId: string } }).data.currentVersionId).toBe(id);
+  });
+});
+
+describe('admin document download stats', () => {
+  it('sums successful downloads across versions for a date range', async () => {
+    const agent = await loginAgent();
+    const handbook = await agent.get('/v1/admin/documents/seller-handbook').expect(200);
+    const docId = (handbook.body as { data: { id: string; versions: { id: string }[] } }).data.id;
+    const versionA = (handbook.body as { data: { versions: { id: string }[] } }).data.versions[0]
+      ?.id;
+    expect(versionA).toBeTruthy();
+
+    const storage = new LocalStorage(mediaRoot, 'http://localhost:4000/v1/public/media');
+    const publicApp = createApp({
+      env,
+      logger,
+      publicRouters: [documentPublicRouter(new DocumentPublicService(connection.db, storage))],
+    });
+
+    await request(publicApp)
+      .get('/v1/public/documents/seller-handbook')
+      .query({ source: 'stats-a' })
+      .expect(200);
+    await request(publicApp)
+      .get('/v1/public/documents/seller-handbook')
+      .query({ source: 'stats-b' })
+      .expect(200);
+
+    const uploaded = await agent
+      .post(`/v1/admin/documents/${docId}/versions`)
+      .field('versionLabel', 'stats-v2')
+      .field('publish', 'true')
+      .attach('file', DEMO_PDF_BYTES, {
+        filename: 'handbook-stats.pdf',
+        contentType: 'application/pdf',
+      })
+      .expect(201);
+    expect((uploaded.body as { data: { id: string } }).data.id).toBeTruthy();
+
+    await request(publicApp)
+      .get('/v1/public/documents/seller-handbook')
+      .query({ source: 'stats-a' })
+      .expect(200);
+
+    const stats = await agent
+      .get(`/v1/admin/documents/${docId}/download-stats`)
+      .query({ from: '2020-01-01T00:00:00.000Z' })
+      .expect(200);
+
+    const body = stats.body as {
+      data: {
+        successTotal: number;
+        attemptTotal: number;
+        byVersion: { versionId: string; total: number }[];
+        bySource: { source: string | null; total: number }[];
+      };
+    };
+
+    expect(body.data.successTotal).toBe(3);
+    expect(body.data.attemptTotal).toBe(3);
+    expect(body.data.byVersion.reduce((sum, row) => sum + row.total, 0)).toBe(3);
+    expect(body.data.bySource.some((row) => row.source === 'stats-a' && row.total === 2)).toBe(
+      true,
+    );
   });
 });
 

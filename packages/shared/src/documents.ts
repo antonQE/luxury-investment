@@ -76,3 +76,11 @@ export const listDocumentsQuerySchema = z
   }));
 
 export type ListDocumentsQuery = z.infer<typeof listDocumentsQuerySchema>;
+
+export const documentDownloadStatsQuerySchema = z.object({
+  from: z.iso.datetime().optional(),
+  to: z.iso.datetime().optional(),
+  source: z.string().trim().max(120).optional(),
+});
+
+export type DocumentDownloadStatsQuery = z.infer<typeof documentDownloadStatsQuerySchema>;

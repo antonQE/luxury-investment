@@ -1,5 +1,6 @@
 import {
   createDocumentSchema,
+  documentDownloadStatsQuerySchema,
   listDocumentsQuerySchema,
   updateDocumentSchema,
 } from '@luxury-investment/shared';
@@ -153,6 +154,18 @@ export function documentAdminRouter(admin: DocumentAdminService): Router {
         },
       });
     }),
+  );
+
+  router.get(
+    '/documents/:id/download-stats',
+    withValidation(
+      { params: idParams, query: documentDownloadStatsQuerySchema },
+      async ({ params, query }, req, res) => {
+        requireContent('content:read', req.auth?.permissions);
+        const data = await admin.downloadStats(params.id, query);
+        res.json({ data });
+      },
+    ),
   );
 
   router.get(

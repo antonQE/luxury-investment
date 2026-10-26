@@ -1,6 +1,6 @@
 # EPIC-13: Document library, seller handbook and download counters
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: 06 DOC-001; 09 OPS-001; 11 F-04; FLOW-010
 
@@ -22,8 +22,8 @@ Admins upload and version public and private documents; the current seller handb
 - LI-075: Document library schema + seed (categories) — Done
 - LI-076: Document library admin API — Done
 - LI-077: Document library admin UI + public list — Done
-- LI-078: Document download analytics by period/source — Ready
+- LI-078: Document download analytics by period/source — Done
 
 ## Notes
 
-R1 seller handbook delivered. R2 library decomposition 2026-10-26.
+R1 seller handbook + R2 library complete 2026-10-26.
