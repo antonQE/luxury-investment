@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-056`
+Next IDs: `EPIC-19`, `LI-057`
 
 
 ## Releases
@@ -73,6 +73,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-056](tasks/LI-056-property-print-qr.md) | Property print view and QR | EPIC-07 |
 | [LI-055](tasks/LI-055-catalog-list-filters.md) | Catalog list filters (city, range, ID) | EPIC-07 |
 | [LI-054](tasks/LI-054-empty-search-inquiry.md) | Empty search results inquiry form | EPIC-07 |
 | [LI-053](tasks/LI-053-admin-offices-ui.md) | Admin offices CRUD UI | EPIC-08 |

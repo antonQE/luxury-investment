@@ -65,3 +65,33 @@ h3,
     animation: none;
   }
 }
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .no-print,
+  [data-testid='cookie-consent-banner'],
+  [data-testid='mobile-agent-bar'],
+  [data-testid='property-share'],
+  [data-testid='inquiry-form'],
+  [data-testid='viewing-form'],
+  [data-testid='search-request-form'],
+  [data-testid='property-print'],
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+}

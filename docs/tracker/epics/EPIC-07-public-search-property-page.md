@@ -21,4 +21,5 @@ A visitor picks Sofia, Black Sea or Dubai & abroad, searches, filters and opens 
 - LI-017: Inquiry and viewing request forms
 - LI-054: Empty search results inquiry form — Done
 - LI-055: Catalog list filters (city, range, ID) — Done
+- LI-056: Property print view and QR — Done
 - (later) admin-configured / type-specific attribute filters

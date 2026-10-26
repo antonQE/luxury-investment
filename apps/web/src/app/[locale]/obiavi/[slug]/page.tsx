@@ -5,9 +5,11 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { InquiryForm } from '@/components/property/InquiryForm';
 import { MobileAgentBar } from '@/components/property/MobileAgentBar';
+import { PrintButton } from '@/components/property/PrintButton';
 import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { PropertyMapLink } from '@/components/property/PropertyMapLink';
+import { PropertyQr } from '@/components/property/PropertyQr';
 import { ShareActions } from '@/components/property/ShareActions';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Link } from '@/i18n/navigation';
@@ -90,10 +92,14 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             mapQuery={property.mapQuery}
             locationPrecision={property.locationPrecision}
           />
-          <div className="mt-6">
+          <div className="mt-6 no-print">
             <p className="mb-2 text-xs tracking-[0.2em] uppercase text-brass">{t('share')}</p>
-            <ShareActions url={pageUrl} title={property.title} />
+            <div className="flex flex-wrap items-center gap-2">
+              <ShareActions url={pageUrl} title={property.title} />
+              <PrintButton />
+            </div>
           </div>
+          <PropertyQr url={pageUrl} />
           <section className="mt-8">
             <h2 className="font-serif text-2xl">{t('description')}</h2>
             <p className="mt-3 whitespace-pre-line leading-relaxed text-ink-soft">
@@ -165,12 +171,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               </a>
             </div>
           </div>
-          <div className="mt-8">
+          <div className="mt-8 no-print">
             <InquiryForm propertySlug={property.slug} />
           </div>
         </aside>
       </div>
-      <section className="mt-16" data-testid="similar-properties">
+      <section className="mt-16 no-print" data-testid="similar-properties">
         <h2 className="font-serif text-3xl">{t('similarTitle')}</h2>
         {similar.length === 0 ? (
           <p className="mt-4 text-ink-soft" data-testid="similar-empty">
