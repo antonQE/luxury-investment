@@ -1,6 +1,6 @@
 # EPIC-11: Internal analytics, GA4 / Search Console and owner reports
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 05 ANL-001..ANL-003, RPT-001; 04 CRM-006, ADMIN-001 (KPIs); 07 INT-001; 09 OPS-001; 11 E-03..E-05; FLOW-009
 
@@ -15,9 +15,9 @@ Views and events for properties and articles are measured internally with a docu
 
 ## Tasks
 
-- LI-082: Property event tracking schema + ingest — Backlog
-- LI-083: Owner report basic (JSON + admin) — Backlog
+- LI-082: Property event tracking schema + ingest — Done
+- LI-083: Owner report basic (JSON + admin) — Done
 
 ## Notes
 
-R2 basic decomposition 2026-10-26.
+R2 basic decomposition 2026-10-26. Basic JSON shipped; PDF/GA4 deferred.

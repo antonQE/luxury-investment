@@ -1,4 +1,9 @@
 export {
+  ownerReportSnapshots,
+  propertyEventDailyRollups,
+  propertyEvents,
+} from '../../modules/analytics/repo/analytics.schema.ts';
+export {
   attributeDefinitions,
   attributeOptions,
 } from '../../modules/attributes/repo/attributes.schema.ts';

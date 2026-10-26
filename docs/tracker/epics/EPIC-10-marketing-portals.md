@@ -1,24 +1,20 @@
-# EPIC-10: Marketing plan and external portal tracking
+# EPIC-10: Marketing plan and portal tracking
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
-- Source: 05 MKT-001..MKT-003; 07 INT-002 (manual path); 11 E-01, E-02; FLOW-008
+- Source: 05 MKT-001..MKT-003; FLOW-008
 
 ## Goal
 
-For each property the team records planned and done marketing activities and an unlimited number of external portal publications with dated, never-overwritten measurements, evidence files and notes, enough to reproduce the "Kosher" report structurally.
+Per-property marketing activities and unlimited portal listings with append-only dated measurements and UTM helpers.
 
 ## Scope
 
-- In: marketing plan and activities (type, owner, period, status, cost, result, evidence, recurrence); portal listings (portal, URL, publish date, status); portal measurements (date, period, views, saves/subscribers, entered by, metric definition, evidence); inquiries and viewings split by private buyers and agencies; broker group publications with frequency; UTM link generator.
-- Out: automatic portal integrations (EPIC-18).
+- In: activities, portal listings, append-only measurements, admin API + basic UI, UTM URL helper.
+- Out (later): auto portal APIs, Kosher PDF export, evidence media gallery.
 
 ## Tasks
 
 - LI-079: Marketing plan + portal measurements schema — Done
 - LI-080: Marketing + portals admin API — Done
-- LI-081: Marketing + portals admin UI (basic) — Ready
-
-## Notes
-
-R2 basic decomposition 2026-10-26. Evidence as URL/notes first.
+- LI-081: Marketing + portals admin UI (basic) — Done

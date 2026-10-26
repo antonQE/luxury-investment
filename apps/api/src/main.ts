@@ -4,6 +4,10 @@ import { createApp } from './app.ts';
 import { parseEnv } from './config/env.ts';
 import { connectDatabase } from './infrastructure/db/client.ts';
 import { LoggingMailer } from './infrastructure/mailer/logging-mailer.ts';
+import { OwnerReportService } from './modules/analytics/app/owner-report-service.ts';
+import { analyticsAdminRouter } from './modules/analytics/handlers/analytics-admin-handlers.ts';
+import { analyticsPublicRouter } from './modules/analytics/handlers/analytics-public-handlers.ts';
+import { AnalyticsRepo } from './modules/analytics/repo/analytics-repo.ts';
 import { AuditService } from './modules/audit/app/audit-service.ts';
 import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
 import { AcquisitionEstimateService } from './modules/calculators/app/acquisition-estimate-service.ts';
@@ -89,6 +93,8 @@ const dealRepo = new DealRepo(database.db);
 const calculatorRulesRepo = new CalculatorRulesRepo(database.db);
 const exchangeRatesRepo = new ExchangeRatesRepo(database.db);
 const marketingRepo = new MarketingRepo(database.db);
+const analyticsRepo = new AnalyticsRepo(database.db);
+const ownerReportService = new OwnerReportService(analyticsRepo);
 const acquisitionEstimate = new AcquisitionEstimateService(database.db);
 const depositEstimate = new DepositEstimateService(database.db);
 const mortgageEstimate = new MortgageEstimateService(database.db, env.CREDIT_CONSULTANT_TEAM_SLUG);
@@ -105,6 +111,7 @@ const app = createApp({
       mortgage: mortgageEstimate,
     }),
     inquiryPublicRouter(inquiryRepo, mailer, env.INQUIRY_NOTIFY_TO, logger),
+    analyticsPublicRouter(analyticsRepo),
     mediaPublicRouter(mediaService),
     teamPublicRouter(teamPublic),
     contentPublicRouter(contentPublic),
@@ -126,6 +133,7 @@ const app = createApp({
     calculatorAdminRouter(calculatorRulesRepo, auditService),
     exchangeRatesAdminRouter(exchangeRatesRepo, auditService),
     marketingAdminRouter(marketingRepo),
+    analyticsAdminRouter(analyticsRepo, ownerReportService),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),
