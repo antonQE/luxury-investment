@@ -50,36 +50,65 @@ export default function Login() {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      bg="background.page"
+      bg="background.sidebar"
       px={4}
+      position="relative"
+      overflow="hidden"
       data-testid="login-page"
     >
       <Box
+        position="absolute"
+        inset={0}
+        style={{
+          background:
+            'radial-gradient(ellipse at 20% 0%, rgba(166,132,69,0.2), transparent 50%), radial-gradient(ellipse at 100% 100%, rgba(242,239,233,0.07), transparent 45%)',
+        }}
+        pointerEvents="none"
+      />
+      <Box
+        position="relative"
         w="full"
-        maxW="md"
+        maxW="420px"
         bg="background.panel"
         borderWidth="1px"
         borderColor="border.default"
-        p={8}
+        px={10}
+        py={12}
       >
         <form
           onSubmit={(event) => {
             void onSubmit(event);
           }}
         >
-          <VStack align="stretch" gap={4}>
-            <Heading size="lg">{t('login.title')}</Heading>
-            <Text fontSize="sm" color="text.muted">
-              {t('login.lead')}
-            </Text>
+          <VStack align="stretch" gap={5}>
+            <Box>
+              <Text fontFamily="heading" fontSize="2xl" color="text.primary" letterSpacing="0.02em">
+                Luxury Investment
+              </Text>
+              <Heading as="h1" size="md" mt={4} fontWeight="500" color="text.primary">
+                {t('login.title')}
+              </Heading>
+              <Text fontSize="sm" color="text.muted" mt={2} lineHeight="1.6">
+                {t('login.lead')}
+              </Text>
+            </Box>
             <Box as="label" display="block">
-              <Text fontSize="sm" mb={1}>
+              <Text
+                fontSize="xs"
+                mb={2}
+                letterSpacing="0.14em"
+                textTransform="uppercase"
+                color="text.muted"
+              >
                 {t('login.email')}
               </Text>
               <Input
                 type="email"
                 autoComplete="username"
                 value={email}
+                borderRadius="0"
+                borderColor="border.default"
+                _focusVisible={{ borderColor: 'accent.gold', boxShadow: 'none' }}
                 onChange={(event) => {
                   setEmail(event.target.value);
                 }}
@@ -88,13 +117,22 @@ export default function Login() {
               />
             </Box>
             <Box as="label" display="block">
-              <Text fontSize="sm" mb={1}>
+              <Text
+                fontSize="xs"
+                mb={2}
+                letterSpacing="0.14em"
+                textTransform="uppercase"
+                color="text.muted"
+              >
                 {t('login.password')}
               </Text>
               <Input
                 type="password"
                 autoComplete="current-password"
                 value={password}
+                borderRadius="0"
+                borderColor="border.default"
+                _focusVisible={{ borderColor: 'accent.gold', boxShadow: 'none' }}
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
@@ -107,7 +145,20 @@ export default function Login() {
                 {error}
               </Text>
             ) : null}
-            <Button type="submit" loading={submitting} data-testid="login-submit">
+            <Button
+              type="submit"
+              loading={submitting}
+              bg="accent.gold"
+              color="background.sidebar"
+              borderRadius="0"
+              fontWeight="600"
+              letterSpacing="0.12em"
+              textTransform="uppercase"
+              fontSize="xs"
+              h="44px"
+              _hover={{ bg: '#8a6c38' }}
+              data-testid="login-submit"
+            >
               {t('login.submit')}
             </Button>
           </VStack>

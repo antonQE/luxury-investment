@@ -5,20 +5,11 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 
 import { Link } from '@/i18n/navigation';
 import {
-  CONSENT_CHANGE_EVENT,
   CONSENT_OPEN_EVENT,
   readConsent,
+  subscribeConsent,
   writeConsent,
 } from '@/lib/consent/storage';
-
-function subscribeConsent(onStoreChange: () => void) {
-  window.addEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-  window.addEventListener('storage', onStoreChange);
-  return () => {
-    window.removeEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-    window.removeEventListener('storage', onStoreChange);
-  };
-}
 
 export function CookieConsentBanner() {
   const t = useTranslations('CookieConsent');
@@ -44,7 +35,7 @@ export function CookieConsentBanner() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper/95 px-6 py-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper/92 px-6 py-6 backdrop-blur-md"
       role="dialog"
       aria-label={t('title')}
       data-testid="cookie-consent-banner"

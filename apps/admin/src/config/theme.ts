@@ -1,24 +1,45 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
 const themeConfig = defineConfig({
+  globalCss: {
+    body: {
+      bg: 'background.page',
+      color: 'text.primary',
+      fontFamily: 'body',
+      letterSpacing: '0.01em',
+    },
+    '::selection': {
+      bg: 'rgba(176, 141, 77, 0.28)',
+    },
+  },
   theme: {
     tokens: {
       fonts: {
-        heading: { value: 'system-ui, sans-serif' },
-        body: { value: 'system-ui, sans-serif' },
+        heading: {
+          value: '"Source Serif 4", "Times New Roman", Georgia, serif',
+        },
+        body: {
+          value: '"Source Sans 3", "Segoe UI", system-ui, sans-serif',
+        },
+      },
+      radii: {
+        l1: { value: '0' },
+        l2: { value: '0' },
+        l3: { value: '0' },
       },
     },
     semanticTokens: {
       colors: {
-        'text.primary': { value: '#1c1916' },
-        'text.secondary': { value: '#3f3a34' },
-        'text.muted': { value: '#6b645c' },
-        'text.inverse': { value: '#fffdf8' },
-        'background.page': { value: '#f6f1e8' },
-        'background.panel': { value: '#fffdf8' },
-        'background.sidebar': { value: '#1c1916' },
-        'border.default': { value: '#e8dfd0' },
-        'accent.gold': { value: '#b08d4d' },
+        'text.primary': { value: '#14161c' },
+        'text.secondary': { value: '#3a3f4a' },
+        'text.muted': { value: '#6a7080' },
+        'text.inverse': { value: '#f2efe9' },
+        'background.page': { value: '#f2efe9' },
+        'background.panel': { value: '#fffcf7' },
+        'background.sidebar': { value: '#12141a' },
+        'border.default': { value: '#d9d3c8' },
+        'accent.gold': { value: '#a68445' },
+        'accent.goldMuted': { value: 'rgba(166, 132, 69, 0.16)' },
         'status.ok': { value: '#1f7a4c' },
         'status.down': { value: '#a11d2c' },
       },

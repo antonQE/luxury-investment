@@ -1,4 +1,4 @@
-import { Box, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { useHealthQuery } from '@/hooks/common/useHealthQuery';
@@ -24,7 +24,21 @@ export default function Dashboard() {
           {t('dashboard.apiStatus')}
         </Heading>
         {isPending ? (
-          <Spinner data-testid="api-health-loading" />
+          <Box display="flex" alignItems="center" gap={3} data-testid="api-health-loading">
+            <Box
+              w="18px"
+              h="18px"
+              borderWidth="1px"
+              borderColor="accent.gold"
+              borderTopColor="transparent"
+              borderRadius="full"
+              style={{ animation: 'admin-spin 0.85s linear infinite' }}
+            />
+            <Text fontSize="sm" color="text.muted">
+              {t('dashboard.loading')}
+            </Text>
+            <style>{`@keyframes admin-spin { to { transform: rotate(360deg); } }`}</style>
+          </Box>
         ) : isError ? (
           <Text color="status.down" data-testid="api-health-error">
             {t('dashboard.error')}

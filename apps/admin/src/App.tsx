@@ -1,9 +1,10 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Text, VStack } from '@chakra-ui/react';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { AppShell } from '@/components/layout/AppShell';
+import { RouteProgress } from '@/components/layout/RouteProgress';
 import { ROUTES } from '@/constants/routes';
 
 const Dashboard = lazy(() => import('@/pages/Dashboard/Dashboard'));
@@ -22,15 +23,28 @@ const TeamList = lazy(() => import('@/pages/Team/TeamList'));
 
 function PageFallback() {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minH="40vh">
-      <Spinner data-testid="page-loading" />
-    </Box>
+    <VStack minH="50vh" justify="center" gap={4} data-testid="page-loading">
+      <Box
+        w="36px"
+        h="36px"
+        borderWidth="1px"
+        borderColor="accent.gold"
+        borderTopColor="transparent"
+        borderRadius="full"
+        style={{ animation: 'admin-spin 0.85s linear infinite' }}
+      />
+      <Text fontSize="xs" letterSpacing="0.18em" textTransform="uppercase" color="text.muted">
+        Loading
+      </Text>
+      <style>{`@keyframes admin-spin { to { transform: rotate(360deg); } }`}</style>
+    </VStack>
   );
 }
 
 export default function App() {
   return (
     <Suspense fallback={<PageFallback />}>
+      <RouteProgress />
       <Routes>
         <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />

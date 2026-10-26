@@ -10,15 +10,18 @@ export async function SiteFooter() {
   const nav = await getTranslations('Nav');
 
   return (
-    <footer className="mt-auto bg-void text-stone" data-testid="site-footer">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-3">
+    <footer
+      className="mt-auto border-t border-white/10 bg-void text-stone"
+      data-testid="site-footer"
+    >
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-3">
         <div>
-          <p className="font-serif text-2xl">Luxury Investment</p>
-          <p className="mt-3 max-w-sm text-sm text-stone/70">{t('tagline')}</p>
+          <p className="font-serif text-2xl tracking-[0.03em]">Luxury Investment</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-stone/60">{t('tagline')}</p>
         </div>
         <div>
-          <p className="text-xs tracking-[0.2em] uppercase text-brass">{t('office')}</p>
-          <p className="mt-3 text-sm text-stone/80">{t('address')}</p>
+          <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('office')}</p>
+          <p className="mt-4 text-sm leading-relaxed text-stone/75">{t('address')}</p>
           <p className="mt-2 text-sm">
             <a
               href="tel:+35920000000"

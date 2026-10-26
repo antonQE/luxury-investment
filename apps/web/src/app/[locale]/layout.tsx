@@ -10,6 +10,7 @@ import { Analytics } from '@/components/consent/Analytics';
 import { CookieConsentBanner } from '@/components/consent/CookieConsentBanner';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { NavigationProgress } from '@/components/ui/NavigationProgress';
 import { routing } from '@/i18n/routing';
 import { serverEnv } from '@/lib/config/env';
 
@@ -45,8 +46,9 @@ export default async function LocaleLayout({ children }: { children: ReactNode }
     <html lang={locale} className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col font-sans antialiased">
         <NextIntlClientProvider>
+          <NavigationProgress />
           <SiteHeader />
-          {children}
+          <div className="page-enter flex flex-1 flex-col">{children}</div>
           <SiteFooter />
           <CookieConsentBanner />
           <Analytics measurementId={serverEnv().NEXT_PUBLIC_GA4_MEASUREMENT_ID} />

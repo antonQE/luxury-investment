@@ -3,16 +3,7 @@
 import Script from 'next/script';
 import { useSyncExternalStore } from 'react';
 
-import { CONSENT_CHANGE_EVENT, readConsent } from '@/lib/consent/storage';
-
-function subscribeConsent(onStoreChange: () => void) {
-  window.addEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-  window.addEventListener('storage', onStoreChange);
-  return () => {
-    window.removeEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-    window.removeEventListener('storage', onStoreChange);
-  };
-}
+import { readConsent, subscribeConsent } from '@/lib/consent/storage';
 
 export function Analytics({ measurementId }: { measurementId: string }) {
   const consent = useSyncExternalStore(subscribeConsent, readConsent, () => null);

@@ -41,15 +41,15 @@
   },
   "Home": {
     "eyebrow": "Boutique agency",
-    "title": "Properties in Sofia, the Black Sea, Dubai and abroad",
-    "lead": "Selected listings for sale and rent. This is the first working version of the new site — the listings are demonstrational.",
+    "title": "Curated homes in Sofia, along the Black Sea and abroad",
+    "lead": "A quiet selection for sale and rent — detail over noise.",
     "searchTitle": "Find a property",
-    "newestTitle": "Newest listings",
-    "newestLead": "Listings start right after the first screen, newest first.",
+    "newestTitle": "Catalogue",
+    "newestLead": "Newest listings",
     "viewAll": "All properties",
     "marketsTitle": "Markets",
     "partnersTitle": "Partners",
-    "partnersLead": "Demo partner logos — fictional links for local development.",
+    "partnersLead": "People we work with",
     "error": "The catalogue is temporarily unavailable. Please try again shortly."
   },
   "Markets": {

@@ -21,46 +21,53 @@ export function AppShell({ children }: AppShellProps) {
     void navigate(ROUTES.LOGIN, { replace: true });
   }
 
+  const navItems = [
+    { to: ROUTES.DASHBOARD, label: t('nav.dashboard'), testId: 'nav-dashboard' },
+    { to: ROUTES.PROPERTIES, label: t('nav.properties'), testId: 'nav-properties' },
+    { to: ROUTES.INQUIRIES, label: t('nav.inquiries'), testId: 'nav-inquiries' },
+    { to: ROUTES.ARTICLES, label: t('nav.articles'), testId: 'nav-articles' },
+    { to: ROUTES.HANDBOOK, label: t('nav.handbook'), testId: 'nav-handbook' },
+    { to: ROUTES.TEAM, label: t('nav.team'), testId: 'nav-team' },
+    { to: ROUTES.OFFICES, label: t('nav.offices'), testId: 'nav-offices' },
+    { to: ROUTES.PARTNERS, label: t('nav.partners'), testId: 'nav-partners' },
+    { to: ROUTES.LOCATIONS, label: t('nav.locations'), testId: 'nav-locations' },
+    {
+      to: ROUTES.PROPERTY_TYPES,
+      label: t('nav.propertyTypes'),
+      testId: 'nav-property-types',
+    },
+  ] as const;
+
   return (
     <Flex minH="100dvh" bg="background.page" data-testid="app-shell">
       <Box
         as="aside"
-        w="240px"
+        w="248px"
         bg="background.sidebar"
         color="text.inverse"
-        p={6}
+        px={5}
+        py={7}
         display="flex"
         flexDirection="column"
-        gap={8}
+        gap={10}
         data-testid="admin-sidebar"
       >
-        <Box>
-          <Text fontWeight="bold" fontSize="lg">
-            {t('app.title')}
+        <Box px={2}>
+          <Text fontFamily="heading" fontSize="xl" letterSpacing="0.02em" lineHeight="1.2">
+            Luxury Investment
           </Text>
-          <Text fontSize="sm" opacity={0.7} mt={1}>
+          <Text
+            fontSize="xs"
+            mt={2}
+            opacity={0.55}
+            letterSpacing="0.14em"
+            textTransform="uppercase"
+          >
             {t('app.tagline')}
           </Text>
         </Box>
-        <Box as="nav" display="flex" flexDirection="column" gap={2}>
-          {(
-            [
-              { to: ROUTES.DASHBOARD, label: t('nav.dashboard'), testId: 'nav-dashboard' },
-              { to: ROUTES.PROPERTIES, label: t('nav.properties'), testId: 'nav-properties' },
-              { to: ROUTES.INQUIRIES, label: t('nav.inquiries'), testId: 'nav-inquiries' },
-              { to: ROUTES.ARTICLES, label: t('nav.articles'), testId: 'nav-articles' },
-              { to: ROUTES.HANDBOOK, label: t('nav.handbook'), testId: 'nav-handbook' },
-              { to: ROUTES.TEAM, label: t('nav.team'), testId: 'nav-team' },
-              { to: ROUTES.OFFICES, label: t('nav.offices'), testId: 'nav-offices' },
-              { to: ROUTES.PARTNERS, label: t('nav.partners'), testId: 'nav-partners' },
-              { to: ROUTES.LOCATIONS, label: t('nav.locations'), testId: 'nav-locations' },
-              {
-                to: ROUTES.PROPERTY_TYPES,
-                label: t('nav.propertyTypes'),
-                testId: 'nav-property-types',
-              },
-            ] as const
-          ).map((item) => (
+        <Box as="nav" display="flex" flexDirection="column" gap={0.5}>
+          {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -68,13 +75,24 @@ export function AppShell({ children }: AppShellProps) {
               style={{ textDecoration: 'none' }}
             >
               {({ isActive }) => (
-                <Text
-                  color={isActive ? 'accent.gold' : 'text.inverse'}
-                  fontSize="sm"
-                  opacity={isActive ? 1 : 0.8}
+                <Box
+                  px={3}
+                  py={2.5}
+                  borderLeftWidth="2px"
+                  borderLeftColor={isActive ? 'accent.gold' : 'transparent'}
+                  bg={isActive ? 'accent.goldMuted' : 'transparent'}
+                  transition="background 0.15s ease, border-color 0.15s ease"
+                  _hover={{ bg: 'accent.goldMuted' }}
                 >
-                  {item.label}
-                </Text>
+                  <Text
+                    color={isActive ? 'accent.gold' : 'text.inverse'}
+                    fontSize="sm"
+                    opacity={isActive ? 1 : 0.72}
+                    letterSpacing="0.02em"
+                  >
+                    {item.label}
+                  </Text>
+                </Box>
               )}
             </NavLink>
           ))}
@@ -99,6 +117,13 @@ export function AppShell({ children }: AppShellProps) {
             <Button
               size="sm"
               variant="outline"
+              borderColor="border.default"
+              color="text.secondary"
+              borderRadius="0"
+              fontWeight="500"
+              letterSpacing="0.06em"
+              textTransform="uppercase"
+              fontSize="xs"
               onClick={() => void onLogout()}
               data-testid="logout"
             >
