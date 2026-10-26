@@ -19,7 +19,8 @@ export function SearchRequestForm({ filterSummary }: { filterSummary: string }) 
     event.preventDefault();
     setError(null);
     setStatus('submitting');
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const rawMessage = form.get('message');
     const userMessage = typeof rawMessage === 'string' ? rawMessage.trim() : '';
     const message =
@@ -39,7 +40,7 @@ export function SearchRequestForm({ filterSummary }: { filterSummary: string }) 
         website: form.get('website') ?? '',
       });
       setStatus('success');
-      event.currentTarget.reset();
+      formElement.reset();
     } catch {
       setStatus('error');
       setError(t('error'));

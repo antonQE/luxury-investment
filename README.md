@@ -47,9 +47,19 @@ API tests need the database running (`npm run db:up`); they use `luxury_test` an
 
 Port 54329 is used so that a PostgreSQL already running on 5432 does not clash.
 
+## Tests
+
+| Command | What it runs |
+|---|---|
+| `npm test` | Unit + API integration + web/admin component tests (Vitest) across workspaces |
+| `npm run test:e2e` | Playwright e2e in `apps/e2e` (starts API + web + admin unless already up) |
+| `npm run test:e2e:ui` | Playwright UI mode |
+
+E2E prerequisites: Postgres up (`npm run db:up`), migrated and seeded (`npm run db:migrate` && `npm run db:seed`). Against an already-running local stack set `E2E_REUSE_SERVER=1`. CI builds the apps, migrates/seeds `luxury_test`, then runs Playwright with production servers.
+
 ## Continuous integration
 
-GitHub Actions (`.github/workflows/ci.yml`) runs on every push to `master` and on pull requests: `npm ci`, dependency audit (high+), Prettier check, ESLint, typecheck, tests (with Postgres 18), and production build. The workflow only reports status; it never approves or merges.
+GitHub Actions (`.github/workflows/ci.yml`) runs on every push to `master` and on pull requests: `npm ci`, dependency audit (high+), Prettier check, ESLint, typecheck, unit/integration/component tests (with Postgres 18), production build, then Playwright e2e. The workflow only reports status; it never approves or merges.
 
 ## Scripts
 
@@ -61,7 +71,8 @@ Run from the repository root. `dev`, `build`, `typecheck` and `test` run the sam
 | `npm run build` | Production build of every app and package |
 | `npm run lint` / `npm run lint:fix` | ESLint over the whole repository (one config: `eslint.config.js`), zero warnings allowed |
 | `npm run typecheck` | TypeScript type check |
-| `npm test` | Unit and integration tests |
+| `npm test` | Unit, integration and component tests |
+| `npm run test:e2e` / `test:e2e:ui` | Playwright end-to-end (see Tests above) |
 | `npm run format` / `npm run format:check` | Prettier (Markdown is excluded on purpose) |
 | `npm run db:migrate` / `npm run db:seed` | Apply migrations / seed demo data |
 | `npm run db:import-wxr -- --file .data/wxr/….xml [--dry-run]` | Import WordPress WXR export (LI-051); keep dumps under `.data/` (gitignored) |

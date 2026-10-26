@@ -8,6 +8,7 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
+    setupFiles: ['./test/setup-component.ts'],
     // next-intl imports `next/server` without an extension, which only bundlers resolve.
     server: { deps: { inline: ['next-intl'] } },
   },

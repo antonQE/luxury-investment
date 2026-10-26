@@ -69,7 +69,7 @@ export default async function HomePage() {
             {t('lead')}
           </p>
           <div className="animate-fade-up mt-12 max-w-4xl" style={{ animationDelay: '220ms' }}>
-            <SearchForm variant="hero" />
+            <SearchForm variant="hero" testId="home-search" />
           </div>
         </div>
       </section>

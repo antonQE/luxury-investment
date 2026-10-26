@@ -38,6 +38,10 @@ jobs:
       # Present so any accidental parse of DATABASE_URL in scripts stays local-shaped.
       DATABASE_URL: postgres://luxury:luxury@localhost:5432/luxury_test
       HUSKY: '0'
+      API_URL: http://localhost:4000
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      SITE_URL: http://localhost:3000
+      VITE_API_URL: http://localhost:4000
 
     steps:
       - name: Checkout
@@ -70,3 +74,18 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Migrate and seed for e2e
+        run: |
+          npm run db:migrate
+          NODE_ENV=development npm run db:seed
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+        working-directory: apps/e2e
+
+      - name: E2E tests
+        run: npm run test:e2e
+        env:
+          CI: 'true'
+          E2E_PROD_SERVERS: '1'

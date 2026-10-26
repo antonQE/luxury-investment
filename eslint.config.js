@@ -86,5 +86,20 @@ export default defineConfig([
     },
   },
 
+  {
+    files: ['**/*.{component.test,test,spec}.{ts,tsx}'],
+    rules: {
+      '@next/next/no-html-link-for-pages': 'off',
+      '@next/next/no-img-element': 'off',
+    },
+  },
+
+  {
+    files: ['apps/e2e/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
   prettierConfig,
 ]);

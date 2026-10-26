@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch --env-file-if-exists=../../.env src/main.ts | pino-pretty",
-    "start": "node src/main.ts",
+    "start": "node --env-file-if-exists=../../.env src/main.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",

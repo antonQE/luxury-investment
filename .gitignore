@@ -18,3 +18,8 @@ docs/**/*.xml
 .next/
 next-env.d.ts
 *.tsbuildinfo
+
+# Playwright
+apps/e2e/playwright-report/
+apps/e2e/test-results/
+apps/e2e/playwright/.auth/

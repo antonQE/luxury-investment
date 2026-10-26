@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-057`
+Next IDs: `EPIC-19`, `LI-058`
 
 
 ## Releases
@@ -72,6 +72,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-057](tasks/LI-057-e2e-component-tests.md) | E2E + component test coverage | EPIC-01 |
 | [LI-051](tasks/LI-051-wordpress-import-scripts.md) | WordPress/data import scripts (WXR) | EPIC-17 |
 | [LI-056](tasks/LI-056-property-print-qr.md) | Property print view and QR | EPIC-07 |
 | [LI-055](tasks/LI-055-catalog-list-filters.md) | Catalog list filters (city, range, ID) | EPIC-07 |

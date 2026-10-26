@@ -19,7 +19,8 @@ export function ConsultationForm() {
     event.preventDefault();
     setError(null);
     setStatus('submitting');
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       await postInquiry({
         type: 'consultation',
@@ -32,7 +33,7 @@ export function ConsultationForm() {
         website: form.get('website') ?? '',
       });
       setStatus('success');
-      event.currentTarget.reset();
+      formElement.reset();
     } catch {
       setStatus('error');
       setError(t('error'));

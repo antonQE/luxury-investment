@@ -19,7 +19,8 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
     event.preventDefault();
     setError(null);
     setStatus('submitting');
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       await postInquiry({
         type,
@@ -32,7 +33,7 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
         website: form.get('website') ?? '',
       });
       setStatus('success');
-      event.currentTarget.reset();
+      formElement.reset();
       setType('inquiry');
     } catch {
       setStatus('error');
