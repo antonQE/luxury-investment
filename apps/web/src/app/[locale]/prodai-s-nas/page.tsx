@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { ConsultationForm } from '@/components/content/ConsultationForm';
 import { ApiError } from '@/lib/api/client';
 import { fetchPage } from '@/lib/api/content';
+import { serverEnv } from '@/lib/config/env';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 
 const SLUG = 'prodai-s-nas';
@@ -32,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SellWithUsPage() {
   const t = await getTranslations('SellWithUs');
   const locale = await getLocale();
+  const handbookUrl = `${serverEnv().API_URL}/v1/public/documents/seller-handbook?source=sell-with-us`;
 
   let title = t('title');
   let body = t('body');
@@ -48,6 +50,16 @@ export default async function SellWithUsPage() {
       <h1 className="font-serif text-4xl">{title}</h1>
       <p className="mt-4 max-w-2xl text-lg text-ink-soft">{t('lead')}</p>
       <div className="mt-8 space-y-4 leading-relaxed whitespace-pre-line">{body}</div>
+
+      <p className="mt-8">
+        <a
+          href={handbookUrl}
+          className="inline-flex border border-brass bg-brass px-5 py-2 text-sm tracking-wide text-void uppercase transition hover:bg-brass-dark"
+          data-testid="handbook-download"
+        >
+          {t('downloadHandbook')}
+        </a>
+      </p>
 
       <ol className="mt-12 grid gap-6 sm:grid-cols-2">
         {(['prepare', 'market', 'viewings', 'sale'] as const).map((step, index) => (

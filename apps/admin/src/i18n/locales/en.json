@@ -10,8 +10,24 @@
     "partners": "Partners",
     "inquiries": "Inquiries",
     "articles": "Articles",
+    "handbook": "Seller handbook",
     "locations": "Locations",
     "propertyTypes": "Property types"
+  },
+  "handbook": {
+    "title": "Seller handbook",
+    "lead": "Upload a new PDF version and publish it as current. Download counts survive new versions.",
+    "upload": "Upload and publish",
+    "versionLabel": "Version label",
+    "file": "PDF file",
+    "downloadTotal": "Total downloads",
+    "downloads": "Downloads",
+    "status": "Status",
+    "current": "Current",
+    "archived": "Previous",
+    "publish": "Make current",
+    "loadError": "Could not load the handbook.",
+    "uploadError": "Upload failed."
   },
   "articles": {
     "title": "Articles",

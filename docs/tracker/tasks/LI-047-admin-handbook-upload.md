@@ -1,7 +1,7 @@
 # LI-047: Admin handbook upload/version UI (basic)
 
 - Epic: EPIC-13
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Size: M
 - Area: admin
@@ -13,9 +13,9 @@ Admin can upload a new handbook PDF as a new version, publish it as current, and
 
 ## Acceptance criteria
 
-- [ ] Admin API to upload version + publish current; `content:write`.
-- [ ] Screen showing current version, upload control, total/per-version counts.
-- [ ] Nav entry.
+- [x] Admin API to upload version + publish current; `content:write`.
+- [x] Screen showing current version, upload control, total/per-version counts.
+- [x] Nav entry.
 
 ## Out of scope
 
@@ -24,3 +24,5 @@ Admin can upload a new handbook PDF as a new version, publish it as current, and
 ## Implementation notes
 
 ## Result
+
+- Document admin service/router; Handbook admin page; upload+publish test green.

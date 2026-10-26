@@ -1,6 +1,8 @@
 import { SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
 import { eq } from 'drizzle-orm';
 
+import { DEMO_PDF_BYTES, DEMO_PDF_STORAGE_KEY } from '../../../modules/documents/demo-pdf.ts';
+import { LocalStorage } from '../../../modules/media/storage/local-storage.ts';
 import { documents, documentVersions, translations } from '../schema.ts';
 import type { SeedModule } from './index.ts';
 
@@ -26,12 +28,22 @@ async function writeTranslation(
     });
 }
 
-/** Tiny valid PDF (one blank page) for local download demos. */
-const DEMO_PDF_STORAGE_KEY = 'documents/seller-handbook/demo-v1.pdf';
+async function ensureDemoPdfOnDisk(): Promise<number> {
+  const root = process.env.MEDIA_LOCAL_ROOT ?? '.data/media';
+  const storage = new LocalStorage(root, 'http://localhost:4000/v1/public/media');
+  await storage.put({
+    key: DEMO_PDF_STORAGE_KEY,
+    body: DEMO_PDF_BYTES,
+    contentType: 'application/pdf',
+  });
+  return DEMO_PDF_BYTES.byteLength;
+}
 
 export const documentsSeed: SeedModule = {
   name: 'documents',
   async run(db) {
+    const byteSize = await ensureDemoPdfOnDisk();
+
     const [existing] = await db
       .select({ id: documents.id, currentVersionId: documents.currentVersionId })
       .from(documents)
@@ -87,11 +99,13 @@ export const documentsSeed: SeedModule = {
           storageKey: DEMO_PDF_STORAGE_KEY,
           fileName: 'seller-handbook-demo.pdf',
           contentType: 'application/pdf',
-          byteSize: 0,
+          byteSize,
           publishedAt: new Date('2026-01-01T10:00:00.000Z'),
         })
         .returning({ id: documentVersions.id });
       versionId = version?.id;
+    } else {
+      await db.update(documentVersions).set({ byteSize }).where(eq(documentVersions.id, versionId));
     }
 
     if (versionId !== undefined && existing?.currentVersionId !== versionId) {

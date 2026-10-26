@@ -37,7 +37,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
-| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | In Progress |
+| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Backlog |
@@ -58,7 +58,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
-| [LI-046](tasks/LI-046-public-handbook-download.md) | Public handbook download API + page | EPIC-13 | P1 | M |
 
 ## Blocked
 
@@ -69,11 +68,12 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-047](tasks/LI-047-admin-handbook-upload.md) | Admin handbook upload/version UI (basic) | EPIC-13 | P1 | M | LI-045, LI-033 |
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-047](tasks/LI-047-admin-handbook-upload.md) | Admin handbook upload/version UI (basic) | EPIC-13 |
+| [LI-046](tasks/LI-046-public-handbook-download.md) | Public handbook download API + page | EPIC-13 |
 | [LI-045](tasks/LI-045-documents-schema-seed.md) | Documents schema + download events + seed | EPIC-13 |
 | [LI-044](tasks/LI-044-admin-content-crud.md) | Admin articles/pages CRUD (basic) | EPIC-12 |
 | [LI-043](tasks/LI-043-sell-with-us-consultation.md) | Sell with us page + consultation form | EPIC-12 |

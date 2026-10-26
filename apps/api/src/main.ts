@@ -12,6 +12,10 @@ import { ContentAdminService } from './modules/content/app/content-admin-service
 import { ContentPublicService } from './modules/content/app/content-public-service.ts';
 import { contentAdminRouter } from './modules/content/handlers/content-admin-handlers.ts';
 import { contentPublicRouter } from './modules/content/handlers/content-public-handlers.ts';
+import { DocumentAdminService } from './modules/documents/app/document-admin-service.ts';
+import { DocumentPublicService } from './modules/documents/app/document-public-service.ts';
+import { documentAdminRouter } from './modules/documents/handlers/document-admin-handlers.ts';
+import { documentPublicRouter } from './modules/documents/handlers/document-public-handlers.ts';
 import { inquiryAdminRouter } from './modules/inquiries/handlers/inquiry-admin-handlers.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
@@ -48,6 +52,8 @@ const teamPublic = new TeamPublicService(database.db);
 const teamAdmin = new TeamAdminService(database.db);
 const contentPublic = new ContentPublicService(database.db);
 const contentAdmin = new ContentAdminService(database.db);
+const documentPublic = new DocumentPublicService(database.db, storage);
+const documentAdmin = new DocumentAdminService(database.db, storage);
 const userRepo = new UserRepo(database.db);
 const auditService = new AuditService(database.db);
 const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS);
@@ -63,6 +69,7 @@ const app = createApp({
     mediaPublicRouter(mediaService),
     teamPublicRouter(teamPublic),
     contentPublicRouter(contentPublic),
+    documentPublicRouter(documentPublic),
   ],
   adminPublicRouters: [adminAuth.publicRouter],
   adminAuthGate: adminAuth.gate,
@@ -75,6 +82,7 @@ const app = createApp({
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),
     contentAdminRouter(contentAdmin),
+    documentAdminRouter(documentAdmin),
   ],
 });
 
