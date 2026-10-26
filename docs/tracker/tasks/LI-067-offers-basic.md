@@ -1,7 +1,7 @@
 # LI-067: Offers register (basic)
 
 - Epic: EPIC-09
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Size: M
 - Area: api
@@ -13,10 +13,14 @@ Register buy/rent offers linked to property and contact with price, dates and st
 
 ## Acceptance criteria
 
-- [ ] `offers` schema + admin API list/create/update status.
-- [ ] Seed demo offer; permission-gated.
-- [ ] Basic admin UI list.
+- [x] `offers` schema + admin API list/create/update status.
+- [x] Seed demo offer; permission-gated.
+- [x] Basic admin UI list.
 
 ## Out of scope
 
 - Full deal closing workflow (LI-068); commissions.
+
+## Result
+
+Migration `0022_little_stingray.sql`; admin offers API/UI; seed purchase offer. Tests green.

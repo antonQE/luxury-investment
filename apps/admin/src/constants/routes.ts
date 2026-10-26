@@ -14,6 +14,7 @@ export const ROUTES = {
   CONTACTS: '/contacts',
   VIEWINGS: '/viewings',
   CRM_TASKS: '/crm-tasks',
+  OFFERS: '/offers',
   ARTICLES: '/articles',
   HANDBOOK: '/handbook',
   NOT_FOUND: '*',

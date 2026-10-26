@@ -15,10 +15,12 @@ import { contentPublicRouter } from './modules/content/handlers/content-public-h
 import { PropertyOwnershipService } from './modules/crm/app/property-ownership-service.ts';
 import { contactAdminRouter } from './modules/crm/handlers/contact-admin-handlers.ts';
 import { crmTaskAdminRouter } from './modules/crm/handlers/crm-task-admin-handlers.ts';
+import { offerAdminRouter } from './modules/crm/handlers/offer-admin-handlers.ts';
 import { propertyOwnershipAdminRouter } from './modules/crm/handlers/property-ownership-admin-handlers.ts';
 import { viewingAdminRouter } from './modules/crm/handlers/viewing-admin-handlers.ts';
 import { ContactRepo } from './modules/crm/repo/contact-repo.ts';
 import { CrmTaskRepo } from './modules/crm/repo/crm-task-repo.ts';
+import { OfferRepo } from './modules/crm/repo/offer-repo.ts';
 import { ViewingRepo } from './modules/crm/repo/viewing-repo.ts';
 import { DocumentAdminService } from './modules/documents/app/document-admin-service.ts';
 import { DocumentPublicService } from './modules/documents/app/document-public-service.ts';
@@ -70,6 +72,7 @@ const propertyOwnership = new PropertyOwnershipService(database.db);
 const contactRepo = new ContactRepo(database.db);
 const viewingRepo = new ViewingRepo(database.db);
 const crmTaskRepo = new CrmTaskRepo(database.db);
+const offerRepo = new OfferRepo(database.db);
 
 const app = createApp({
   env,
@@ -94,6 +97,7 @@ const app = createApp({
     contactAdminRouter(contactRepo),
     viewingAdminRouter(viewingRepo),
     crmTaskAdminRouter(crmTaskRepo),
+    offerAdminRouter(offerRepo),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

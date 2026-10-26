@@ -120,6 +120,22 @@ export {
 } from './inquiries.ts';
 export type { Locale } from './locales.ts';
 export { DEFAULT_LOCALE, LOCALES, localeSchema } from './locales.ts';
+export type {
+  CreateOfferInput,
+  ListOffersQuery,
+  OfferStatus,
+  OfferType,
+  UpdateOfferInput,
+} from './offers.ts';
+export {
+  createOfferSchema,
+  listOffersQuerySchema,
+  OFFER_STATUSES,
+  OFFER_TYPES,
+  offerStatusSchema,
+  offerTypeSchema,
+  updateOfferSchema,
+} from './offers.ts';
 export type { PermissionKey, RoleKey } from './permissions.ts';
 export { PERMISSION_KEYS, ROLE_KEYS, ROLE_PERMISSIONS } from './permissions.ts';
 export type { PublicOffice, PublicPartner, PublicTeamMember, TeamMemberKind } from './team.ts';
