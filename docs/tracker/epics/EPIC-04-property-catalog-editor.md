@@ -1,6 +1,6 @@
 # EPIC-04: Property catalog and admin editor
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 02 §2-§7; 04 ADMIN-002; 08 MARKET-002; 11 B-03, B-05, B-06; FLOW-003, FLOW-005
 
@@ -15,4 +15,12 @@ Admins create, edit, duplicate and publish properties with universal and type-sp
 
 ## Tasks
 
-Decomposed when the epic starts.
+- LI-026: Property schema evolution (catalog model) — Done
+- LI-027: Price history and slug history — Done
+- LI-028: Admin properties API (CRUD + publish) — Done
+- LI-029: Admin property list and editor UI (basic) — Done
+- LI-030: Duplicate property — Done
+
+## Notes
+
+Basic R1 scope delivered. Stepped autosave, rich-text polish, public 301 wiring for old slugs, and media remain follow-ups (EPIC-05 / later refinements).

@@ -37,13 +37,18 @@ const sample = {
   bedrooms: 2,
   bathrooms: 1,
   area: '88.50',
+  builtUpArea: '88.50',
+  areaWithCommonParts: '95.00',
+  primaryArea: 'built_up',
   primaryAreaLabelBg: 'Застроена площ',
   primaryAreaLabelEn: 'Built-up area',
   constructionStage: 'act_16',
   badges: ['new'],
+  attributeValues: {},
   imageUrls: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688'],
   agentName: 'Demo Agent',
   agentPhone: '+359 000 000 000',
+  listingStatus: 'published',
   publishedAt: new Date('2026-10-01T10:00:00Z'),
 };
 
@@ -90,6 +95,23 @@ describe('GET /v1/public/properties', () => {
 
     const invalid = await request(app).get('/v1/public/properties?market=moon').expect(400);
     expect((invalid.body as ErrorBody).error.code).toBe('VALIDATION_FAILED');
+  });
+
+  it('hides draft listings from the public list and detail', async () => {
+    await connection.db.insert(properties).values({
+      ...sample,
+      referenceNumber: 'DEMO-DRAFT-TEST',
+      slug: 'demo-draft-hidden-test',
+      listingStatus: 'draft',
+      publishedAt: null,
+    });
+
+    const list = await request(app).get('/v1/public/properties').expect(200);
+    expect((list.body as ListBody).data.every((row) => row.slug !== 'demo-draft-hidden-test')).toBe(
+      true,
+    );
+
+    await request(app).get('/v1/public/properties/demo-draft-hidden-test').expect(404);
   });
 });
 

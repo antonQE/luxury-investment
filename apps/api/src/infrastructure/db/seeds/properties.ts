@@ -267,14 +267,66 @@ const rows = [
     agentPhone: DEMO_PHONE,
     publishedAt: new Date('2026-10-10T10:00:00Z'),
   },
-] satisfies (typeof properties.$inferInsert)[];
+];
+
+function enrich(row: (typeof rows)[number]): typeof properties.$inferInsert {
+  const withCommon = row.primaryAreaLabelEn === 'Area with common parts';
+  return {
+    ...row,
+    imageUrls: [...row.imageUrls],
+    badges: [...row.badges],
+    listingStatus: 'published',
+    primaryArea: withCommon ? 'with_common' : 'built_up',
+    builtUpArea: withCommon ? null : row.area,
+    areaWithCommonParts: withCommon ? row.area : null,
+    attributeValues: {},
+  };
+}
+
+const draftRow: typeof properties.$inferInsert = {
+  referenceNumber: 'DEMO-DRAFT-1',
+  slug: 'demo-draft-hidden',
+  titleBg: 'Demo: Чернова (непублична)',
+  titleEn: 'Demo: Draft (unpublished)',
+  excerptBg: 'Не трябва да се вижда публично.',
+  excerptEn: 'Must not appear publicly.',
+  descriptionBg: 'Чернова за тестове.',
+  descriptionEn: 'Draft for tests.',
+  transactionType: 'sale',
+  propertyType: 'apartment',
+  market: 'sofia',
+  country: 'България',
+  city: 'София',
+  district: 'Изток',
+  price: '100000.00',
+  currency: 'EUR',
+  vatLabel: null,
+  bedrooms: 1,
+  bathrooms: 1,
+  area: '50.00',
+  builtUpArea: '50.00',
+  areaWithCommonParts: null,
+  primaryArea: 'built_up',
+  primaryAreaLabelBg: 'Застроена площ',
+  primaryAreaLabelEn: 'Built-up area',
+  constructionStage: null,
+  badges: [],
+  attributeValues: {},
+  imageUrls: [
+    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=80',
+  ],
+  agentName: 'Demo Агент Иванова',
+  agentPhone: DEMO_PHONE,
+  listingStatus: 'draft',
+  publishedAt: null,
+};
 
 export const propertiesSeed: SeedModule = {
   name: 'properties',
   run: async (db) => {
     await db
       .insert(properties)
-      .values([...rows])
+      .values([...rows.map(enrich), draftRow])
       .onConflictDoNothing({ target: properties.slug });
   },
 };

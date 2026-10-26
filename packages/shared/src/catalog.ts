@@ -3,14 +3,20 @@ import { z } from 'zod';
 export const TRANSACTION_TYPES = ['sale', 'rent'] as const;
 export const PROPERTY_TYPES = ['apartment', 'house', 'plot', 'office', 'hotel'] as const;
 export const MARKETS = ['sofia', 'black_sea', 'dubai_abroad'] as const;
+export const PRIMARY_AREA_KEYS = ['built_up', 'with_common'] as const;
+export const PROPERTY_LISTING_STATUSES = ['draft', 'published', 'archived'] as const;
 
 export const transactionTypeSchema = z.enum(TRANSACTION_TYPES);
 export const propertyTypeSchema = z.enum(PROPERTY_TYPES);
 export const marketSchema = z.enum(MARKETS);
+export const primaryAreaKeySchema = z.enum(PRIMARY_AREA_KEYS);
+export const propertyListingStatusSchema = z.enum(PROPERTY_LISTING_STATUSES);
 
 export type TransactionType = z.infer<typeof transactionTypeSchema>;
 export type PropertyType = z.infer<typeof propertyTypeSchema>;
 export type Market = z.infer<typeof marketSchema>;
+export type PrimaryAreaKey = z.infer<typeof primaryAreaKeySchema>;
+export type PropertyListingStatus = z.infer<typeof propertyListingStatusSchema>;
 
 export const propertyListQuerySchema = z.object({
   transactionType: transactionTypeSchema.optional(),

@@ -1,7 +1,7 @@
 # LI-023: Markets and core taxonomies schema + seed
 
 - Epic: EPIC-03
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Size: M
 - Area: api
@@ -13,9 +13,9 @@ Schema and seeds for markets (Sofia, Black Sea, Dubai & abroad), property types,
 
 ## Acceptance criteria
 
-- [ ] Tables + migration; translations for labels.
-- [ ] Idempotent seeds matching ROLE/spec lists and inventory (deduped badges).
-- [ ] Markets remain independent of geography (optional links later).
+- [x] Tables + migration; translations for labels.
+- [x] Idempotent seeds matching ROLE/spec lists and inventory (deduped badges).
+- [x] Markets remain independent of geography (optional links later).
 
 ## Out of scope
 
@@ -23,4 +23,11 @@ Schema and seeds for markets (Sofia, Black Sea, Dubai & abroad), property types,
 
 ## Implementation notes
 
+- Tables: `markets`, `property_types`, `transaction_types`, `badges`, `construction_stages`, `listing_statuses` — labels via shared `translations`.
+- Seed keys align with `@luxury-investment/shared` where possible; badges deduped from inventory.
+
 ## Result
+
+- Migration `0007` for markets + five taxonomy tables; labels in `translations`.
+- Seed: 3 markets, sale/rent, 9 property types, 6 deduped badges, Act stages, listing statuses.
+- Idempotent seed test green.

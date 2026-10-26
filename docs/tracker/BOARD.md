@@ -6,7 +6,10 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-026`
+Next IDs: `EPIC-19`, `LI-031`
+
+Working note: EPIC-03 and EPIC-04 basic R1 scope are Done. Next backlog epic by dependency order is EPIC-05 (media) or EPIC-08 (team) — pick up when continuing.
+
 
 ## Releases
 
@@ -26,8 +29,8 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 |---|---|---|---|
 | [EPIC-01](epics/EPIC-01-project-foundation.md) | Project foundation | P1 | Done |
 | [EPIC-02](epics/EPIC-02-identity-roles-audit.md) | Identity, roles, permissions and audit log | P1 | Done |
-| [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | In Progress |
-| [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Backlog |
+| [EPIC-03](epics/EPIC-03-locations-taxonomies-attributes.md) | Locations, markets, taxonomies and dynamic attributes | P1 | Done |
+| [EPIC-04](epics/EPIC-04-property-catalog-editor.md) | Property catalog and admin editor | P1 | Done |
 | [EPIC-05](epics/EPIC-05-media-pipeline.md) | Media pipeline | P1 | Backlog |
 | [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
 | [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
@@ -57,7 +60,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
-| [LI-023](tasks/LI-023-taxonomies-markets-seed.md) | Markets and core taxonomies schema + seed | EPIC-03 | P1 | M |
 
 ## Blocked
 
@@ -68,13 +70,19 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-024](tasks/LI-024-attribute-definitions-schema.md) | Attribute definitions schema + seed | EPIC-03 | P1 | M | LI-023 |
-| [LI-025](tasks/LI-025-admin-taxonomy-crud.md) | Admin taxonomy and location CRUD (basic) | EPIC-03 | P1 | L | LI-024, LI-019 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-030](tasks/LI-030-property-duplicate.md) | Duplicate property | EPIC-04 |
+| [LI-029](tasks/LI-029-admin-property-editor-ui.md) | Admin property list and editor UI (basic) | EPIC-04 |
+| [LI-028](tasks/LI-028-admin-properties-api.md) | Admin properties API (CRUD + publish) | EPIC-04 |
+| [LI-027](tasks/LI-027-price-slug-history.md) | Price history and slug history | EPIC-04 |
+| [LI-026](tasks/LI-026-property-schema-evolution.md) | Property schema evolution (catalog model) | EPIC-04 |
+| [LI-025](tasks/LI-025-admin-taxonomy-crud.md) | Admin taxonomy and location CRUD (basic) | EPIC-03 |
+| [LI-024](tasks/LI-024-attribute-definitions-schema.md) | Attribute definitions schema + seed | EPIC-03 |
+| [LI-023](tasks/LI-023-taxonomies-markets-seed.md) | Markets and core taxonomies schema + seed | EPIC-03 |
 | [LI-022](tasks/LI-022-locations-schema-seed.md) | Locations schema and seed | EPIC-03 |
 | [LI-021](tasks/LI-021-catalog-data-model-adr.md) | Catalog data model ADR | EPIC-03 |
 | [LI-020](tasks/LI-020-audit-log-foundation.md) | Audit log foundation | EPIC-02 |

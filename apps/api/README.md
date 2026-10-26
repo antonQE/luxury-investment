@@ -64,6 +64,17 @@ For SQL that drizzle-kit cannot generate (extensions, triggers, data fixes): `np
 | `API_LOG_LEVEL` | `info` | pino level |
 | `API_CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Allowed browser origins (web, admin) |
 
+## Catalog reference data (EPIC-03)
+
+| Tables | Purpose |
+|---|---|
+| `locations`, `translations` | Hierarchy + BG/EN labels (LI-022) |
+| `markets`, `property_types`, `transaction_types`, `badges`, `construction_stages`, `listing_statuses` | Admin lists independent of geography (LI-023) |
+| `properties` | Listings (ADR-0005 → EPIC-04): dual areas, `listing_status`, `attribute_values`, optional `location_id` / agent (LI-026) |
+| `property_price_history`, `property_slug_history` | Append-only price/slug changes + resolve helper (LI-027) |
+
+Labels always go through `translations` (`entity_type` + `entity_id` + `locale` + `field`). Soft archive via `archived_at`. Public catalog only returns `listing_status = published`.
+
 ## Staff users (LI-018)
 
 Tables: `users`, `roles`, `permissions`, `role_permissions` (ADR-0006 email + password). Shared permission keys live in `@luxury-investment/shared`.
@@ -85,6 +96,31 @@ Fictional only — never use outside local/test.
 | POST | `/v1/admin/auth/logout` | Clears session |
 | GET | `/v1/admin/auth/me` | Current user + permissions (auth required) |
 | GET | `/v1/admin/ping` | Auth smoke check |
+
+### Catalog admin (LI-025)
+
+Requires `catalog:read` / `catalog:write`. Soft archive only (`archived_at`); no hard delete.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET/POST | `/v1/admin/locations` | List / create (BG+EN `name`) |
+| PATCH | `/v1/admin/locations/:id` | Update slug, parent, labels |
+| POST | `/v1/admin/locations/:id/archive` | Soft archive |
+| GET/POST | `/v1/admin/taxonomies/:kind` | `property_types`, `markets`, … |
+| PATCH | `/v1/admin/taxonomies/:kind/:id` | Update key / labels |
+| POST | `/v1/admin/taxonomies/:kind/:id/archive` | Soft archive |
+
+### Properties admin (LI-028)
+
+Requires `properties:read` / `properties:write` / `properties:publish`. Drafts are created unpublished; publish fails without `responsibleAgentUserId`.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/v1/admin/properties` | List (optional `listingStatus`) |
+| POST | `/v1/admin/properties` | Create draft |
+| GET/PATCH | `/v1/admin/properties/:id` | Read / update |
+| POST | `/v1/admin/properties/:id/publish` | Publish |
+| POST | `/v1/admin/properties/:id/archive` | Soft archive status |
 
 Env: `AUTH_SESSION_SECRET`, `AUTH_COOKIE_NAME`, `AUTH_SESSION_TTL_HOURS` (see root `.env.example`).
 

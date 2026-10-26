@@ -1,6 +1,6 @@
 # EPIC-03: Locations, markets, taxonomies and dynamic attributes
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: 02 §1, §8, §9; 08 MARKET-001, MARKET-003; 03 SRCH-003; 11 B-01, B-02, B-04, H-04; FLOW-004
 

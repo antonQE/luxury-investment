@@ -1,7 +1,7 @@
 # LI-024: Attribute definitions schema + seed
 
 - Epic: EPIC-03
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Size: M
 - Area: api
@@ -13,9 +13,9 @@
 
 ## Acceptance criteria
 
-- [ ] Schema + migration per ADR-0009.
-- [ ] Idempotent seed of a small definition set.
-- [ ] Shared zod types for definition keys where useful.
+- [x] Schema + migration per ADR-0009.
+- [x] Idempotent seed of a small definition set.
+- [x] Shared zod types for definition keys where useful.
 
 ## Out of scope
 
@@ -23,4 +23,11 @@
 
 ## Implementation notes
 
+- `attribute_definitions` + `attribute_options`; labels/help via `translations`.
+- Seed heating, parking, furnished, Dubai community (stub), floor — not the two apartment areas (those stay columns in EPIC-04).
+
 ## Result
+
+- Migration `0008`; seed module `attributes` (5 definitions; heating/parking options).
+- Shared `ATTRIBUTE_DATA_TYPES` / `SEEDED_ATTRIBUTE_KEYS` in `@luxury-investment/shared`.
+- Integration test confirms idempotent seed + select options.

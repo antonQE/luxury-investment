@@ -6,6 +6,8 @@ import { properties } from '../../../infrastructure/db/schema.ts';
 
 export type PropertyRow = typeof properties.$inferSelect;
 
+const PUBLISHED = 'published';
+
 export class PropertyRepo {
   readonly #db: Database;
 
@@ -15,7 +17,8 @@ export class PropertyRepo {
 
   async getPage(query: PropertyListQuery): Promise<{ items: PropertyRow[]; total: number }> {
     const filters = this.filters(query);
-    const where = filters.length > 0 ? and(...filters) : undefined;
+    filters.push(eq(properties.listingStatus, PUBLISHED));
+    const where = and(...filters);
     const [items, totals] = await Promise.all([
       this.#db
         .select()
@@ -33,7 +36,7 @@ export class PropertyRepo {
     const [row] = await this.#db
       .select()
       .from(properties)
-      .where(eq(properties.slug, slug))
+      .where(and(eq(properties.slug, slug), eq(properties.listingStatus, PUBLISHED)))
       .limit(1);
     return row;
   }
@@ -46,6 +49,7 @@ export class PropertyRepo {
         and(
           eq(properties.market, row.market),
           eq(properties.propertyType, row.propertyType),
+          eq(properties.listingStatus, PUBLISHED),
           ne(properties.id, row.id),
         ),
       )

@@ -2,6 +2,11 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
+  LOCATIONS: '/locations',
+  PROPERTY_TYPES: '/property-types',
+  PROPERTIES: '/properties',
+  PROPERTY_NEW: '/properties/new',
+  PROPERTY_EDIT: '/properties/:id',
   NOT_FOUND: '*',
 } as const;
 

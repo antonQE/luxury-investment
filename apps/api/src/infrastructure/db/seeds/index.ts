@@ -1,6 +1,8 @@
 import type { Database } from '../client.ts';
+import { attributesSeed } from './attributes.ts';
 import { locationsSeed } from './locations.ts';
 import { propertiesSeed } from './properties.ts';
+import { taxonomiesSeed } from './taxonomies.ts';
 import { usersSeed } from './users.ts';
 
 export interface SeedModule {
@@ -10,4 +12,10 @@ export interface SeedModule {
 }
 
 /** Seed modules in the order they run. Reference data first, then content that points to it. */
-export const SEED_MODULES: SeedModule[] = [usersSeed, locationsSeed, propertiesSeed];
+export const SEED_MODULES: SeedModule[] = [
+  usersSeed,
+  locationsSeed,
+  taxonomiesSeed,
+  attributesSeed,
+  propertiesSeed,
+];

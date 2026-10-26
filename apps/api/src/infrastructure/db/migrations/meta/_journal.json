@@ -50,6 +50,41 @@
       "when": 1792963039075,
       "tag": "0006_strong_stardust",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792996930725,
+      "tag": "0007_empty_lockjaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792997031978,
+      "tag": "0008_yummy_juggernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792997551328,
+      "tag": "0009_tranquil_carmella_unuscione",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792997600000,
+      "tag": "0010_backfill_property_listing_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792997668956,
+      "tag": "0011_shiny_hellfire_club",
+      "breakpoints": true
     }
   ]
 }

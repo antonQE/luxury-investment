@@ -5,8 +5,13 @@ import { parseEnv } from './config/env.ts';
 import { connectDatabase } from './infrastructure/db/client.ts';
 import { AuditService } from './modules/audit/app/audit-service.ts';
 import { auditAdminRouter } from './modules/audit/handlers/audit-admin-handlers.ts';
+import { catalogAdminRouter } from './modules/catalog/handlers/catalog-admin-handlers.ts';
+import { CatalogRepo } from './modules/catalog/repo/catalog-repo.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
+import { PropertyAdminService } from './modules/properties/app/property-admin-service.ts';
+import { PropertyHistoryService } from './modules/properties/app/property-history-service.ts';
+import { propertyAdminRouter } from './modules/properties/handlers/property-admin-handlers.ts';
 import { propertyPublicRouter } from './modules/properties/handlers/property-public-handlers.ts';
 import { PropertyRepo } from './modules/properties/repo/property-repo.ts';
 import { AuthService } from './modules/users/app/auth-service.ts';
@@ -18,7 +23,10 @@ const env = parseEnv(process.env);
 const logger = createLogger(env);
 const database = connectDatabase(env.DATABASE_URL);
 const propertyRepo = new PropertyRepo(database.db);
+const propertyHistory = new PropertyHistoryService(database.db);
+const propertyAdmin = new PropertyAdminService(database.db, propertyHistory);
 const inquiryRepo = new InquiryRepo(database.db);
+const catalogRepo = new CatalogRepo(database.db);
 const userRepo = new UserRepo(database.db);
 const auditService = new AuditService(database.db);
 const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS);
@@ -31,7 +39,12 @@ const app = createApp({
   publicRouters: [propertyPublicRouter(propertyRepo), inquiryPublicRouter(inquiryRepo)],
   adminPublicRouters: [adminAuth.publicRouter],
   adminAuthGate: adminAuth.gate,
-  adminRouters: [adminAuth.protectedRouter, auditAdminRouter(auditService)],
+  adminRouters: [
+    adminAuth.protectedRouter,
+    auditAdminRouter(auditService),
+    catalogAdminRouter(catalogRepo),
+    propertyAdminRouter(propertyAdmin),
+  ],
 });
 
 const server = app.listen(env.API_PORT, () => {

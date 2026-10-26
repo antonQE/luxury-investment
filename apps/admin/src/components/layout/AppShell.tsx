@@ -43,24 +43,35 @@ export function AppShell({ children }: AppShellProps) {
           </Text>
         </Box>
         <Box as="nav" display="flex" flexDirection="column" gap={2}>
-          <NavLink
-            to={ROUTES.DASHBOARD}
-            data-testid="nav-dashboard"
-            style={{ textDecoration: 'none' }}
-          >
-            {({ isActive }) => (
-              <Text
-                color={isActive ? 'accent.gold' : 'text.inverse'}
-                fontSize="sm"
-                opacity={isActive ? 1 : 0.8}
-              >
-                {t('nav.dashboard')}
-              </Text>
-            )}
-          </NavLink>
-          <Text fontSize="xs" opacity={0.45} mt={4}>
-            {t('nav.placeholder')}
-          </Text>
+          {(
+            [
+              { to: ROUTES.DASHBOARD, label: t('nav.dashboard'), testId: 'nav-dashboard' },
+              { to: ROUTES.PROPERTIES, label: t('nav.properties'), testId: 'nav-properties' },
+              { to: ROUTES.LOCATIONS, label: t('nav.locations'), testId: 'nav-locations' },
+              {
+                to: ROUTES.PROPERTY_TYPES,
+                label: t('nav.propertyTypes'),
+                testId: 'nav-property-types',
+              },
+            ] as const
+          ).map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              data-testid={item.testId}
+              style={{ textDecoration: 'none' }}
+            >
+              {({ isActive }) => (
+                <Text
+                  color={isActive ? 'accent.gold' : 'text.inverse'}
+                  fontSize="sm"
+                  opacity={isActive ? 1 : 0.8}
+                >
+                  {item.label}
+                </Text>
+              )}
+            </NavLink>
+          ))}
         </Box>
       </Box>
       <Flex flex={1} direction="column" minW={0}>
