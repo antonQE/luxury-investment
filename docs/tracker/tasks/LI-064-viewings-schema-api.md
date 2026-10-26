@@ -1,7 +1,7 @@
 # LI-064: Viewings schema + admin API
 
 - Epic: EPIC-09
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Size: M
 - Area: api
@@ -13,10 +13,14 @@ Viewings linked to property, contact, agent, schedule and outcome status (CRM-00
 
 ## Acceptance criteria
 
-- [ ] `viewings` table + statuses; seed demo rows.
-- [ ] Admin CRUD/list API with date range filter.
-- [ ] Tests for create/update outcome.
+- [x] `viewings` table + statuses; seed demo rows.
+- [x] Admin CRUD/list API with date range filter.
+- [x] Tests for create/update outcome.
 
 ## Out of scope
 
 - Calendar UI (LI-065); external calendar sync.
+
+## Result
+
+Migration `0020_magical_rumiko_fujikawa.sql`; admin GET/POST/PATCH `/viewings` with `from`/`to` filters; seed confirmed viewing; gated by `inquiries:read/write`. Tests green.

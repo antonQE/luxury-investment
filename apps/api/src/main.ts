@@ -13,7 +13,11 @@ import { ContentPublicService } from './modules/content/app/content-public-servi
 import { contentAdminRouter } from './modules/content/handlers/content-admin-handlers.ts';
 import { contentPublicRouter } from './modules/content/handlers/content-public-handlers.ts';
 import { PropertyOwnershipService } from './modules/crm/app/property-ownership-service.ts';
+import { contactAdminRouter } from './modules/crm/handlers/contact-admin-handlers.ts';
 import { propertyOwnershipAdminRouter } from './modules/crm/handlers/property-ownership-admin-handlers.ts';
+import { viewingAdminRouter } from './modules/crm/handlers/viewing-admin-handlers.ts';
+import { ContactRepo } from './modules/crm/repo/contact-repo.ts';
+import { ViewingRepo } from './modules/crm/repo/viewing-repo.ts';
 import { DocumentAdminService } from './modules/documents/app/document-admin-service.ts';
 import { DocumentPublicService } from './modules/documents/app/document-public-service.ts';
 import { documentAdminRouter } from './modules/documents/handlers/document-admin-handlers.ts';
@@ -61,6 +65,8 @@ const auditService = new AuditService(database.db);
 const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS, env.AUTH_SESSION_SECRET);
 const adminAuth = mountAdminAuth(authService, env, auditService);
 const propertyOwnership = new PropertyOwnershipService(database.db);
+const contactRepo = new ContactRepo(database.db);
+const viewingRepo = new ViewingRepo(database.db);
 
 const app = createApp({
   env,
@@ -82,6 +88,8 @@ const app = createApp({
     catalogAdminRouter(catalogRepo),
     propertyAdminRouter(propertyAdmin),
     propertyOwnershipAdminRouter(propertyOwnership),
+    contactAdminRouter(contactRepo),
+    viewingAdminRouter(viewingRepo),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

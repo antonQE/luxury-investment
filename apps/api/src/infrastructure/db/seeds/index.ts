@@ -9,6 +9,7 @@ import { propertiesSeed } from './properties.ts';
 import { taxonomiesSeed } from './taxonomies.ts';
 import { teamSeed } from './team.ts';
 import { usersSeed } from './users.ts';
+import { viewingsSeed } from './viewings.ts';
 
 export interface SeedModule {
   name: string;
@@ -26,6 +27,7 @@ export const SEED_MODULES: SeedModule[] = [
   propertiesSeed,
   contactsSeed,
   inquiriesSeed,
+  viewingsSeed,
   contentSeed,
   documentsSeed,
 ];

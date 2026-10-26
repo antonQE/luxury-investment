@@ -1,7 +1,7 @@
 # LI-065: Viewings calendar UI (basic)
 
 - Epic: EPIC-09
-- Status: Backlog
+- Status: Ready
 - Priority: P1
 - Size: L
 - Area: admin

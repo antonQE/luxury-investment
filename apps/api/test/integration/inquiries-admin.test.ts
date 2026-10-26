@@ -64,8 +64,24 @@ describe('admin inquiries API', () => {
   it('lists inquiries and updates status', async () => {
     const agent = await loginAgent();
     const list = await agent.get('/v1/admin/inquiries').expect(200);
-    const rows = (list.body as { data: { id: string; status: string }[] }).data;
+    const rows = (
+      list.body as {
+        data: {
+          id: string;
+          email: string;
+          status: string;
+          funnelStage: string;
+          source: string | null;
+          contactId: string | null;
+        }[];
+      }
+    ).data;
     expect(rows.length).toBeGreaterThan(0);
+
+    const linked = rows.find((row) => row.email === 'client.ivanov@example.com');
+    expect(linked?.contactId).toBeTruthy();
+    expect(linked?.source).toBe('property_form');
+    expect(linked?.funnelStage).toBe('new');
 
     const target = rows.find((row) => row.status === 'new');
     expect(target).toBeDefined();
@@ -78,5 +94,29 @@ describe('admin inquiries API', () => {
     expect((patched.body as { data: { status: string } }).data.status).toBe('closed');
 
     await request(buildApp()).get('/v1/admin/inquiries').expect(401);
+  });
+
+  it('filters by funnel stage and source', async () => {
+    const agent = await loginAgent();
+
+    const byStage = await agent.get('/v1/admin/inquiries?funnelStage=viewing').expect(200);
+    const stageRows = (byStage.body as { data: { funnelStage: string; source: string | null }[] })
+      .data;
+    expect(stageRows.length).toBeGreaterThan(0);
+    expect(stageRows.every((row) => row.funnelStage === 'viewing')).toBe(true);
+
+    const bySource = await agent.get('/v1/admin/inquiries?source=referral').expect(200);
+    const sourceRows = (bySource.body as { data: { source: string | null }[] }).data;
+    expect(sourceRows.length).toBeGreaterThan(0);
+    expect(sourceRows.every((row) => row.source === 'referral')).toBe(true);
+
+    const both = await agent
+      .get('/v1/admin/inquiries?funnelStage=new&source=property_form')
+      .expect(200);
+    const bothRows = (both.body as { data: { funnelStage: string; source: string | null }[] }).data;
+    expect(bothRows.length).toBeGreaterThan(0);
+    expect(
+      bothRows.every((row) => row.funnelStage === 'new' && row.source === 'property_form'),
+    ).toBe(true);
   });
 });

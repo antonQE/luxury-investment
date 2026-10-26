@@ -48,7 +48,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
-| [LI-061](tasks/LI-061-inquiry-crm-fields.md) | Inquiry CRM fields (contact, source, funnel) | EPIC-09 | M |
 
 ## Review
 
@@ -59,7 +58,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
-| [LI-062](tasks/LI-062-admin-contacts-crud.md) | Admin contacts CRUD API + UI | EPIC-09 | P1 | L |
+| [LI-065](tasks/LI-065-viewings-calendar-ui.md) | Viewings calendar UI (basic) | EPIC-09 | P1 | L |
 
 ## Blocked
 
@@ -70,9 +69,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-063](tasks/LI-063-contact-duplicate-hints.md) | Contact duplicate detection hints | EPIC-09 | P1 | S | LI-062 |
-| [LI-064](tasks/LI-064-viewings-schema-api.md) | Viewings schema + admin API | EPIC-09 | P1 | M | LI-059, LI-061 |
-| [LI-065](tasks/LI-065-viewings-calendar-ui.md) | Viewings calendar UI (basic) | EPIC-09 | P1 | L | LI-064 |
 | [LI-066](tasks/LI-066-crm-tasks-basic.md) | CRM tasks schema + basic admin | EPIC-09 | P1 | M | LI-059 |
 | [LI-067](tasks/LI-067-offers-basic.md) | Offers register (basic) | EPIC-09 | P1 | M | LI-059 |
 | [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 | P1 | M | LI-067 |
@@ -81,6 +77,10 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-064](tasks/LI-064-viewings-schema-api.md) | Viewings schema + admin API | EPIC-09 |
+| [LI-063](tasks/LI-063-contact-duplicate-hints.md) | Contact duplicate detection hints | EPIC-09 |
+| [LI-062](tasks/LI-062-admin-contacts-crud.md) | Admin contacts CRUD API + UI | EPIC-09 |
+| [LI-061](tasks/LI-061-inquiry-crm-fields.md) | Inquiry CRM fields (contact, source, funnel) | EPIC-09 |
 | [LI-060](tasks/LI-060-property-owners-brokerage.md) | Property owners / co-owners + brokerage | EPIC-09 |
 | [LI-059](tasks/LI-059-contacts-schema-seed.md) | Contacts schema + seed | EPIC-09 |
 | [LI-058](tasks/LI-058-api-security-hardening.md) | API security hardening | EPIC-02 |

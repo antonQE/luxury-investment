@@ -1,10 +1,10 @@
-import { updateInquiryStatusSchema } from '@luxury-investment/shared';
+import { listInquiriesQuerySchema, updateInquiryStatusSchema } from '@luxury-investment/shared';
 import { Router } from 'express';
 import { z } from 'zod';
 
 import { AppError } from '../../../errors/app-error.ts';
 import { withValidation } from '../../../infrastructure/server/middleware/validate.ts';
-import type { InquiryRepo } from '../repo/inquiry-repo.ts';
+import type { InquiryRepo, InquiryRow } from '../repo/inquiry-repo.ts';
 
 const idParams = z.object({ id: z.uuid() });
 
@@ -15,19 +15,7 @@ function requireInquiry(
   if (permissions?.includes(permission) !== true) throw new AppError('FORBIDDEN');
 }
 
-function serialize(row: {
-  id: string;
-  type: string;
-  propertySlug: string;
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-  consent: boolean;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-}) {
+function serialize(row: InquiryRow) {
   return {
     id: row.id,
     type: row.type,
@@ -38,6 +26,17 @@ function serialize(row: {
     message: row.message,
     consent: row.consent,
     status: row.status,
+    contactId: row.contactId,
+    source: row.source,
+    utmSource: row.utmSource,
+    utmMedium: row.utmMedium,
+    utmCampaign: row.utmCampaign,
+    utmTerm: row.utmTerm,
+    utmContent: row.utmContent,
+    assignedAgentId: row.assignedAgentId,
+    funnelStage: row.funnelStage,
+    nextActionAt: row.nextActionAt?.toISOString() ?? null,
+    nextActionNote: row.nextActionNote,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   };
@@ -46,11 +45,14 @@ function serialize(row: {
 export function inquiryAdminRouter(repo: InquiryRepo): Router {
   const router = Router();
 
-  router.get('/inquiries', async (req, res) => {
-    requireInquiry('inquiries:read', req.auth?.permissions);
-    const rows = await repo.list();
-    res.json({ data: rows.map(serialize) });
-  });
+  router.get(
+    '/inquiries',
+    withValidation({ query: listInquiriesQuerySchema }, async ({ query }, req, res) => {
+      requireInquiry('inquiries:read', req.auth?.permissions);
+      const rows = await repo.list(query);
+      res.json({ data: rows.map(serialize) });
+    }),
+  );
 
   router.get(
     '/inquiries/:id',

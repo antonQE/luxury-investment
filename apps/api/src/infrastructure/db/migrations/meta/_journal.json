@@ -134,6 +134,20 @@
       "when": 1793010013294,
       "tag": "0018_rich_peter_parker",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1793010309567,
+      "tag": "0019_quiet_the_hand",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793010740002,
+      "tag": "0020_magical_rumiko_fujikawa",
+      "breakpoints": true
     }
   ]
 }

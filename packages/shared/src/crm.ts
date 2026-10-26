@@ -34,3 +34,59 @@ export const upsertPropertyOwnershipSchema = z.object({
 });
 
 export type UpsertPropertyOwnershipInput = z.infer<typeof upsertPropertyOwnershipSchema>;
+
+const optionalEmail = z.email().max(200).nullable().optional();
+const optionalPhone = z.string().trim().max(40).nullable().optional();
+
+export const createContactSchema = z.object({
+  kind: contactKindSchema,
+  displayName: z.string().trim().min(1).max(200),
+  email: optionalEmail,
+  phone: optionalPhone,
+  preferredLocale: z.enum(['bg', 'en']).optional().default('bg'),
+  preferredChannel: preferredContactChannelSchema.nullable().optional(),
+  notes: z.string().max(5000).optional().default(''),
+  legalBasis: z.string().trim().max(500).nullable().optional(),
+  roles: z.array(contactRoleSchema).default([]),
+});
+
+export type CreateContactInput = z.infer<typeof createContactSchema>;
+
+export const updateContactSchema = z.object({
+  kind: contactKindSchema.optional(),
+  displayName: z.string().trim().min(1).max(200).optional(),
+  email: optionalEmail,
+  phone: optionalPhone,
+  preferredLocale: z.enum(['bg', 'en']).optional(),
+  preferredChannel: preferredContactChannelSchema.nullable().optional(),
+  notes: z.string().max(5000).optional(),
+  legalBasis: z.string().trim().max(500).nullable().optional(),
+  roles: z.array(contactRoleSchema).optional(),
+});
+
+export type UpdateContactInput = z.infer<typeof updateContactSchema>;
+
+export const listContactsQuerySchema = z
+  .object({
+    includeArchived: z.union([z.boolean(), z.enum(['true', 'false'])]).optional(),
+  })
+  .transform((query) => ({
+    includeArchived: query.includeArchived === true || query.includeArchived === 'true',
+  }));
+
+export type ListContactsQuery = z.infer<typeof listContactsQuerySchema>;
+
+export const contactDuplicatesQuerySchema = z
+  .object({
+    email: z.string().trim().max(200).optional(),
+    phone: z.string().trim().max(40).optional(),
+    excludeId: z.uuid().optional(),
+  })
+  .refine(
+    (query) =>
+      (query.email !== undefined && query.email !== '') ||
+      (query.phone !== undefined && query.phone !== ''),
+    { message: 'email or phone required' },
+  );
+
+export type ContactDuplicatesQuery = z.infer<typeof contactDuplicatesQuerySchema>;

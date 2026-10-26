@@ -24,11 +24,11 @@ Every inquiry from the site or entered manually lands in the CRM linked to the r
 ### R2
 - LI-059: Contacts schema + seed — Done
 - LI-060: Property owners / co-owners + brokerage agreements — Done
-- LI-061: Inquiry CRM fields (contact, source, funnel) — In Progress
-- LI-062: Admin contacts CRUD API + UI — Backlog
-- LI-063: Contact duplicate detection hints — Backlog
-- LI-064: Viewings schema + admin API — Backlog
-- LI-065: Viewings calendar UI (basic) — Backlog
+- LI-061: Inquiry CRM fields (contact, source, funnel) — Done
+- LI-062: Admin contacts CRUD API + UI — Done
+- LI-063: Contact duplicate detection hints — Done
+- LI-064: Viewings schema + admin API — Done
+- LI-065: Viewings calendar UI (basic) — Ready
 - LI-066: CRM tasks schema + basic admin — Backlog
 - LI-067: Offers register (basic) — Backlog
 - LI-068: Deal stages (basic) — Backlog

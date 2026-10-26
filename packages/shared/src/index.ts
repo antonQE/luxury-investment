@@ -46,21 +46,29 @@ export type {
 } from './content.ts';
 export { CONTENT_STATUSES, contentStatusSchema, PAGE_KINDS, pageKindSchema } from './content.ts';
 export type {
+  ContactDuplicatesQuery,
   ContactKind,
   ContactRole,
+  CreateContactInput,
+  ListContactsQuery,
   PreferredContactChannel,
   PropertyOwnershipRole,
+  UpdateContactInput,
   UpsertPropertyOwnershipInput,
 } from './crm.ts';
 export {
   CONTACT_KINDS,
   CONTACT_ROLES,
+  contactDuplicatesQuerySchema,
   contactKindSchema,
   contactRoleSchema,
+  createContactSchema,
+  listContactsQuerySchema,
   PREFERRED_CONTACT_CHANNELS,
   preferredContactChannelSchema,
   PROPERTY_OWNERSHIP_ROLES,
   propertyOwnershipRoleSchema,
+  updateContactSchema,
   upsertPropertyOwnershipSchema,
 } from './crm.ts';
 export type { DocumentAccessLevel, DocumentKind } from './documents.ts';
@@ -73,16 +81,24 @@ export {
 } from './documents.ts';
 export type {
   CreateInquiryInput,
+  InquiryFunnelStage,
+  InquirySource,
   InquiryStatus,
   InquiryType,
+  ListInquiriesQuery,
   PropertyInquiryType,
   UpdateInquiryStatusInput,
 } from './inquiries.ts';
 export {
   createInquirySchema,
+  INQUIRY_FUNNEL_STAGES,
+  INQUIRY_SOURCES,
   INQUIRY_STATUSES,
   INQUIRY_TYPES,
+  inquiryFunnelStageSchema,
+  inquirySourceSchema,
   inquiryStatusSchema,
+  listInquiriesQuerySchema,
   PROPERTY_INQUIRY_TYPES,
   updateInquiryStatusSchema,
 } from './inquiries.ts';
@@ -92,3 +108,16 @@ export type { PermissionKey, RoleKey } from './permissions.ts';
 export { PERMISSION_KEYS, ROLE_KEYS, ROLE_PERMISSIONS } from './permissions.ts';
 export type { PublicOffice, PublicPartner, PublicTeamMember, TeamMemberKind } from './team.ts';
 export { TEAM_MEMBER_KINDS, teamMemberKindSchema } from './team.ts';
+export type {
+  CreateViewingInput,
+  ListViewingsQuery,
+  UpdateViewingInput,
+  ViewingStatus,
+} from './viewings.ts';
+export {
+  createViewingSchema,
+  listViewingsQuerySchema,
+  updateViewingSchema,
+  VIEWING_STATUSES,
+  viewingStatusSchema,
+} from './viewings.ts';

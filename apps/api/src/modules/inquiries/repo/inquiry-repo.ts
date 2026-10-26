@@ -1,8 +1,12 @@
-import type { CreateInquiryInput, InquiryStatus } from '@luxury-investment/shared';
-import { desc, eq } from 'drizzle-orm';
+import type {
+  CreateInquiryInput,
+  InquiryStatus,
+  ListInquiriesQuery,
+} from '@luxury-investment/shared';
+import { and, desc, eq, isNull, type SQL, sql } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
-import { inquiries } from '../../../infrastructure/db/schema.ts';
+import { contacts, inquiries } from '../../../infrastructure/db/schema.ts';
 
 export type InquiryRow = typeof inquiries.$inferSelect;
 
@@ -13,7 +17,20 @@ export class InquiryRepo {
     this.#db = db;
   }
 
-  async create(input: CreateInquiryInput): Promise<{ id: string }> {
+  async findActiveContactIdByEmail(email: string): Promise<string | null> {
+    const normalized = email.trim().toLowerCase();
+    const [row] = await this.#db
+      .select({ id: contacts.id })
+      .from(contacts)
+      .where(and(sql`lower(${contacts.email}) = ${normalized}`, isNull(contacts.archivedAt)))
+      .limit(1);
+    return row?.id ?? null;
+  }
+
+  async create(input: CreateInquiryInput): Promise<{ id: string; contactId: string | null }> {
+    const contactId = await this.findActiveContactIdByEmail(input.email);
+    const source = input.source ?? 'property_form';
+
     const [row] = await this.#db
       .insert(inquiries)
       .values({
@@ -25,14 +42,30 @@ export class InquiryRepo {
         message: input.message,
         consent: input.consent,
         status: 'new',
+        contactId,
+        source,
+        utmSource: input.utmSource ?? null,
+        utmMedium: input.utmMedium ?? null,
+        utmCampaign: input.utmCampaign ?? null,
+        utmTerm: input.utmTerm ?? null,
+        utmContent: input.utmContent ?? null,
+        funnelStage: 'new',
       })
-      .returning({ id: inquiries.id });
+      .returning({ id: inquiries.id, contactId: inquiries.contactId });
     if (row === undefined) throw new Error('insert inquiries returned no row');
     return row;
   }
 
-  async list(): Promise<InquiryRow[]> {
-    return this.#db.select().from(inquiries).orderBy(desc(inquiries.createdAt));
+  async list(query: ListInquiriesQuery = {}): Promise<InquiryRow[]> {
+    const clauses: SQL[] = [];
+    if (query.funnelStage !== undefined) {
+      clauses.push(eq(inquiries.funnelStage, query.funnelStage));
+    }
+    if (query.source !== undefined) {
+      clauses.push(eq(inquiries.source, query.source));
+    }
+    const where = clauses.length > 0 ? and(...clauses) : undefined;
+    return this.#db.select().from(inquiries).where(where).orderBy(desc(inquiries.createdAt));
   }
 
   async getById(id: string): Promise<InquiryRow | null> {

@@ -12,6 +12,17 @@ export interface AdminInquiry {
   message: string;
   consent: boolean;
   status: InquiryStatus;
+  contactId: string | null;
+  source: string | null;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmTerm: string | null;
+  utmContent: string | null;
+  assignedAgentId: string | null;
+  funnelStage: string;
+  nextActionAt: string | null;
+  nextActionNote: string | null;
   createdAt: string;
   updatedAt: string;
 }

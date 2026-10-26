@@ -1,9 +1,10 @@
+import { eq } from 'drizzle-orm';
 import { pino } from 'pino';
 import request from 'supertest';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { createApp } from '../../src/app.ts';
-import { inquiries } from '../../src/infrastructure/db/schema.ts';
+import { contacts, inquiries } from '../../src/infrastructure/db/schema.ts';
 import type { MailerPort } from '../../src/infrastructure/mailer/mailer-port.ts';
 import { inquiryPublicRouter } from '../../src/modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from '../../src/modules/inquiries/repo/inquiry-repo.ts';
@@ -54,9 +55,53 @@ describe('POST /v1/public/inquiries', () => {
     const rows = await connection.db.select().from(inquiries);
     expect(rows).toHaveLength(1);
     expect(rows[0]?.email).toBe('visitor@example.com');
+    expect(rows[0]?.source).toBe('property_form');
+    expect(rows[0]?.funnelStage).toBe('new');
+    expect(rows[0]?.contactId).toBeNull();
     expect(sent).toEqual([
       { to: 'agent@example.com', subject: '[LI] New inquiry: demo-test-apartment' },
     ]);
+  });
+
+  it('links an existing contact by email without overwriting it', async () => {
+    const [contact] = await connection.db
+      .insert(contacts)
+      .values({
+        kind: 'person',
+        displayName: 'Existing Contact',
+        email: 'visitor@example.com',
+        phone: '+359 000 999 000',
+        notes: 'Do not overwrite',
+      })
+      .returning({ id: contacts.id, displayName: contacts.displayName, phone: contacts.phone });
+    expect(contact).toBeDefined();
+    if (contact === undefined) throw new Error('expected contact insert');
+
+    await request(app)
+      .post('/v1/public/inquiries')
+      .send({
+        ...validBody,
+        name: 'Different Name',
+        phone: '+359 000 111 999',
+        source: 'ads',
+        utmSource: 'fb',
+        utmCampaign: 'spring',
+      })
+      .expect(201);
+
+    const rows = await connection.db.select().from(inquiries);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.contactId).toBe(contact.id);
+    expect(rows[0]?.source).toBe('ads');
+    expect(rows[0]?.utmSource).toBe('fb');
+    expect(rows[0]?.utmCampaign).toBe('spring');
+
+    const [unchanged] = await connection.db
+      .select()
+      .from(contacts)
+      .where(eq(contacts.id, contact.id));
+    expect(unchanged?.displayName).toBe('Existing Contact');
+    expect(unchanged?.phone).toBe('+359 000 999 000');
   });
 
   it('silently accepts a filled honeypot without storing', async () => {
