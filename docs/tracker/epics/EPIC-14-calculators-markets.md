@@ -1,6 +1,6 @@
 # EPIC-14: Calculators and market rules
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: 08 CALC-001..CALC-003, CALC-ADMIN, MARKET-002; 03 PROP-PAGE-004; 11 H-01..H-03; FLOW-013
 
@@ -20,7 +20,7 @@ On a property page a visitor estimates acquisition costs by country, sees the de
 - LI-071: Acquisition cost calculator (API + property page) — Done
 - LI-072: Deposit calculator (no double-counting) — Done
 - LI-073: Mortgage estimate + consultant CTA — Done
-- LI-074: Exchange rates for normalized prices — Ready
+- LI-074: Exchange rates for normalized prices — Done
 
 ## Notes
 

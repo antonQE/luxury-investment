@@ -20,6 +20,7 @@ export {
   documentVersions,
   downloadEvents,
 } from '../../modules/documents/repo/documents.schema.ts';
+export { exchangeRates } from '../../modules/exchange-rates/repo/exchange-rates.schema.ts';
 export { inquiries } from '../../modules/inquiries/repo/inquiries.schema.ts';
 export { locations, translations } from '../../modules/locations/repo/locations.schema.ts';
 export { mediaAssets } from '../../modules/media/repo/media.schema.ts';

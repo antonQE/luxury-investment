@@ -146,6 +146,16 @@ export {
   SELLER_HANDBOOK_SLUG,
 } from './documents.ts';
 export type {
+  ListExchangeRatesQuery,
+  PriceEquivalent,
+  UpsertExchangeRateInput,
+} from './exchange-rates.ts';
+export {
+  listExchangeRatesQuerySchema,
+  priceEquivalentSchema,
+  upsertExchangeRateSchema,
+} from './exchange-rates.ts';
+export type {
   CreateInquiryInput,
   InquiryFunnelStage,
   InquirySource,

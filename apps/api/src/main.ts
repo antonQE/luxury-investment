@@ -34,6 +34,8 @@ import { DocumentAdminService } from './modules/documents/app/document-admin-ser
 import { DocumentPublicService } from './modules/documents/app/document-public-service.ts';
 import { documentAdminRouter } from './modules/documents/handlers/document-admin-handlers.ts';
 import { documentPublicRouter } from './modules/documents/handlers/document-public-handlers.ts';
+import { exchangeRatesAdminRouter } from './modules/exchange-rates/handlers/exchange-rates-admin-handlers.ts';
+import { ExchangeRatesRepo } from './modules/exchange-rates/repo/exchange-rates-repo.ts';
 import { inquiryAdminRouter } from './modules/inquiries/handlers/inquiry-admin-handlers.ts';
 import { inquiryPublicRouter } from './modules/inquiries/handlers/inquiry-public-handlers.ts';
 import { InquiryRepo } from './modules/inquiries/repo/inquiry-repo.ts';
@@ -83,6 +85,7 @@ const crmTaskRepo = new CrmTaskRepo(database.db);
 const offerRepo = new OfferRepo(database.db);
 const dealRepo = new DealRepo(database.db);
 const calculatorRulesRepo = new CalculatorRulesRepo(database.db);
+const exchangeRatesRepo = new ExchangeRatesRepo(database.db);
 const acquisitionEstimate = new AcquisitionEstimateService(database.db);
 const depositEstimate = new DepositEstimateService(database.db);
 const mortgageEstimate = new MortgageEstimateService(database.db, env.CREDIT_CONSULTANT_TEAM_SLUG);
@@ -92,7 +95,7 @@ const app = createApp({
   logger,
   healthChecks: [{ name: 'database', check: database.ping }],
   publicRouters: [
-    propertyPublicRouter(propertyRepo, mediaService),
+    propertyPublicRouter(propertyRepo, mediaService, exchangeRatesRepo),
     calculatorPublicRouter({
       acquisition: acquisitionEstimate,
       deposit: depositEstimate,
@@ -118,6 +121,7 @@ const app = createApp({
     offerAdminRouter(offerRepo),
     dealAdminRouter(dealRepo),
     calculatorAdminRouter(calculatorRulesRepo, auditService),
+    exchangeRatesAdminRouter(exchangeRatesRepo, auditService),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

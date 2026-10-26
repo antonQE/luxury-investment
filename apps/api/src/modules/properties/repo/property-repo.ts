@@ -3,6 +3,8 @@ import { and, count, desc, eq, gte, ilike, lte, ne, or, type SQL, sql } from 'dr
 
 import type { Database } from '../../../infrastructure/db/client.ts';
 import { properties } from '../../../infrastructure/db/schema.ts';
+import type { FxRateQuote } from '../../exchange-rates/app/convert-price.ts';
+import { convertPrice } from '../../exchange-rates/app/convert-price.ts';
 
 export type PropertyRow = typeof properties.$inferSelect;
 
@@ -10,6 +12,25 @@ const PUBLISHED = 'published';
 
 function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, '\\$&');
+}
+
+/** Pure helper for mixed-currency price bounds (original amount unchanged). */
+export function matchesNormalizedPriceBounds(
+  price: number,
+  currency: string,
+  bounds: { priceMin?: number; priceMax?: number; priceCurrency: string },
+  rates: FxRateQuote[],
+): boolean {
+  const converted = convertPrice(price, currency, bounds.priceCurrency, rates);
+  if (converted === null) {
+    if (currency.toUpperCase() !== bounds.priceCurrency.toUpperCase()) return false;
+    if (bounds.priceMin !== undefined && price < bounds.priceMin) return false;
+    if (bounds.priceMax !== undefined && price > bounds.priceMax) return false;
+    return true;
+  }
+  if (bounds.priceMin !== undefined && converted.amount < bounds.priceMin) return false;
+  if (bounds.priceMax !== undefined && converted.amount > bounds.priceMax) return false;
+  return true;
 }
 
 export class PropertyRepo {

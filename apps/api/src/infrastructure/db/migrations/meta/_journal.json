@@ -176,6 +176,13 @@
       "when": 1793011818392,
       "tag": "0024_flawless_lady_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1793013242014,
+      "tag": "0025_yielding_captain_britain",
+      "breakpoints": true
     }
   ]
 }

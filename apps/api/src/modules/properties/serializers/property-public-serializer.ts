@@ -1,4 +1,9 @@
-import type { Locale, PublicProperty, PublicPropertyListItem } from '@luxury-investment/shared';
+import type {
+  Locale,
+  PriceEquivalent,
+  PublicProperty,
+  PublicPropertyListItem,
+} from '@luxury-investment/shared';
 import { marketSchema, propertyTypeSchema, transactionTypeSchema } from '@luxury-investment/shared';
 
 import type { PropertyRow } from '../repo/property-repo.ts';
@@ -26,6 +31,7 @@ function primaryAreaLabels(row: PropertyRow, isBg: boolean): string {
 export function serializePropertyListItem(
   row: PropertyRow,
   locale: Locale,
+  options?: { priceEquivalent?: PriceEquivalent | null },
 ): PublicPropertyListItem {
   const isBg = locale === 'bg';
   const publishedAt = row.publishedAt;
@@ -44,6 +50,7 @@ export function serializePropertyListItem(
     district: row.district,
     price: Number(row.price),
     currency: row.currency,
+    priceEquivalent: options?.priceEquivalent ?? null,
     vatLabel: row.vatLabel,
     bedrooms: row.bedrooms,
     bathrooms: row.bathrooms,
@@ -60,7 +67,7 @@ export function serializePropertyListItem(
 export function serializeProperty(
   row: PropertyRow,
   locale: Locale,
-  options?: { imageUrls?: string[] },
+  options?: { imageUrls?: string[]; priceEquivalent?: PriceEquivalent | null },
 ): PublicProperty {
   const isBg = locale === 'bg';
   const publishedAt = row.publishedAt;
@@ -81,6 +88,7 @@ export function serializeProperty(
     mapQuery: [row.district, row.city, row.country].filter(Boolean).join(', '),
     price: Number(row.price),
     currency: row.currency,
+    priceEquivalent: options?.priceEquivalent ?? null,
     vatLabel: row.vatLabel,
     bedrooms: row.bedrooms,
     bathrooms: row.bathrooms,
