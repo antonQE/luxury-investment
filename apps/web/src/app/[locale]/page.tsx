@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
+import { RemoteImage } from '@/components/ui/RemoteImage';
 import { Link } from '@/i18n/navigation';
 import { fetchProperties } from '@/lib/api/catalog';
 import { fetchPartners } from '@/lib/api/team';
@@ -21,27 +22,27 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2400&q=80';
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=75';
 
 export default async function HomePage() {
   const t = await getTranslations('Home');
   const markets = await getTranslations('Markets');
   const locale = await getLocale();
 
-  let newest;
-  let loadError = false;
-  let partners: PublicPartner[] = [];
-  try {
-    newest = await fetchProperties(locale, { limit: '6' });
-  } catch {
-    newest = { data: [], total: 0, offset: 0, limit: 6 };
-    loadError = true;
-  }
-  try {
-    partners = await fetchPartners(locale);
-  } catch {
-    /* keep empty */
-  }
+  const [newestResult, partnersResult] = await Promise.all([
+    fetchProperties(locale, { limit: '6' }).then(
+      (data) => ({ ok: true as const, data }),
+      () => ({ ok: false as const }),
+    ),
+    fetchPartners(locale).then(
+      (data) => data,
+      (): PublicPartner[] => [],
+    ),
+  ]);
+
+  const newest = newestResult.ok ? newestResult.data : { data: [], total: 0, offset: 0, limit: 6 };
+  const loadError = !newestResult.ok;
+  const partners = partnersResult;
 
   return (
     <main>
@@ -49,8 +50,7 @@ export default async function HomePage() {
         className="relative isolate min-h-[88vh] overflow-hidden text-stone"
         data-testid="home-hero"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- full-bleed hero atmosphere */}
-        <img src={HERO_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <RemoteImage src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-void/75 via-void/70 to-void/90" />
         <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-6 pb-16 pt-28 md:pb-24 md:pt-32">
           <p className="animate-fade-up font-serif text-3xl tracking-[0.04em] text-stone md:text-5xl">
@@ -143,14 +143,15 @@ export default async function HomePage() {
                     href={partner.websiteUrl ?? '#'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block grayscale transition hover:grayscale-0 hover:opacity-100 opacity-70"
+                    className="relative block h-10 w-[140px] opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
                     data-testid={`partner-${partner.slug}`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element -- partner logos are remote URLs */}
-                    <img
+                    <RemoteImage
                       src={partner.logoUrl}
                       alt={partner.name}
-                      className="h-10 w-auto max-w-[140px] object-contain"
+                      fill
+                      sizes="140px"
+                      className="object-contain"
                     />
                   </a>
                 </li>

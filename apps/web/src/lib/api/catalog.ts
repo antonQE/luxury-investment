@@ -1,8 +1,14 @@
 import 'server-only';
 
-import type { Locale, Paginated, PublicProperty } from '@luxury-investment/shared';
+import type {
+  Locale,
+  Paginated,
+  PublicProperty,
+  PublicPropertyListItem,
+} from '@luxury-investment/shared';
 import { propertyListQuerySchema } from '@luxury-investment/shared';
 
+import { CACHE_TAGS, PUBLIC_REVALIDATE_SECONDS } from './cache';
 import { apiGet } from './client';
 
 export interface CatalogFilters {
@@ -39,18 +45,21 @@ function queryString(params: Record<string, string | number | undefined>): strin
 export async function fetchProperties(
   locale: Locale,
   filters: CatalogFilters = {},
-): Promise<Paginated<PublicProperty>> {
+): Promise<Paginated<PublicPropertyListItem>> {
   const query = parseCatalogFilters(filters);
-  return apiGet<Paginated<PublicProperty>>(
+  return apiGet<Paginated<PublicPropertyListItem>>(
     `/v1/public/properties${queryString({ ...query, lang: locale })}`,
-    { revalidate: false },
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: [CACHE_TAGS.properties] },
   );
 }
 
 export async function fetchProperty(locale: Locale, slug: string): Promise<PublicProperty> {
   const body = await apiGet<{ data: PublicProperty }>(
     `/v1/public/properties/${encodeURIComponent(slug)}${queryString({ lang: locale })}`,
-    { revalidate: false },
+    {
+      revalidate: PUBLIC_REVALIDATE_SECONDS,
+      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(slug)],
+    },
   );
   return body.data;
 }
@@ -58,10 +67,13 @@ export async function fetchProperty(locale: Locale, slug: string): Promise<Publi
 export async function fetchSimilarProperties(
   locale: Locale,
   slug: string,
-): Promise<PublicProperty[]> {
-  const body = await apiGet<{ data: PublicProperty[] }>(
+): Promise<PublicPropertyListItem[]> {
+  const body = await apiGet<{ data: PublicPropertyListItem[] }>(
     `/v1/public/properties/${encodeURIComponent(slug)}/similar${queryString({ lang: locale })}`,
-    { revalidate: false },
+    {
+      revalidate: PUBLIC_REVALIDATE_SECONDS,
+      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(slug)],
+    },
   );
   return body.data;
 }

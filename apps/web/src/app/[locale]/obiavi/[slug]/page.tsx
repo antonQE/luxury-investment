@@ -49,17 +49,23 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const t = await getTranslations('Property');
   const search = await getTranslations('Search');
 
-  let property;
-  try {
-    property = await fetchProperty(locale, slug);
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) notFound();
-    throw error;
-  }
+  const [propertyResult, similar] = await Promise.all([
+    fetchProperty(locale, slug).then(
+      (data) => ({ ok: true as const, data }),
+      (error: unknown) => ({ ok: false as const, error }),
+    ),
+    fetchSimilarProperties(locale, slug).catch(
+      (): Awaited<ReturnType<typeof fetchSimilarProperties>> => [],
+    ),
+  ]);
 
-  const similar = await fetchSimilarProperties(locale, slug).catch(
-    (): Awaited<ReturnType<typeof fetchSimilarProperties>> => [],
-  );
+  if (!propertyResult.ok) {
+    if (propertyResult.error instanceof ApiError && propertyResult.error.status === 404) {
+      notFound();
+    }
+    throw propertyResult.error;
+  }
+  const property = propertyResult.data;
 
   const phoneDigits = property.agentPhone.replace(/\D/g, '');
   const stageKey =

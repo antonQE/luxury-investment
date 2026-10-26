@@ -3,6 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
+import { RemoteImage } from '@/components/ui/RemoteImage';
+
 export function PropertyGallery({ images, title }: { images: string[]; title: string }) {
   const t = useTranslations('Property');
   const [index, setIndex] = useState(0);
@@ -38,13 +40,16 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
       aria-roledescription="carousel"
       aria-label={t('gallery')}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={current}
-        alt={`${title} (${String(index + 1)}/${String(images.length)})`}
-        className="aspect-[16/10] w-full object-cover"
-        draggable={false}
-      />
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-line">
+        <RemoteImage
+          src={current}
+          alt={`${title} (${String(index + 1)}/${String(images.length)})`}
+          fill
+          sizes="(max-width: 1024px) 100vw, 60vw"
+          priority={index === 0}
+          className="object-cover"
+        />
+      </div>
       {images.length > 1 ? (
         <>
           <p className="absolute bottom-3 left-3 bg-void/75 px-2 py-1 text-xs tracking-wide text-stone">

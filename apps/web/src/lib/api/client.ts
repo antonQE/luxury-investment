@@ -26,7 +26,7 @@ export interface ApiRequestOptions {
 
 export async function apiGet<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
   const url = new URL(path, serverEnv().API_URL);
-  // In Next.js `revalidate: false` means "cache forever", so no-cache requests use `no-store`.
+  // Explicit `false` bypasses the Next data cache (admin/private). Otherwise ISR seconds.
   const caching: RequestInit =
     options.revalidate === false
       ? { cache: 'no-store' }

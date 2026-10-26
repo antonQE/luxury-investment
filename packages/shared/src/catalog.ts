@@ -50,6 +50,33 @@ export const propertyListQuerySchema = z.object({
 
 export type PropertyListQuery = z.infer<typeof propertyListQuerySchema>;
 
+/** Card/list payload — no description, single cover image. */
+export interface PublicPropertyListItem {
+  id: string;
+  referenceNumber: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  transactionType: TransactionType;
+  propertyType: PropertyType;
+  market: Market;
+  country: string;
+  city: string;
+  district: string | null;
+  price: number;
+  currency: string;
+  vatLabel: string | null;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  area: number;
+  primaryAreaLabel: string;
+  constructionStage: string | null;
+  badges: string[];
+  coverUrl: string | null;
+  agentName: string;
+  publishedAt: string;
+}
+
 export interface PublicProperty {
   id: string;
   referenceNumber: string;

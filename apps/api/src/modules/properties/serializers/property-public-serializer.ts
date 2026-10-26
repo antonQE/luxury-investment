@@ -1,4 +1,4 @@
-import type { Locale, PublicProperty } from '@luxury-investment/shared';
+import type { Locale, PublicProperty, PublicPropertyListItem } from '@luxury-investment/shared';
 import { marketSchema, propertyTypeSchema, transactionTypeSchema } from '@luxury-investment/shared';
 
 import type { PropertyRow } from '../repo/property-repo.ts';
@@ -21,6 +21,40 @@ function primaryAreaLabels(row: PropertyRow, isBg: boolean): string {
     return isBg ? row.primaryAreaLabelBg : row.primaryAreaLabelEn;
   }
   return isBg ? 'Застроена площ' : 'Built-up area';
+}
+
+export function serializePropertyListItem(
+  row: PropertyRow,
+  locale: Locale,
+): PublicPropertyListItem {
+  const isBg = locale === 'bg';
+  const publishedAt = row.publishedAt;
+  const cover = row.imageUrls[0];
+  return {
+    id: row.id,
+    referenceNumber: row.referenceNumber,
+    slug: row.slug,
+    title: isBg ? row.titleBg : row.titleEn,
+    excerpt: isBg ? row.excerptBg : row.excerptEn,
+    transactionType: transactionTypeSchema.parse(row.transactionType),
+    propertyType: propertyTypeSchema.parse(row.propertyType),
+    market: marketSchema.parse(row.market),
+    country: row.country,
+    city: row.city,
+    district: row.district,
+    price: Number(row.price),
+    currency: row.currency,
+    vatLabel: row.vatLabel,
+    bedrooms: row.bedrooms,
+    bathrooms: row.bathrooms,
+    area: resolvePrimaryArea(row),
+    primaryAreaLabel: primaryAreaLabels(row, isBg),
+    constructionStage: row.constructionStage,
+    badges: row.badges,
+    coverUrl: cover === undefined || cover === '' ? null : cover,
+    agentName: row.agentName,
+    publishedAt: (publishedAt ?? row.createdAt).toISOString(),
+  };
 }
 
 export function serializeProperty(

@@ -1,16 +1,29 @@
-import type { PublicProperty } from '@luxury-investment/shared';
-import { getLocale, getTranslations } from 'next-intl/server';
+import type { Locale, PublicPropertyListItem } from '@luxury-investment/shared';
 
 import { PropertyBadge } from '@/components/ui/PropertyBadge';
+import { RemoteImage } from '@/components/ui/RemoteImage';
 import { Link } from '@/i18n/navigation';
 import { formatArea, formatPrice, locationLabel } from '@/lib/format';
 import { badgeMessageKey } from '@/lib/labels';
 
-export async function PropertyCard({ property }: { property: PublicProperty }) {
-  const t = await getTranslations('Property');
-  const search = await getTranslations('Search');
-  const locale = await getLocale();
-  const image = property.imageUrls[0];
+export interface PropertyCardLabels {
+  bedrooms: (count: number) => string;
+  perMonth: string;
+  badge: (key: string) => string;
+  transaction: (key: string) => string;
+  propertyType: (key: string) => string;
+}
+
+export function PropertyCard({
+  property,
+  locale,
+  labels,
+}: {
+  property: PublicPropertyListItem;
+  locale: Locale;
+  labels: PropertyCardLabels;
+}) {
+  const image = property.coverUrl;
 
   return (
     <article
@@ -21,17 +34,17 @@ export async function PropertyCard({ property }: { property: PublicProperty }) {
         href={`/obiavi/${property.slug}`}
         className="relative block aspect-[4/3] overflow-hidden bg-line"
       >
-        {image === undefined ? (
+        {image === null ? (
           <div className="flex h-full items-center justify-center px-4 text-center text-sm text-ink-soft">
             {property.title}
           </div>
         ) : (
-          // External listing photos; next/image domains are wired in next.config.ts.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <RemoteImage
             src={image}
             alt=""
-            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/35 via-transparent to-transparent opacity-80" />
@@ -43,7 +56,7 @@ export async function PropertyCard({ property }: { property: PublicProperty }) {
                 <PropertyBadge
                   key={badge}
                   badge={badge}
-                  label={key === undefined ? badge : t(key)}
+                  label={key === undefined ? badge : labels.badge(key)}
                 />
               );
             })}
@@ -52,7 +65,8 @@ export async function PropertyCard({ property }: { property: PublicProperty }) {
       </Link>
       <div className="flex flex-1 flex-col gap-2 pt-5">
         <p className="text-[11px] tracking-[0.2em] uppercase text-brass">
-          {search(property.transactionType)} · {search(property.propertyType)}
+          {labels.transaction(property.transactionType)} ·{' '}
+          {labels.propertyType(property.propertyType)}
         </p>
         <h3 className="font-serif text-xl leading-snug text-ink md:text-[1.35rem]">
           <Link href={`/obiavi/${property.slug}`} className="transition hover:text-brass-dark">
@@ -63,12 +77,12 @@ export async function PropertyCard({ property }: { property: PublicProperty }) {
         <p className="mt-auto pt-4 font-serif text-2xl tracking-tight text-ink">
           {formatPrice(locale, property)}
           {property.transactionType === 'rent' ? (
-            <span className="ml-1 font-sans text-sm text-ink-soft">{t('perMonth')}</span>
+            <span className="ml-1 font-sans text-sm text-ink-soft">{labels.perMonth}</span>
           ) : null}
         </p>
         <p className="text-sm text-ink-soft">
           {formatArea(locale, property.area)}
-          {property.bedrooms !== null ? ` · ${t('bedrooms', { count: property.bedrooms })}` : null}
+          {property.bedrooms !== null ? ` · ${labels.bedrooms(property.bedrooms)}` : null}
         </p>
       </div>
     </article>

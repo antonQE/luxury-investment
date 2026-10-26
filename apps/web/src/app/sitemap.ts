@@ -1,4 +1,4 @@
-import { type Locale, LOCALES, type PublicProperty } from '@luxury-investment/shared';
+import { type Locale, LOCALES, type PublicPropertyListItem } from '@luxury-investment/shared';
 import type { MetadataRoute } from 'next';
 
 import { fetchProperties } from '@/lib/api/catalog';
@@ -21,8 +21,8 @@ const STATIC_PATHS = [
   '/stranici/terms/',
 ] as const;
 
-async function allPublishedProperties(locale: Locale): Promise<PublicProperty[]> {
-  const items: PublicProperty[] = [];
+async function allPublishedProperties(locale: Locale): Promise<PublicPropertyListItem[]> {
+  const items: PublicPropertyListItem[] = [];
   let offset = 0;
   const limit = 48;
   for (;;) {

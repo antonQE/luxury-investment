@@ -61,8 +61,16 @@ afterAll(async () => {
   await connection.close();
 });
 
+interface ListItem {
+  slug: string;
+  title: string;
+  coverUrl: string | null;
+  description?: string;
+  imageUrls?: string[];
+}
+
 interface ListBody {
-  data: PublicProperty[];
+  data: ListItem[];
   total: number;
 }
 
@@ -86,7 +94,10 @@ describe('GET /v1/public/properties', () => {
       price: 199000,
       area: 88.5,
       market: 'sofia',
+      coverUrl: sample.imageUrls[0],
     });
+    expect(body.data[0]?.description).toBeUndefined();
+    expect(body.data[0]?.imageUrls).toBeUndefined();
   });
 
   it('filters by market and rejects unknown query values', async () => {

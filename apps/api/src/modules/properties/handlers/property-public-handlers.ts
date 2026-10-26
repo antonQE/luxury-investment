@@ -12,7 +12,10 @@ import { withValidation } from '../../../infrastructure/server/middleware/valida
 import type { MediaService } from '../../media/app/media-service.ts';
 import type { PropertyRepo } from '../repo/property-repo.ts';
 import type { PropertyRow } from '../repo/property-repo.ts';
-import { serializeProperty } from '../serializers/property-public-serializer.ts';
+import {
+  serializeProperty,
+  serializePropertyListItem,
+} from '../serializers/property-public-serializer.ts';
 
 const localeQuery = z.object({ lang: localeSchema.optional() });
 const slugParams = z.object({ slug: z.string().min(1) });
@@ -45,11 +48,8 @@ export function propertyPublicRouter(repo: PropertyRepo, media?: MediaService): 
       async ({ query }, _req, res) => {
         const { items, total } = await repo.getPage(query);
         const locale = localeFrom(query.lang);
-        const data = await Promise.all(
-          items.map(async (row) =>
-            serializeProperty(row, locale, { imageUrls: await imageUrlsFor(media, row) }),
-          ),
-        );
+        // List cards use denormalized cover only — no per-row media queries.
+        const data = items.map((row) => serializePropertyListItem(row, locale));
         res.json({
           data,
           total,
@@ -85,11 +85,7 @@ export function propertyPublicRouter(repo: PropertyRepo, media?: MediaService): 
         if (row === undefined) throw new AppError('NOT_FOUND');
         const locale = localeFrom(query.lang);
         const items = await repo.findSimilar(row);
-        const data = await Promise.all(
-          items.map(async (item) =>
-            serializeProperty(item, locale, { imageUrls: await imageUrlsFor(media, item) }),
-          ),
-        );
+        const data = items.map((item) => serializePropertyListItem(item, locale));
         res.json({ data });
       },
     ),

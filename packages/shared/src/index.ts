@@ -13,6 +13,7 @@ export type {
   PropertyListQuery,
   PropertyType,
   PublicProperty,
+  PublicPropertyListItem,
   TransactionType,
 } from './catalog.ts';
 export {

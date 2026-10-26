@@ -5,38 +5,18 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from '@/i18n/navigation';
 
 /**
- * Thin brass progress bar for client navigations — starts on internal link click,
- * completes when the pathname settles.
+ * Thin brass progress bar for client navigations — CSS width transition only (no interval ticks).
  */
 export function NavigationProgress() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(false);
-  const [width, setWidth] = useState(0);
+  const [active, setActive] = useState(false);
+  const [done, setDone] = useState(false);
   const isFirstPath = useRef(true);
-  const tickTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    function clearTimers() {
-      if (tickTimer.current !== null) clearInterval(tickTimer.current);
-      if (hideTimer.current !== null) clearTimeout(hideTimer.current);
-    }
-
-    function start() {
-      clearTimers();
-      setVisible(true);
-      setWidth(12);
-      tickTimer.current = setInterval(() => {
-        setWidth((current) => {
-          if (current >= 88) return current;
-          return current + Math.max(1, (90 - current) * 0.08);
-        });
-      }, 180);
-    }
-
     function onClick(event: MouseEvent) {
-      if (event.defaultPrevented) return;
-      if (event.button !== 0) return;
+      if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const target = event.target;
       if (!(target instanceof Element)) return;
@@ -53,13 +33,15 @@ export function NavigationProgress() {
         return;
       }
       if (/^https?:\/\//i.test(href) && !href.startsWith(window.location.origin)) return;
-      start();
+      if (hideTimer.current !== null) clearTimeout(hideTimer.current);
+      setDone(false);
+      setActive(true);
     }
 
     document.addEventListener('click', onClick, true);
     return () => {
       document.removeEventListener('click', onClick, true);
-      clearTimers();
+      if (hideTimer.current !== null) clearTimeout(hideTimer.current);
     };
   }, []);
 
@@ -68,27 +50,26 @@ export function NavigationProgress() {
       isFirstPath.current = false;
       return;
     }
-    if (tickTimer.current !== null) clearInterval(tickTimer.current);
-    setWidth(100);
-    hideTimer.current = setTimeout(() => {
-      setVisible(false);
-      setWidth(0);
-    }, 280);
+    setDone(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    hideTimer.current = setTimeout(() => {
+      setActive(false);
+      setDone(false);
+    }, 320);
   }, [pathname]);
 
-  if (!visible && width === 0) return null;
+  if (!active) return null;
 
   return (
     <div
       className="pointer-events-none fixed inset-x-0 top-0 z-[100] h-[2px]"
       role="progressbar"
-      aria-hidden={!visible}
+      aria-hidden
       data-testid="nav-progress"
     >
       <div
-        className="h-full origin-left bg-brass shadow-[0_0_12px_rgba(166,132,69,0.55)] transition-[width] duration-200 ease-out"
-        style={{ width: `${String(width)}%`, opacity: visible ? 1 : 0 }}
+        className="h-full origin-left bg-brass shadow-[0_0_12px_rgba(166,132,69,0.55)] transition-[width] duration-300 ease-out"
+        style={{ width: done ? '100%' : '72%' }}
       />
     </div>
   );

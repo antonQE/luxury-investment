@@ -10,7 +10,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   agentRules: false,
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' }],
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'luxuryinvestment.bg', pathname: '/**' },
+      { protocol: 'https', hostname: 'www.luxuryinvestment.bg', pathname: '/**' },
+      { protocol: 'http', hostname: 'localhost', port: '4000', pathname: '/**' },
+      { protocol: 'http', hostname: '127.0.0.1', port: '4000', pathname: '/**' },
+    ],
   },
 };
 
