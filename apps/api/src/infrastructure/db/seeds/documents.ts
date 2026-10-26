@@ -1,4 +1,4 @@
-import { SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
+import { DEMO_POWER_OF_ATTORNEY_SLUG, SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
 import { eq } from 'drizzle-orm';
 
 import { DEMO_PDF_BYTES, DEMO_PDF_STORAGE_KEY } from '../../../modules/documents/demo-pdf.ts';
@@ -39,80 +39,154 @@ async function ensureDemoPdfOnDisk(): Promise<number> {
   return DEMO_PDF_BYTES.byteLength;
 }
 
+const POA_STORAGE_KEY = 'documents/demo-power-of-attorney.pdf';
+
+async function upsertDocument(
+  db: Parameters<SeedModule['run']>[0],
+  input: {
+    slug: string;
+    kind: string;
+    accessLevel: 'public' | 'internal';
+    locale: string;
+    source: string;
+    legalSample: boolean;
+    responsibleEditor: string;
+    titleBg: string;
+    titleEn: string;
+    descriptionBg: string;
+    descriptionEn: string;
+    storageKey: string;
+    fileName: string;
+    versionLabel: string;
+    byteSize: number;
+  },
+) {
+  const [existing] = await db
+    .select({ id: documents.id, currentVersionId: documents.currentVersionId })
+    .from(documents)
+    .where(eq(documents.slug, input.slug))
+    .limit(1);
+
+  let documentId = existing?.id;
+  if (documentId === undefined) {
+    const [inserted] = await db
+      .insert(documents)
+      .values({
+        slug: input.slug,
+        kind: input.kind,
+        accessLevel: input.accessLevel,
+        locale: input.locale,
+        source: input.source,
+        legalSample: input.legalSample,
+        responsibleEditor: input.responsibleEditor,
+      })
+      .returning({ id: documents.id });
+    documentId = inserted?.id;
+  } else {
+    await db
+      .update(documents)
+      .set({
+        kind: input.kind,
+        accessLevel: input.accessLevel,
+        locale: input.locale,
+        source: input.source,
+        legalSample: input.legalSample,
+        responsibleEditor: input.responsibleEditor,
+        updatedAt: new Date(),
+      })
+      .where(eq(documents.id, documentId));
+  }
+  if (documentId === undefined) return;
+
+  await writeTranslation(db, 'document', documentId, 'title', 'bg', input.titleBg);
+  await writeTranslation(db, 'document', documentId, 'title', 'en', input.titleEn);
+  await writeTranslation(db, 'document', documentId, 'description', 'bg', input.descriptionBg);
+  await writeTranslation(db, 'document', documentId, 'description', 'en', input.descriptionEn);
+
+  const [versionExisting] = await db
+    .select({ id: documentVersions.id })
+    .from(documentVersions)
+    .where(eq(documentVersions.storageKey, input.storageKey))
+    .limit(1);
+
+  let versionId = versionExisting?.id;
+  if (versionId === undefined) {
+    const [version] = await db
+      .insert(documentVersions)
+      .values({
+        documentId,
+        versionLabel: input.versionLabel,
+        storageKey: input.storageKey,
+        fileName: input.fileName,
+        contentType: 'application/pdf',
+        byteSize: input.byteSize,
+        publishedAt: new Date('2026-01-01T10:00:00.000Z'),
+      })
+      .returning({ id: documentVersions.id });
+    versionId = version?.id;
+  } else {
+    await db
+      .update(documentVersions)
+      .set({ byteSize: input.byteSize })
+      .where(eq(documentVersions.id, versionId));
+  }
+
+  if (versionId !== undefined && existing?.currentVersionId !== versionId) {
+    await db
+      .update(documents)
+      .set({ currentVersionId: versionId, updatedAt: new Date() })
+      .where(eq(documents.id, documentId));
+  }
+}
+
 export const documentsSeed: SeedModule = {
   name: 'documents',
   async run(db) {
     const byteSize = await ensureDemoPdfOnDisk();
 
-    const [existing] = await db
-      .select({ id: documents.id, currentVersionId: documents.currentVersionId })
-      .from(documents)
-      .where(eq(documents.slug, SELLER_HANDBOOK_SLUG))
-      .limit(1);
+    const root = process.env.MEDIA_LOCAL_ROOT ?? '.data/media';
+    const storage = new LocalStorage(root, 'http://localhost:4000/v1/public/media');
+    await storage.put({
+      key: POA_STORAGE_KEY,
+      body: DEMO_PDF_BYTES,
+      contentType: 'application/pdf',
+    });
 
-    let documentId = existing?.id;
-    if (documentId === undefined) {
-      const [inserted] = await db
-        .insert(documents)
-        .values({
-          slug: SELLER_HANDBOOK_SLUG,
-          kind: 'seller_handbook',
-          accessLevel: 'public',
-        })
-        .returning({ id: documents.id });
-      documentId = inserted?.id;
-    } else {
-      await db
-        .update(documents)
-        .set({
-          kind: 'seller_handbook',
-          accessLevel: 'public',
-          updatedAt: new Date(),
-        })
-        .where(eq(documents.id, documentId));
-    }
-    if (documentId === undefined) return;
+    await upsertDocument(db, {
+      slug: SELLER_HANDBOOK_SLUG,
+      kind: 'seller_handbook',
+      accessLevel: 'public',
+      locale: 'bg',
+      source: '',
+      legalSample: false,
+      responsibleEditor: 'Demo editor',
+      titleBg: 'Наръчник на продавача (демо)',
+      titleEn: 'Seller handbook (demo)',
+      descriptionBg: 'Публичен демо наръчник. Броячите се запазват при нова версия.',
+      descriptionEn: 'Public demo handbook. Counters survive new versions.',
+      storageKey: DEMO_PDF_STORAGE_KEY,
+      fileName: 'seller-handbook-demo.pdf',
+      versionLabel: '2026.1-demo',
+      byteSize,
+    });
 
-    await writeTranslation(
-      db,
-      'document',
-      documentId,
-      'title',
-      'bg',
-      'Наръчник на продавача (демо)',
-    );
-    await writeTranslation(db, 'document', documentId, 'title', 'en', 'Seller handbook (demo)');
-
-    const [versionExisting] = await db
-      .select({ id: documentVersions.id })
-      .from(documentVersions)
-      .where(eq(documentVersions.storageKey, DEMO_PDF_STORAGE_KEY))
-      .limit(1);
-
-    let versionId = versionExisting?.id;
-    if (versionId === undefined) {
-      const [version] = await db
-        .insert(documentVersions)
-        .values({
-          documentId,
-          versionLabel: '2026.1-demo',
-          storageKey: DEMO_PDF_STORAGE_KEY,
-          fileName: 'seller-handbook-demo.pdf',
-          contentType: 'application/pdf',
-          byteSize,
-          publishedAt: new Date('2026-01-01T10:00:00.000Z'),
-        })
-        .returning({ id: documentVersions.id });
-      versionId = version?.id;
-    } else {
-      await db.update(documentVersions).set({ byteSize }).where(eq(documentVersions.id, versionId));
-    }
-
-    if (versionId !== undefined && existing?.currentVersionId !== versionId) {
-      await db
-        .update(documents)
-        .set({ currentVersionId: versionId, updatedAt: new Date() })
-        .where(eq(documents.id, documentId));
-    }
+    await upsertDocument(db, {
+      slug: DEMO_POWER_OF_ATTORNEY_SLUG,
+      kind: 'power_of_attorney',
+      accessLevel: 'public',
+      locale: 'bg',
+      source: 'Demo legal template — fictional',
+      legalSample: true,
+      responsibleEditor: 'Demo editor',
+      titleBg: 'Демо пълномощно (образец)',
+      titleEn: 'Demo power of attorney (sample)',
+      descriptionBg:
+        'Примерен документ. Може да изисква юридическа адаптация — не е индивидуална правна консултация.',
+      descriptionEn: 'Sample document. May require legal adaptation — not individual legal advice.',
+      storageKey: POA_STORAGE_KEY,
+      fileName: 'demo-power-of-attorney.pdf',
+      versionLabel: '2026.1-demo',
+      byteSize,
+    });
   },
 };

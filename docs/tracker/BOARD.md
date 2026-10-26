@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-075`
+Next IDs: `EPIC-19`, `LI-079`
 
 
 ## Releases
@@ -37,7 +37,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
-| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
+| [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | In Progress |
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Done |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
@@ -58,6 +58,8 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
+| [LI-076](tasks/LI-076-document-library-admin-api.md) | Document library admin API | EPIC-13 | P1 | M |
+| [LI-078](tasks/LI-078-document-download-analytics.md) | Document download analytics by period/source | EPIC-13 | P1 | S |
 
 ## Blocked
 
@@ -68,11 +70,13 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
+| [LI-077](tasks/LI-077-document-library-admin-ui-public.md) | Document library admin UI + public list | EPIC-13 | P1 | M | LI-076 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-075](tasks/LI-075-document-library-schema.md) | Document library schema + seed (categories) | EPIC-13 |
 | [LI-074](tasks/LI-074-exchange-rates-normalized-prices.md) | Exchange rates for normalized prices | EPIC-14 |
 | [LI-073](tasks/LI-073-mortgage-estimate-cta.md) | Mortgage estimate + consultant CTA | EPIC-14 |
 | [LI-072](tasks/LI-072-deposit-calculator.md) | Deposit calculator (no double-counting) | EPIC-14 |

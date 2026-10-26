@@ -183,6 +183,13 @@
       "when": 1793013242014,
       "tag": "0025_yielding_captain_britain",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1793013464613,
+      "tag": "0026_regular_dazzler",
+      "breakpoints": true
     }
   ]
 }

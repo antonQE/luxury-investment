@@ -1,13 +1,21 @@
 import { boolean, integer, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-/** Logical document (EPIC-13). Labels via `translations` (title). */
+/** Logical document (EPIC-13). Labels via `translations` (title, description). */
 export const documents = pgTable('documents', {
   id: uuid().defaultRandom().primaryKey(),
   slug: text().notNull().unique(),
-  /** seller_handbook | … */
+  /** Category: seller_handbook | power_of_attorney | declaration | contract_template | guide_other */
   kind: text().notNull(),
   /** public | internal */
   accessLevel: text().notNull().default('public'),
+  /** Primary language of the file content. */
+  locale: text().notNull().default('bg'),
+  /** Optional provenance note (URL or short citation). */
+  source: text().notNull().default(''),
+  /** When true, public UIs must show a legal-sample disclaimer. */
+  legalSample: boolean().notNull().default(false),
+  /** Display name of the responsible editor (plain text for R2). */
+  responsibleEditor: text().notNull().default(''),
   currentVersionId: uuid(),
   archivedAt: timestamp({ withTimezone: true }),
   createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),

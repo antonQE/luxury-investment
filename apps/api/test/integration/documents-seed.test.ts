@@ -1,4 +1,4 @@
-import { SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
+import { DEMO_POWER_OF_ATTORNEY_SLUG, SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
 import { count, eq } from 'drizzle-orm';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 
@@ -17,13 +17,13 @@ afterAll(async () => {
 });
 
 describe('documents seed', () => {
-  it('is idempotent and sets current handbook version', async () => {
+  it('is idempotent and seeds handbook plus a legal-sample document', async () => {
     await documentsSeed.run(connection.db);
     await documentsSeed.run(connection.db);
 
-    expect((await connection.db.select({ total: count() }).from(documents))[0]?.total).toBe(1);
+    expect((await connection.db.select({ total: count() }).from(documents))[0]?.total).toBe(2);
     expect((await connection.db.select({ total: count() }).from(documentVersions))[0]?.total).toBe(
-      1,
+      2,
     );
 
     const [doc] = await connection.db
@@ -32,6 +32,7 @@ describe('documents seed', () => {
       .where(eq(documents.slug, SELLER_HANDBOOK_SLUG))
       .limit(1);
     expect(doc?.kind).toBe('seller_handbook');
+    expect(doc?.legalSample).toBe(false);
     expect(doc?.currentVersionId).toBeTruthy();
 
     if (doc === undefined) return;
@@ -40,5 +41,15 @@ describe('documents seed', () => {
       .from(translations)
       .where(eq(translations.entityId, doc.id));
     expect(titles.some((row) => row.field === 'title' && row.locale === 'en')).toBe(true);
+    expect(titles.some((row) => row.field === 'description' && row.locale === 'bg')).toBe(true);
+
+    const [poa] = await connection.db
+      .select()
+      .from(documents)
+      .where(eq(documents.slug, DEMO_POWER_OF_ATTORNEY_SLUG))
+      .limit(1);
+    expect(poa?.kind).toBe('power_of_attorney');
+    expect(poa?.legalSample).toBe(true);
+    expect(poa?.accessLevel).toBe('public');
   });
 });

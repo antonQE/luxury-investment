@@ -137,12 +137,22 @@ export {
   listDealsQuerySchema,
   updateDealSchema,
 } from './deals.ts';
-export type { DocumentAccessLevel, DocumentKind } from './documents.ts';
+export type {
+  DocumentAccessLevel,
+  DocumentCategory,
+  DocumentKind,
+  DocumentLocale,
+} from './documents.ts';
 export {
+  DEMO_POWER_OF_ATTORNEY_SLUG,
   DOCUMENT_ACCESS_LEVELS,
+  DOCUMENT_CATEGORIES,
   DOCUMENT_KINDS,
+  DOCUMENT_LOCALES,
   documentAccessLevelSchema,
+  documentCategorySchema,
   documentKindSchema,
+  documentLocaleSchema,
   SELLER_HANDBOOK_SLUG,
 } from './documents.ts';
 export type {
