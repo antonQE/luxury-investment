@@ -80,6 +80,26 @@ const TEAM = [
     bioEn: 'Demo profile for legal services. Not a real person.',
     qualifications: 'Demo: member of Sofia Bar (fictional)',
   },
+  {
+    slug: 'demo-credit-consultant',
+    kind: 'staff',
+    sortOrder: 4,
+    email: 'credit@example.com',
+    phone: '+359 000 000 004',
+    markets: ['sofia'],
+    languages: ['bg', 'en'],
+    photoUrl:
+      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80',
+    nameBg: 'Demo Кредитен консултант',
+    nameEn: 'Demo Credit Consultant',
+    roleBg: 'Кредитен консултант',
+    roleEn: 'Credit consultant',
+    bioBg:
+      'Демо профил. Единственото лице в демо данните с кредитна квалификация (CALC-003). Не е реално лице.',
+    bioEn:
+      'Demo profile. The only seeded person with a credit-consultant qualification (CALC-003). Not a real person.',
+    qualifications: 'Credit consultant (demo — fictional)',
+  },
 ];
 
 const OFFICES = [

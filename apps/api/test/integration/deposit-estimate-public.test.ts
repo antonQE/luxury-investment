@@ -6,6 +6,7 @@ import { createApp } from '../../src/app.ts';
 import { SEED_MODULES } from '../../src/infrastructure/db/seeds/index.ts';
 import { AcquisitionEstimateService } from '../../src/modules/calculators/app/acquisition-estimate-service.ts';
 import { DepositEstimateService } from '../../src/modules/calculators/app/deposit-estimate-service.ts';
+import { MortgageEstimateService } from '../../src/modules/calculators/app/mortgage-estimate-service.ts';
 import { calculatorPublicRouter } from '../../src/modules/calculators/handlers/calculator-public-handlers.ts';
 import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 
@@ -18,6 +19,7 @@ const app = createApp({
     calculatorPublicRouter({
       acquisition: new AcquisitionEstimateService(connection.db),
       deposit: new DepositEstimateService(connection.db),
+      mortgage: new MortgageEstimateService(connection.db, 'demo-credit-consultant'),
     }),
   ],
 });

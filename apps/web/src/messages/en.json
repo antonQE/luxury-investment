@@ -159,6 +159,25 @@
       "initialFunds": "Indicative initial funds",
       "unknown": "—",
       "disclaimer": "Indicative only. The deposit is part of the agreed price, not an extra cost."
+    },
+    "mortgageCalculator": {
+      "title": "Indicative mortgage",
+      "lead": "Example payment from configurable assumptions — not a financing offer.",
+      "loading": "Calculating…",
+      "loadError": "Could not load the mortgage estimate.",
+      "disabled": "This calculator is disabled for this market.",
+      "insufficientData": "Not enough configured rates to show a reliable mortgage estimate.",
+      "downPayment": "Down payment / own funds",
+      "loanAmount": "Indicative loan",
+      "rate": "Annual interest rate",
+      "term": "Term",
+      "termYears": "{years} years",
+      "monthly": "Example monthly payment",
+      "totalInterest": "Total interest (assumptions)",
+      "unknown": "—",
+      "disclaimer": "Bank approval and fees are individual. This is not guaranteed financing.",
+      "ctaLead": "Speak with the qualified credit consultant:",
+      "ctaProfile": "View profile"
     }
   },
   "About": {

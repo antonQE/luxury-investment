@@ -29,6 +29,11 @@ const envSchema = z.object({
   MEDIA_PUBLIC_BASE_URL: z.string().min(1).default('http://localhost:4000/v1/public/media'),
   /** Catch-all recipient for inquiry notifications until per-agent routing exists (ADR-0011). */
   INQUIRY_NOTIFY_TO: z.email().default('inquiries@example.com'),
+  /**
+   * Team member slug for the mortgage calculator CTA (CALC-003).
+   * Only this profile should carry a credit-consultant qualification.
+   */
+  CREDIT_CONSULTANT_TEAM_SLUG: z.string().min(1).default('demo-credit-consultant'),
 });
 
 export type Env = z.infer<typeof envSchema>;

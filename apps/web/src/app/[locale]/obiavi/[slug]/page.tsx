@@ -7,6 +7,7 @@ import { AcquisitionCalculator } from '@/components/property/AcquisitionCalculat
 import { DepositCalculator } from '@/components/property/DepositCalculator';
 import { InquiryForm } from '@/components/property/InquiryForm';
 import { MobileAgentBar } from '@/components/property/MobileAgentBar';
+import { MortgageCalculator } from '@/components/property/MortgageCalculator';
 import { PrintButton } from '@/components/property/PrintButton';
 import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
@@ -190,6 +191,11 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 currency={property.currency}
               />
               <DepositCalculator
+                slug={property.slug}
+                price={property.price}
+                currency={property.currency}
+              />
+              <MortgageCalculator
                 slug={property.slug}
                 price={property.price}
                 currency={property.currency}

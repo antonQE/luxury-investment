@@ -154,3 +154,45 @@ export const depositEstimateSchema = z.object({
 });
 
 export type DepositEstimate = z.infer<typeof depositEstimateSchema>;
+
+export const mortgageEstimateQuerySchema = z.object({
+  price: z.coerce.number().positive().optional(),
+  /** Own funds / down payment; defaults to deposit % of price when omitted. */
+  downPayment: z.coerce.number().nonnegative().optional(),
+  /** Desired loan; defaults to price − down payment. */
+  loanAmount: z.coerce.number().positive().optional(),
+  /** Loan term in years; default 25. */
+  termYears: z.coerce.number().int().positive().max(40).optional(),
+  /** Override annual interest rate %; defaults to configured mortgage rule. */
+  annualRate: z.coerce.number().positive().max(100).optional(),
+});
+
+export type MortgageEstimateQuery = z.infer<typeof mortgageEstimateQuerySchema>;
+
+export const mortgageConsultantSchema = z.object({
+  name: z.string(),
+  email: z.string().nullable(),
+  phone: z.string().nullable(),
+  slug: z.string().nullable(),
+});
+
+export type MortgageConsultant = z.infer<typeof mortgageConsultantSchema>;
+
+export const mortgageEstimateSchema = z.object({
+  status: z.enum(['ok', 'disabled', 'insufficient_data']),
+  countryCode: z.string().nullable(),
+  currency: z.string(),
+  purchasePrice: z.number(),
+  downPayment: z.number().nullable(),
+  loanAmount: z.number().nullable(),
+  termYears: z.number().nullable(),
+  annualRatePercent: z.number().nullable(),
+  monthlyPayment: z.number().nullable(),
+  totalPayments: z.number().nullable(),
+  totalInterest: z.number().nullable(),
+  consultant: mortgageConsultantSchema.nullable(),
+  warning: z.string().nullable(),
+  disclaimer: z.string(),
+});
+
+export type MortgageEstimate = z.infer<typeof mortgageEstimateSchema>;
