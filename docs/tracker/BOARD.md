@@ -58,7 +58,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
-| [LI-076](tasks/LI-076-document-library-admin-api.md) | Document library admin API | EPIC-13 | P1 | M |
+| [LI-077](tasks/LI-077-document-library-admin-ui-public.md) | Document library admin UI + public list | EPIC-13 | P1 | M |
 | [LI-078](tasks/LI-078-document-download-analytics.md) | Document download analytics by period/source | EPIC-13 | P1 | S |
 
 ## Blocked
@@ -70,12 +70,12 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-077](tasks/LI-077-document-library-admin-ui-public.md) | Document library admin UI + public list | EPIC-13 | P1 | M | LI-076 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-076](tasks/LI-076-document-library-admin-api.md) | Document library admin API | EPIC-13 |
 | [LI-075](tasks/LI-075-document-library-schema.md) | Document library schema + seed (categories) | EPIC-13 |
 | [LI-074](tasks/LI-074-exchange-rates-normalized-prices.md) | Exchange rates for normalized prices | EPIC-14 |
 | [LI-073](tasks/LI-073-mortgage-estimate-cta.md) | Mortgage estimate + consultant CTA | EPIC-14 |

@@ -20,8 +20,8 @@ Admins upload and version public and private documents; the current seller handb
 - LI-046: Public handbook download API + page — Done
 - LI-047: Admin handbook upload/version UI (basic) — Done
 - LI-075: Document library schema + seed (categories) — Done
-- LI-076: Document library admin API — Ready
-- LI-077: Document library admin UI + public list — Backlog
+- LI-076: Document library admin API — Done
+- LI-077: Document library admin UI + public list — Ready
 - LI-078: Document download analytics by period/source — Ready
 
 ## Notes

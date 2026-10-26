@@ -105,3 +105,63 @@ describe('admin seller handbook API', () => {
     expect((after.body as { data: { currentVersionId: string } }).data.currentVersionId).toBe(id);
   });
 });
+
+describe('admin document library API', () => {
+  it('creates a document, uploads a version, sets current, and archives', async () => {
+    const agent = await loginAgent();
+
+    const created = await agent
+      .post('/v1/admin/documents')
+      .send({
+        slug: 'demo-declaration',
+        kind: 'declaration',
+        accessLevel: 'public',
+        locale: 'bg',
+        legalSample: true,
+        titleBg: 'Демо декларация',
+        titleEn: 'Demo declaration',
+        descriptionBg: 'Примерен текст',
+        descriptionEn: 'Sample text',
+      })
+      .expect(201);
+
+    const docId = (created.body as { data: { id: string; legalSample: boolean } }).data.id;
+    expect((created.body as { data: { legalSample: boolean } }).data.legalSample).toBe(true);
+
+    const uploaded = await agent
+      .post(`/v1/admin/documents/${docId}/versions`)
+      .field('versionLabel', '2026.1')
+      .field('publish', 'false')
+      .attach('file', DEMO_PDF_BYTES, {
+        filename: 'declaration.pdf',
+        contentType: 'application/pdf',
+      })
+      .expect(201);
+
+    const versionId = (uploaded.body as { data: { id: string } }).data.id;
+
+    await agent.post(`/v1/admin/documents/${docId}/versions/${versionId}/publish`).expect(200);
+
+    const detail = await agent.get(`/v1/admin/documents/${docId}`).expect(200);
+    expect((detail.body as { data: { currentVersionId: string } }).data.currentVersionId).toBe(
+      versionId,
+    );
+    expect((detail.body as { data: { downloadTotal: number } }).data.downloadTotal).toBe(0);
+
+    await agent.post(`/v1/admin/documents/${docId}/archive`).expect(200);
+
+    const listed = await agent.get('/v1/admin/documents').expect(200);
+    const active = (listed.body as { data: { id: string }[] }).data;
+    expect(active.some((row) => row.id === docId)).toBe(false);
+
+    const withArchived = await agent
+      .get('/v1/admin/documents')
+      .query({ includeArchived: 'true' })
+      .expect(200);
+    expect(
+      (withArchived.body as { data: { id: string; archivedAt: string | null }[] }).data.some(
+        (row) => row.id === docId && row.archivedAt !== null,
+      ),
+    ).toBe(true);
+  });
+});

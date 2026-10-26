@@ -138,12 +138,16 @@ export {
   updateDealSchema,
 } from './deals.ts';
 export type {
+  CreateDocumentInput,
   DocumentAccessLevel,
   DocumentCategory,
   DocumentKind,
   DocumentLocale,
+  ListDocumentsQuery,
+  UpdateDocumentInput,
 } from './documents.ts';
 export {
+  createDocumentSchema,
   DEMO_POWER_OF_ATTORNEY_SLUG,
   DOCUMENT_ACCESS_LEVELS,
   DOCUMENT_CATEGORIES,
@@ -153,7 +157,9 @@ export {
   documentCategorySchema,
   documentKindSchema,
   documentLocaleSchema,
+  listDocumentsQuerySchema,
   SELLER_HANDBOOK_SLUG,
+  updateDocumentSchema,
 } from './documents.ts';
 export type {
   ListExchangeRatesQuery,

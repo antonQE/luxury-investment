@@ -1,7 +1,7 @@
 # LI-077: Document library admin UI + public list
 
 - Epic: EPIC-13
-- Status: Backlog
+- Status: Ready
 - Priority: P1
 - Size: M
 - Area: web
