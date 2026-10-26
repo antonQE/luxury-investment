@@ -12,6 +12,7 @@ export const ROUTES = {
   PARTNERS: '/partners',
   INQUIRIES: '/inquiries',
   CONTACTS: '/contacts',
+  VIEWINGS: '/viewings',
   ARTICLES: '/articles',
   HANDBOOK: '/handbook',
   NOT_FOUND: '*',

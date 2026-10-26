@@ -1,7 +1,7 @@
 # LI-065: Viewings calendar UI (basic)
 
 - Epic: EPIC-09
-- Status: Ready
+- Status: Done
 - Priority: P1
 - Size: L
 - Area: admin
@@ -13,10 +13,14 @@ Day/week/month calendar of viewings with overlap warning and filters by agent.
 
 ## Acceptance criteria
 
-- [ ] Admin calendar page backed by viewings API.
-- [ ] Overlap warning when two viewings share agent+time.
-- [ ] Create/reschedule/decline from UI (basic).
+- [x] Admin calendar page backed by viewings API.
+- [x] Overlap warning when two viewings share agent+time.
+- [x] Create/reschedule/decline from UI (basic).
 
 ## Out of scope
 
 - Google/Outlook sync; mobile-native calendar.
+
+## Result
+
+Admin `/viewings` calendar (day/week/month), agent filter, create/reschedule/decline, overlap warning + unit tests.

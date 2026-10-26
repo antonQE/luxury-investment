@@ -28,8 +28,8 @@ Every inquiry from the site or entered manually lands in the CRM linked to the r
 - LI-062: Admin contacts CRUD API + UI — Done
 - LI-063: Contact duplicate detection hints — Done
 - LI-064: Viewings schema + admin API — Done
-- LI-065: Viewings calendar UI (basic) — Ready
-- LI-066: CRM tasks schema + basic admin — Backlog
+- LI-065: Viewings calendar UI (basic) — Done
+- LI-066: CRM tasks schema + basic admin — In Progress
 - LI-067: Offers register (basic) — Backlog
 - LI-068: Deal stages (basic) — Backlog
 
