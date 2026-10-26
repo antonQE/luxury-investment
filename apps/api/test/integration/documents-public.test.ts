@@ -48,6 +48,19 @@ afterAll(async () => {
   await connection.close();
 });
 
+describe('public document library', () => {
+  it('lists public documents grouped by category metadata', async () => {
+    const res = await request(app).get('/v1/public/documents').query({ lang: 'en' }).expect(200);
+    const body = res.body as {
+      data: { slug: string; kind: string; legalSample: boolean; title: string }[];
+    };
+    expect(body.data.some((row) => row.slug === 'seller-handbook')).toBe(true);
+    expect(body.data.some((row) => row.slug === 'demo-power-of-attorney' && row.legalSample)).toBe(
+      true,
+    );
+  });
+});
+
 describe('public document download', () => {
   it('streams the seller handbook and records a successful download', async () => {
     const res = await request(app)

@@ -17,6 +17,7 @@ export const ROUTES = {
   OFFERS: '/offers',
   DEALS: '/deals',
   ARTICLES: '/articles',
+  DOCUMENTS: '/documents',
   HANDBOOK: '/handbook',
   NOT_FOUND: '*',
 } as const;

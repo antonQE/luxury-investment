@@ -16,6 +16,7 @@
     "team": "Team",
     "articles": "Articles",
     "sellWithUs": "Sell with us",
+    "documents": "Documents",
     "services": "Services",
     "contact": "Contacts",
     "phone": "+359 2 000 00 00",
@@ -256,6 +257,21 @@
     "submitting": "Sending…",
     "success": "Thank you. We received your enquiry and will get back to you soon.",
     "error": "We could not send the enquiry. Please try again."
+  },
+  "Documents": {
+    "title": "Document library",
+    "lead": "Public guides and sample templates. Download counts are recorded per version.",
+    "error": "The document list is temporarily unavailable.",
+    "empty": "No public documents yet.",
+    "download": "Download PDF",
+    "legalDisclaimer": "Sample document only. It may require legal adaptation and is not individual legal advice.",
+    "categories": {
+      "seller_handbook": "Seller handbook",
+      "power_of_attorney": "Powers of attorney",
+      "declaration": "Declarations",
+      "contract_template": "Contracts and templates",
+      "guide_other": "Guides and checklists"
+    }
   },
   "SellWithUs": {
     "title": "Sell with us",

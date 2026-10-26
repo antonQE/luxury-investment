@@ -31,6 +31,7 @@ export function AppShell({ children }: AppShellProps) {
     { to: ROUTES.OFFERS, label: t('nav.offers'), testId: 'nav-offers' },
     { to: ROUTES.DEALS, label: t('nav.deals'), testId: 'nav-deals' },
     { to: ROUTES.ARTICLES, label: t('nav.articles'), testId: 'nav-articles' },
+    { to: ROUTES.DOCUMENTS, label: t('nav.documents'), testId: 'nav-documents' },
     { to: ROUTES.HANDBOOK, label: t('nav.handbook'), testId: 'nav-handbook' },
     { to: ROUTES.TEAM, label: t('nav.team'), testId: 'nav-team' },
     { to: ROUTES.OFFICES, label: t('nav.offices'), testId: 'nav-offices' },

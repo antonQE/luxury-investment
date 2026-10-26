@@ -15,6 +15,7 @@ const PropertiesList = lazy(() => import('@/pages/Properties/PropertiesList'));
 const PropertyEditor = lazy(() => import('@/pages/Properties/PropertyEditor'));
 const PropertyTypes = lazy(() => import('@/pages/PropertyTypes/PropertyTypes'));
 const ArticlesList = lazy(() => import('@/pages/Articles/ArticlesList'));
+const DocumentLibraryAdmin = lazy(() => import('@/pages/Documents/DocumentLibraryAdmin'));
 const HandbookAdmin = lazy(() => import('@/pages/Documents/HandbookAdmin'));
 const InquiriesInbox = lazy(() => import('@/pages/Inquiries/InquiriesInbox'));
 const ContactsList = lazy(() => import('@/pages/Contacts/ContactsList'));
@@ -71,6 +72,7 @@ export default function App() {
             <Route path={ROUTES.OFFERS} element={<OffersList />} />
             <Route path={ROUTES.DEALS} element={<DealsList />} />
             <Route path={ROUTES.ARTICLES} element={<ArticlesList />} />
+            <Route path={ROUTES.DOCUMENTS} element={<DocumentLibraryAdmin />} />
             <Route path={ROUTES.HANDBOOK} element={<HandbookAdmin />} />
           </Route>
         </Route>

@@ -1,4 +1,4 @@
-import { SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
+import { DEFAULT_LOCALE, localeSchema, SELLER_HANDBOOK_SLUG } from '@luxury-investment/shared';
 import { type Response, Router } from 'express';
 import { z } from 'zod';
 
@@ -8,6 +8,9 @@ import type { DocumentPublicService } from '../app/document-public-service.ts';
 const slugParams = z.object({ slug: z.string().min(1) });
 const downloadQuery = z.object({
   source: z.string().max(120).optional(),
+});
+const listQuery = z.object({
+  lang: localeSchema.optional().default(DEFAULT_LOCALE),
 });
 
 export function documentPublicRouter(docs: DocumentPublicService): Router {
@@ -25,6 +28,14 @@ export function documentPublicRouter(docs: DocumentPublicService): Router {
     res.setHeader('Cache-Control', 'private, no-store');
     res.send(file.body);
   }
+
+  router.get(
+    '/documents',
+    withValidation({ query: listQuery }, async ({ query }, _req, res) => {
+      const data = await docs.listPublic(query.lang);
+      res.json({ data });
+    }),
+  );
 
   router.get(
     '/documents/:slug',
