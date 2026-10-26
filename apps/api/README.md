@@ -92,10 +92,12 @@ Fictional only — never use outside local/test.
 
 | Method | Path | Notes |
 |---|---|---|
-| POST | `/v1/admin/auth/login` | Sets httpOnly `li_session` cookie |
+| POST | `/v1/admin/auth/login` | Sets httpOnly `li_session` cookie; rate-limited per IP |
 | POST | `/v1/admin/auth/logout` | Clears session |
 | GET | `/v1/admin/auth/me` | Current user + permissions (auth required) |
 | GET | `/v1/admin/ping` | Auth smoke check |
+
+Session cookies carry an opaque token; Postgres stores only an HMAC of that token (`AUTH_SESSION_SECRET`, ADR-0012). Mutating `/v1/admin` requests whose browser `Origin` is outside `API_ADMIN_CORS_ORIGINS` are rejected (keeps the public site from driving staff cookies).
 
 ### Catalog admin (LI-025)
 

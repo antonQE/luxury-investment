@@ -18,7 +18,7 @@ import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 const connection = connectTestDatabase();
 let mediaRoot = '';
 let app = createApp({
-  env: { API_CORS_ORIGINS: [] },
+  env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
   logger: pino({ level: 'silent' }),
   publicRouters: [],
 });
@@ -35,7 +35,7 @@ beforeEach(async () => {
   }
   const storage = new LocalStorage(mediaRoot, 'http://localhost:4000/v1/public/media');
   app = createApp({
-    env: { API_CORS_ORIGINS: [] },
+    env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
     logger: pino({ level: 'silent' }),
     publicRouters: [documentPublicRouter(new DocumentPublicService(connection.db, storage))],
   });

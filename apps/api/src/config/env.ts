@@ -13,11 +13,15 @@ const envSchema = z.object({
   API_LOG_LEVEL: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
     .default('info'),
+  /** Browser origins allowed for CORS (public site + admin; used for /health etc.). */
   API_CORS_ORIGINS: csv.default(['http://localhost:3000', 'http://localhost:5173']),
+  /** Origins allowed to mutate `/v1/admin` (CSRF: public site must not drive staff cookies). */
+  API_ADMIN_CORS_ORIGINS: csv.default(['http://localhost:5173']),
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
-  /** Random string used to name/document session cookies; opaque tokens live in Postgres. */
+  /** HMAC key for hashing opaque session tokens before storage (ADR-0012). */
   AUTH_SESSION_SECRET: z.string().min(16).default('local-dev-session-secret'),
   AUTH_COOKIE_NAME: z.string().min(1).default('li_session'),
+  /** Staff session lifetime in hours (default one week; shorten in production if desired). */
   AUTH_SESSION_TTL_HOURS: z.coerce.number().int().positive().default(168),
   /** Local media root (ADR-0010). Relative paths resolve from the monorepo root when started via npm. */
   MEDIA_LOCAL_ROOT: z.string().min(1).default('.data/media'),

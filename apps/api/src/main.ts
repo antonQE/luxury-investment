@@ -56,7 +56,7 @@ const documentPublic = new DocumentPublicService(database.db, storage);
 const documentAdmin = new DocumentAdminService(database.db, storage);
 const userRepo = new UserRepo(database.db);
 const auditService = new AuditService(database.db);
-const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS);
+const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS, env.AUTH_SESSION_SECRET);
 const adminAuth = mountAdminAuth(authService, env, auditService);
 
 const app = createApp({

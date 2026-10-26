@@ -19,7 +19,7 @@ const mailer: MailerPort = {
   },
 };
 const app = createApp({
-  env: { API_CORS_ORIGINS: [] },
+  env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
   logger,
   publicRouters: [
     inquiryPublicRouter(new InquiryRepo(connection.db), mailer, 'agent@example.com', logger),
@@ -59,11 +59,13 @@ describe('POST /v1/public/inquiries', () => {
     ]);
   });
 
-  it('rejects a filled honeypot', async () => {
+  it('silently accepts a filled honeypot without storing', async () => {
     await request(app)
       .post('/v1/public/inquiries')
       .send({ ...validBody, website: 'http://spam.example' })
-      .expect(400);
+      .expect(201);
+    const rows = await connection.db.select().from(inquiries);
+    expect(rows).toHaveLength(0);
   });
 
   it('rejects missing consent', async () => {

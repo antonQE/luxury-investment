@@ -3,6 +3,7 @@ import express from 'express';
 import { z } from 'zod';
 
 import type { Env } from '../../../config/env.ts';
+import { createRateLimiter } from '../../../infrastructure/server/middleware/rate-limit.ts';
 import {
   requireAuth,
   sessionTokenFromRequest,
@@ -31,12 +32,23 @@ function cookieOptions(env: AuthEnv, maxAgeMs: number): CookieOptions {
   };
 }
 
+function clearCookieOptions(env: AuthEnv): CookieOptions {
+  return {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: env.NODE_ENV === 'production',
+    path: '/',
+  };
+}
+
 export function authPublicRouter(auth: AuthService, env: AuthEnv, audit?: AuditService): Router {
   const router = express.Router();
   const maxAgeMs = env.AUTH_SESSION_TTL_HOURS * 60 * 60 * 1000;
+  const loginLimit = createRateLimiter({ windowMs: 15 * 60_000, max: 20 });
 
   router.post(
     '/auth/login',
+    loginLimit,
     withValidation({ body: loginBody }, async ({ body }, _req, res) => {
       const { token, user } = await auth.login(body.email, body.password);
       if (audit) {
@@ -62,7 +74,7 @@ export function authProtectedRouter(auth: AuthService, env: AuthEnv): Router {
   router.post('/auth/logout', async (req: Request, res: Response) => {
     const token = sessionTokenFromRequest(req, env.AUTH_COOKIE_NAME);
     await auth.logout(token);
-    res.clearCookie(env.AUTH_COOKIE_NAME, { path: '/' });
+    res.clearCookie(env.AUTH_COOKIE_NAME, clearCookieOptions(env));
     res.status(204).end();
   });
 

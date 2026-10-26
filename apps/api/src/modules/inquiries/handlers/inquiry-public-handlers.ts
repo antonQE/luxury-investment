@@ -19,8 +19,20 @@ export function inquiryPublicRouter(
   router.post(
     '/inquiries',
     rateLimit,
+    (req, res, next) => {
+      // Silent honeypot: bots that fill the hidden field get a fake success (ADR-0012).
+      const rawBody: unknown = req.body;
+      let website: unknown;
+      if (rawBody !== null && typeof rawBody === 'object' && 'website' in rawBody) {
+        website = Reflect.get(rawBody, 'website');
+      }
+      if (typeof website === 'string' && website.trim() !== '') {
+        res.status(201).json({ data: { id: 'ok' } });
+        return;
+      }
+      next();
+    },
     withValidation({ body: createInquirySchema }, async ({ body }, _req, res) => {
-      // Honeypot already enforced by schema (`website` max length 0).
       const created = await repo.create(body);
       try {
         await mailer.send({

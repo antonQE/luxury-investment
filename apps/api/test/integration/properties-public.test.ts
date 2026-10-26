@@ -11,7 +11,7 @@ import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 
 const connection = connectTestDatabase();
 const app = createApp({
-  env: { API_CORS_ORIGINS: [] },
+  env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
   logger: pino({ level: 'silent' }),
   publicRouters: [propertyPublicRouter(new PropertyRepo(connection.db))],
 });

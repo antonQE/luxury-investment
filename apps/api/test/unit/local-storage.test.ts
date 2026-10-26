@@ -46,5 +46,12 @@ describe('LocalStorage', () => {
     await expect(
       storage.put({ key: '../escape.txt', body: Buffer.from('x'), contentType: 'text/plain' }),
     ).rejects.toMatchObject({ code: 'VALIDATION_FAILED' });
+    await expect(
+      storage.put({
+        key: 'properties/../../escape.txt',
+        body: Buffer.from('x'),
+        contentType: 'text/plain',
+      }),
+    ).rejects.toMatchObject({ code: 'VALIDATION_FAILED' });
   });
 });

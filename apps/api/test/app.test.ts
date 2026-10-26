@@ -12,7 +12,10 @@ interface ErrorBody {
 }
 
 const logger = pino({ level: 'silent' });
-const env = { API_CORS_ORIGINS: ['http://localhost:3000'] };
+const env = {
+  API_CORS_ORIGINS: ['http://localhost:3000'],
+  API_ADMIN_CORS_ORIGINS: ['http://localhost:5173'],
+};
 
 function appWith(router?: express.Router) {
   return createApp({ env, logger, publicRouters: router ? [router] : [] });

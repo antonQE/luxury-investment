@@ -14,6 +14,18 @@ function assertSafeKey(key: string): void {
   }
 }
 
+/** Resolve `key` under `root`; reject if the result escapes the root directory. */
+export function resolveUnderRoot(root: string, key: string): string {
+  assertSafeKey(key);
+  const absoluteRoot = path.resolve(root);
+  const absolute = path.resolve(absoluteRoot, key);
+  const prefix = absoluteRoot.endsWith(path.sep) ? absoluteRoot : `${absoluteRoot}${path.sep}`;
+  if (absolute !== absoluteRoot && !absolute.startsWith(prefix)) {
+    throw new AppError('VALIDATION_FAILED', 'Invalid storage key.');
+  }
+  return absolute;
+}
+
 export class LocalStorage implements StoragePort {
   readonly #root: string;
   readonly #publicBaseUrl: string;
@@ -24,8 +36,7 @@ export class LocalStorage implements StoragePort {
   }
 
   async put(input: PutObjectInput): Promise<StoredObject> {
-    assertSafeKey(input.key);
-    const absolute = path.join(this.#root, input.key);
+    const absolute = resolveUnderRoot(this.#root, input.key);
     await mkdir(path.dirname(absolute), { recursive: true });
     await writeFile(absolute, input.body);
     return {
@@ -36,18 +47,18 @@ export class LocalStorage implements StoragePort {
   }
 
   async get(key: string): Promise<Buffer> {
-    assertSafeKey(key);
+    const absolute = resolveUnderRoot(this.#root, key);
     try {
-      return await readFile(path.join(this.#root, key));
+      return await readFile(absolute);
     } catch {
       throw new AppError('NOT_FOUND', 'Media object not found.');
     }
   }
 
   async delete(key: string): Promise<void> {
-    assertSafeKey(key);
+    const absolute = resolveUnderRoot(this.#root, key);
     try {
-      await unlink(path.join(this.#root, key));
+      await unlink(absolute);
     } catch {
       // already gone
     }

@@ -18,13 +18,18 @@ const logger = pino({ level: 'silent' });
 const env = {
   NODE_ENV: 'test' as const,
   API_CORS_ORIGINS: ['http://localhost:5173'],
+  API_ADMIN_CORS_ORIGINS: ['http://localhost:5173'],
   AUTH_SESSION_SECRET: 'test-session-secret-32',
   AUTH_COOKIE_NAME: 'li_session',
   AUTH_SESSION_TTL_HOURS: 24,
 };
 
 function buildApp() {
-  const auth = new AuthService(new UserRepo(connection.db), env.AUTH_SESSION_TTL_HOURS);
+  const auth = new AuthService(
+    new UserRepo(connection.db),
+    env.AUTH_SESSION_TTL_HOURS,
+    env.AUTH_SESSION_SECRET,
+  );
   const mounted = mountAdminAuth(auth, env);
   return createApp({
     env,

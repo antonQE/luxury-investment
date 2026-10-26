@@ -27,7 +27,7 @@ describe('database', () => {
 
   it('is reported as up by /health', async () => {
     const app = createApp({
-      env: { API_CORS_ORIGINS: [] },
+      env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
       logger: pino({ level: 'silent' }),
       healthChecks: [{ name: 'database', check: connection.ping }],
     });

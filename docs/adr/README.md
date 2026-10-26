@@ -21,6 +21,7 @@ Until an ADR says otherwise, the baseline in `.cursor/skills/luxury-investment-w
 | [0009](0009-catalog-data-model.md) | Catalog data model (locations, taxonomies, attributes, translations) | Accepted (delegated) | 2026-10-25 |
 | [0010](0010-media-storage-and-jobs.md) | Media storage interface and background jobs | Accepted (delegated) | 2026-10-26 |
 | [0011](0011-transactional-email.md) | Transactional email (inquiry notifications) | Accepted (delegated) | 2026-10-26 |
+| [0012](0012-api-security-hardening.md) | API security hardening (sessions, login limit, admin Origin) | Accepted (delegated) | 2026-10-26 |
 
 ## Pending decisions
 
