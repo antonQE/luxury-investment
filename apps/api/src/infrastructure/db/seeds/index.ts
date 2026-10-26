@@ -1,5 +1,6 @@
 import type { Database } from '../client.ts';
 import { attributesSeed } from './attributes.ts';
+import { contactsSeed } from './contacts.ts';
 import { contentSeed } from './content.ts';
 import { documentsSeed } from './documents.ts';
 import { inquiriesSeed } from './inquiries.ts';
@@ -23,6 +24,7 @@ export const SEED_MODULES: SeedModule[] = [
   attributesSeed,
   teamSeed,
   propertiesSeed,
+  contactsSeed,
   inquiriesSeed,
   contentSeed,
   documentsSeed,

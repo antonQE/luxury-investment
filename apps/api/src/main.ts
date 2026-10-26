@@ -12,6 +12,8 @@ import { ContentAdminService } from './modules/content/app/content-admin-service
 import { ContentPublicService } from './modules/content/app/content-public-service.ts';
 import { contentAdminRouter } from './modules/content/handlers/content-admin-handlers.ts';
 import { contentPublicRouter } from './modules/content/handlers/content-public-handlers.ts';
+import { PropertyOwnershipService } from './modules/crm/app/property-ownership-service.ts';
+import { propertyOwnershipAdminRouter } from './modules/crm/handlers/property-ownership-admin-handlers.ts';
 import { DocumentAdminService } from './modules/documents/app/document-admin-service.ts';
 import { DocumentPublicService } from './modules/documents/app/document-public-service.ts';
 import { documentAdminRouter } from './modules/documents/handlers/document-admin-handlers.ts';
@@ -58,6 +60,7 @@ const userRepo = new UserRepo(database.db);
 const auditService = new AuditService(database.db);
 const authService = new AuthService(userRepo, env.AUTH_SESSION_TTL_HOURS, env.AUTH_SESSION_SECRET);
 const adminAuth = mountAdminAuth(authService, env, auditService);
+const propertyOwnership = new PropertyOwnershipService(database.db);
 
 const app = createApp({
   env,
@@ -78,6 +81,7 @@ const app = createApp({
     auditAdminRouter(auditService),
     catalogAdminRouter(catalogRepo),
     propertyAdminRouter(propertyAdmin),
+    propertyOwnershipAdminRouter(propertyOwnership),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),

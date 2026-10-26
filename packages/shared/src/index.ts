@@ -45,6 +45,24 @@ export type {
   PublicPage,
 } from './content.ts';
 export { CONTENT_STATUSES, contentStatusSchema, PAGE_KINDS, pageKindSchema } from './content.ts';
+export type {
+  ContactKind,
+  ContactRole,
+  PreferredContactChannel,
+  PropertyOwnershipRole,
+  UpsertPropertyOwnershipInput,
+} from './crm.ts';
+export {
+  CONTACT_KINDS,
+  CONTACT_ROLES,
+  contactKindSchema,
+  contactRoleSchema,
+  PREFERRED_CONTACT_CHANNELS,
+  preferredContactChannelSchema,
+  PROPERTY_OWNERSHIP_ROLES,
+  propertyOwnershipRoleSchema,
+  upsertPropertyOwnershipSchema,
+} from './crm.ts';
 export type { DocumentAccessLevel, DocumentKind } from './documents.ts';
 export {
   DOCUMENT_ACCESS_LEVELS,
