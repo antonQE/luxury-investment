@@ -4,6 +4,10 @@ build/
 coverage/
 .data/
 
+# WordPress migration dumps (WXR / SQL / uploads) — never commit
+*.WordPress.*.xml
+docs/**/*.xml
+
 .env
 .env.*
 !.env.example

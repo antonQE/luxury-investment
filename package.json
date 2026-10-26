@@ -26,7 +26,8 @@
     "db:reset": "docker compose down --volumes && docker compose up -d --wait postgres",
     "db:generate": "npm run db:generate -w @luxury-investment/api",
     "db:migrate": "npm run db:migrate -w @luxury-investment/api",
-    "db:seed": "npm run db:seed -w @luxury-investment/api"
+    "db:seed": "npm run db:seed -w @luxury-investment/api",
+    "db:import-wxr": "npm run db:import-wxr --workspace=@luxury-investment/api --"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",

@@ -41,7 +41,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
-| [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Blocked |
+| [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Done |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
 
 ## In Progress
@@ -63,7 +63,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Reason |
 |---|---|---|
-| [LI-051](tasks/LI-051-wordpress-import-scripts.md) | WordPress/data import scripts | Waiting for WordPress dump + uploads (analysis Q2, Q9) |
 
 ## Backlog
 
@@ -73,6 +72,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-051](tasks/LI-051-wordpress-import-scripts.md) | WordPress/data import scripts (WXR) | EPIC-17 |
 | [LI-056](tasks/LI-056-property-print-qr.md) | Property print view and QR | EPIC-07 |
 | [LI-055](tasks/LI-055-catalog-list-filters.md) | Catalog list filters (city, range, ID) | EPIC-07 |
 | [LI-054](tasks/LI-054-empty-search-inquiry.md) | Empty search results inquiry form | EPIC-07 |

@@ -63,8 +63,8 @@ Run from the repository root. `dev`, `build`, `typecheck` and `test` run the sam
 | `npm run typecheck` | TypeScript type check |
 | `npm test` | Unit and integration tests |
 | `npm run format` / `npm run format:check` | Prettier (Markdown is excluded on purpose) |
-
-Until the first workspace exists, the workspace scripts end with "No workspaces found".
+| `npm run db:migrate` / `npm run db:seed` | Apply migrations / seed demo data |
+| `npm run db:import-wxr -- --file .data/wxr/….xml [--dry-run]` | Import WordPress WXR export (LI-051); keep dumps under `.data/` (gitignored) |
 
 ## Git hooks
 

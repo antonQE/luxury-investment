@@ -10,7 +10,8 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=../../.env src/scripts/migrate.ts",
-    "db:seed": "node --env-file-if-exists=../../.env src/scripts/seed.ts"
+    "db:seed": "node --env-file-if-exists=../../.env src/scripts/seed.ts",
+    "db:import-wxr": "node --env-file-if-exists=../../.env src/scripts/import-wxr.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Fixture</title>
+	<link>https://luxuryinvestment.bg</link>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_blog_url>https://luxuryinvestment.bg</wp:base_blog_url>
+
+	<item>
+		<title><![CDATA[Demo Agent]]></title>
+		<link>https://luxuryinvestment.bg/estate_agent/demo-agent/</link>
+		<wp:post_id>10</wp:post_id>
+		<wp:post_name><![CDATA[demo-agent]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[estate_agent]]></wp:post_type>
+		<content:encoded><![CDATA[<p>Agent bio</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:postmeta><wp:meta_key><![CDATA[agent_mobile]]></wp:meta_key><wp:meta_value><![CDATA[+359 888 111 222]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[agent_email]]></wp:meta_key><wp:meta_value><![CDATA[agent@example.com]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[agent_position]]></wp:meta_key><wp:meta_value><![CDATA[Брокер]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[Photo]]></title>
+		<link>https://luxuryinvestment.bg/photo/</link>
+		<wp:post_id>20</wp:post_id>
+		<wp:post_name><![CDATA[photo]]></wp:post_name>
+		<wp:status><![CDATA[inherit]]></wp:status>
+		<wp:post_type><![CDATA[attachment]]></wp:post_type>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:attachment_url><![CDATA[https://luxuryinvestment.bg/wp-content/uploads/2024/01/demo.jpg]]></wp:attachment_url>
+	</item>
+
+	<item>
+		<title><![CDATA[Тристаен в Малинова долина]]></title>
+		<link>https://luxuryinvestment.bg/property/tristaen/</link>
+		<wp:post_id>30</wp:post_id>
+		<wp:post_date_gmt><![CDATA[2024-05-01 10:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[tristaen-malinova]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[estate_property]]></wp:post_type>
+		<content:encoded><![CDATA[<p>Светъл апартамент.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[Кратко]]></excerpt:encoded>
+		<category domain="property_action_category" nicename="prodazhbi"><![CDATA[Продажби]]></category>
+		<category domain="property_category" nicename="apartamenti"><![CDATA[Апартаменти]]></category>
+		<category domain="property_city" nicename="sofiya"><![CDATA[София]]></category>
+		<category domain="property_area" nicename="malinova"><![CDATA[Малинова долина]]></category>
+		<category domain="property_status" nicename="nova"><![CDATA[Нова оферта]]></category>
+		<wp:postmeta><wp:meta_key><![CDATA[property_price]]></wp:meta_key><wp:meta_value><![CDATA[250000]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[property_size]]></wp:meta_key><wp:meta_value><![CDATA[110]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[property_bedrooms]]></wp:meta_key><wp:meta_value><![CDATA[2]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[property_bathrooms]]></wp:meta_key><wp:meta_value><![CDATA[1]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[property_agent]]></wp:meta_key><wp:meta_value><![CDATA[10]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[image_to_attach]]></wp:meta_key><wp:meta_value><![CDATA[20,]]></wp:meta_value></wp:postmeta>
+	</item>
+
+	<item>
+		<title><![CDATA[Статия]]></title>
+		<link>https://luxuryinvestment.bg/statiya/</link>
+		<wp:post_id>40</wp:post_id>
+		<wp:post_date_gmt><![CDATA[2024-06-01 10:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[statiya]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<content:encoded><![CDATA[<p>Текст на статия.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[Excerpt]]></excerpt:encoded>
+	</item>
+</channel>
+</rss>
