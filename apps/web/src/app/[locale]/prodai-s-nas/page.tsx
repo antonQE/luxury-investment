@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { ConsultationForm } from '@/components/content/ConsultationForm';
-import { ApiError } from '@/lib/api/client';
 import { fetchPage } from '@/lib/api/content';
 import { serverEnv } from '@/lib/config/env';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -41,8 +40,8 @@ export default async function SellWithUsPage() {
     const page = await fetchPage(locale, SLUG);
     title = page.title;
     body = page.body;
-  } catch (error) {
-    if (!(error instanceof ApiError)) throw error;
+  } catch {
+    // CMS copy is optional at build time (API may be down in CI); keep i18n defaults.
   }
 
   return (

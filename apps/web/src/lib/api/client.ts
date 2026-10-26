@@ -31,7 +31,15 @@ export async function apiGet<T>(path: string, options: ApiRequestOptions = {}): 
     options.revalidate === false
       ? { cache: 'no-store' }
       : { next: { revalidate: options.revalidate ?? 60, tags: options.tags ?? [] } };
-  const response = await fetch(url, { headers: { accept: 'application/json' }, ...caching });
+
+  let response: Response;
+  try {
+    response = await fetch(url, { headers: { accept: 'application/json' }, ...caching });
+  } catch (cause) {
+    // Build/CI often has no API process; surface as ApiError so pages can fall back.
+    const message = cause instanceof Error ? cause.message : 'API unreachable';
+    throw new ApiError(503, 'UNAVAILABLE', message);
+  }
 
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
