@@ -19,4 +19,6 @@ A visitor picks Sofia, Black Sea or Dubai & abroad, searches, filters and opens 
 - LI-015: Property page enrichment
 - LI-016: Maps link and similar properties
 - LI-017: Inquiry and viewing request forms
-- (later) advanced filters / free text once EPIC-03 attributes exist
+- LI-054: Empty search results inquiry form — Done
+- LI-055: Catalog list filters (city, range, ID) — Done
+- (later) admin-configured / type-specific attribute filters

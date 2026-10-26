@@ -9,7 +9,29 @@ export interface SearchFormValues {
   transactionType?: string;
   propertyType?: string;
   market?: string;
+  city?: string;
+  district?: string;
+  bedroomsMin?: string;
+  priceMin?: string;
+  priceMax?: string;
+  areaMin?: string;
+  areaMax?: string;
+  q?: string;
 }
+
+const TEXT_KEYS = [
+  'transactionType',
+  'propertyType',
+  'market',
+  'city',
+  'district',
+  'bedroomsMin',
+  'priceMin',
+  'priceMax',
+  'areaMin',
+  'areaMax',
+  'q',
+] as const;
 
 export function SearchForm({
   values = {},
@@ -26,9 +48,9 @@ export function SearchForm({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const query = new URLSearchParams();
-    for (const key of ['transactionType', 'propertyType', 'market'] as const) {
+    for (const key of TEXT_KEYS) {
       const value = data.get(key);
-      if (typeof value === 'string' && value !== '') query.set(key, value);
+      if (typeof value === 'string' && value.trim() !== '') query.set(key, value.trim());
     }
     const suffix = query.toString();
     router.push(suffix === '' ? '/obiavi' : `/obiavi?${suffix}`);
@@ -87,6 +109,96 @@ export function SearchForm({
             </option>
           ))}
         </select>
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('q')}
+        <input
+          name="q"
+          type="search"
+          defaultValue={values.q ?? ''}
+          placeholder={t('qPlaceholder')}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-q"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('city')}
+        <input
+          name="city"
+          defaultValue={values.city ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-city"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('district')}
+        <input
+          name="district"
+          defaultValue={values.district ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-district"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('bedroomsMin')}
+        <input
+          name="bedroomsMin"
+          type="number"
+          min={0}
+          max={20}
+          step={1}
+          defaultValue={values.bedroomsMin ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-bedrooms-min"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('priceMin')}
+        <input
+          name="priceMin"
+          type="number"
+          min={0}
+          step={1}
+          defaultValue={values.priceMin ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-price-min"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('priceMax')}
+        <input
+          name="priceMax"
+          type="number"
+          min={0}
+          step={1}
+          defaultValue={values.priceMax ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-price-max"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('areaMin')}
+        <input
+          name="areaMin"
+          type="number"
+          min={0}
+          step={1}
+          defaultValue={values.areaMin ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-area-min"
+        />
+      </label>
+      <label className="grid gap-1 text-xs tracking-wide uppercase text-ink-soft">
+        {t('areaMax')}
+        <input
+          name="areaMax"
+          type="number"
+          min={0}
+          step={1}
+          defaultValue={values.areaMax ?? ''}
+          className="border border-line bg-paper px-3 py-2 text-sm text-ink"
+          data-testid="filter-area-max"
+        />
       </label>
       <button
         type="submit"

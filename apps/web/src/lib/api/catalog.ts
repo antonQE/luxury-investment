@@ -9,6 +9,14 @@ export interface CatalogFilters {
   transactionType?: string;
   propertyType?: string;
   market?: string;
+  city?: string;
+  district?: string;
+  bedroomsMin?: string;
+  priceMin?: string;
+  priceMax?: string;
+  areaMin?: string;
+  areaMax?: string;
+  q?: string;
   offset?: string;
   limit?: string;
 }

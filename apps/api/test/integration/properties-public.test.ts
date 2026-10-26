@@ -97,6 +97,27 @@ describe('GET /v1/public/properties', () => {
     expect((invalid.body as ErrorBody).error.code).toBe('VALIDATION_FAILED');
   });
 
+  it('filters by reference/q, city, bedrooms and price range', async () => {
+    const byRef = await request(app).get('/v1/public/properties?q=DEMO-TEST-1').expect(200);
+    expect((byRef.body as ListBody).total).toBe(1);
+
+    const byCity = await request(app)
+      .get('/v1/public/properties?city=%D0%A1%D0%BE%D1%84')
+      .expect(200);
+    expect((byCity.body as ListBody).total).toBe(1);
+
+    const byBedrooms = await request(app).get('/v1/public/properties?bedroomsMin=3').expect(200);
+    expect((byBedrooms.body as ListBody).total).toBe(0);
+
+    const byPrice = await request(app)
+      .get('/v1/public/properties?priceMin=100000&priceMax=250000')
+      .expect(200);
+    expect((byPrice.body as ListBody).total).toBe(1);
+
+    const missPrice = await request(app).get('/v1/public/properties?priceMax=1000').expect(200);
+    expect((missPrice.body as ListBody).total).toBe(0);
+  });
+
   it('hides draft listings from the public list and detail', async () => {
     await connection.db.insert(properties).values({
       ...sample,

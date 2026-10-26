@@ -18,10 +18,32 @@ export type Market = z.infer<typeof marketSchema>;
 export type PrimaryAreaKey = z.infer<typeof primaryAreaKeySchema>;
 export type PropertyListingStatus = z.infer<typeof propertyListingStatusSchema>;
 
+const optionalTrimmed = z.preprocess(
+  (value) => (typeof value === 'string' && value.trim() === '' ? undefined : value),
+  z.string().trim().min(1).max(120).optional(),
+);
+
+const optionalNonNegNumber = z.preprocess(
+  (value) => (typeof value === 'string' && value.trim() === '' ? undefined : value),
+  z.coerce.number().nonnegative().optional(),
+);
+
 export const propertyListQuerySchema = z.object({
   transactionType: transactionTypeSchema.optional(),
   propertyType: propertyTypeSchema.optional(),
   market: marketSchema.optional(),
+  city: optionalTrimmed,
+  district: optionalTrimmed,
+  bedroomsMin: z.preprocess(
+    (value) => (typeof value === 'string' && value.trim() === '' ? undefined : value),
+    z.coerce.number().int().min(0).max(20).optional(),
+  ),
+  priceMin: optionalNonNegNumber,
+  priceMax: optionalNonNegNumber,
+  areaMin: optionalNonNegNumber,
+  areaMax: optionalNonNegNumber,
+  /** Reference number or free-text match against titles. */
+  q: optionalTrimmed,
   offset: z.coerce.number().int().min(0).default(0),
   limit: z.coerce.number().int().min(1).max(48).default(12),
 });

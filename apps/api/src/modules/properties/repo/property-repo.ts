@@ -1,5 +1,5 @@
 import type { PropertyListQuery } from '@luxury-investment/shared';
-import { and, count, desc, eq, ne, type SQL } from 'drizzle-orm';
+import { and, count, desc, eq, gte, ilike, lte, ne, or, type SQL, sql } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
 import { properties } from '../../../infrastructure/db/schema.ts';
@@ -7,6 +7,10 @@ import { properties } from '../../../infrastructure/db/schema.ts';
 export type PropertyRow = typeof properties.$inferSelect;
 
 const PUBLISHED = 'published';
+
+function escapeLike(value: string): string {
+  return value.replace(/[\\%_]/g, '\\$&');
+}
 
 export class PropertyRepo {
   readonly #db: Database;
@@ -67,6 +71,37 @@ export class PropertyRepo {
     }
     if (query.market !== undefined) {
       clauses.push(eq(properties.market, query.market));
+    }
+    if (query.city !== undefined) {
+      clauses.push(ilike(properties.city, `%${escapeLike(query.city)}%`));
+    }
+    if (query.district !== undefined) {
+      clauses.push(ilike(properties.district, `%${escapeLike(query.district)}%`));
+    }
+    if (query.bedroomsMin !== undefined) {
+      clauses.push(gte(properties.bedrooms, query.bedroomsMin));
+    }
+    if (query.priceMin !== undefined) {
+      clauses.push(gte(sql`${properties.price}::numeric`, query.priceMin));
+    }
+    if (query.priceMax !== undefined) {
+      clauses.push(lte(sql`${properties.price}::numeric`, query.priceMax));
+    }
+    if (query.areaMin !== undefined) {
+      clauses.push(gte(sql`${properties.area}::numeric`, query.areaMin));
+    }
+    if (query.areaMax !== undefined) {
+      clauses.push(lte(sql`${properties.area}::numeric`, query.areaMax));
+    }
+    if (query.q !== undefined) {
+      const pattern = `%${escapeLike(query.q)}%`;
+      const textMatch = or(
+        ilike(properties.referenceNumber, pattern),
+        ilike(properties.titleBg, pattern),
+        ilike(properties.titleEn, pattern),
+        ilike(properties.slug, pattern),
+      );
+      if (textMatch) clauses.push(textMatch);
     }
     return clauses;
   }
