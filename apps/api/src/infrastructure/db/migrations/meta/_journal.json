@@ -148,6 +148,13 @@
       "when": 1793010740002,
       "tag": "0020_magical_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1793011154966,
+      "tag": "0021_goofy_leo",
+      "breakpoints": true
     }
   ]
 }

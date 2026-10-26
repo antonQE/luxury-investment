@@ -2,6 +2,7 @@ import type { Database } from '../client.ts';
 import { attributesSeed } from './attributes.ts';
 import { contactsSeed } from './contacts.ts';
 import { contentSeed } from './content.ts';
+import { crmTasksSeed } from './crm-tasks.ts';
 import { documentsSeed } from './documents.ts';
 import { inquiriesSeed } from './inquiries.ts';
 import { locationsSeed } from './locations.ts';
@@ -28,6 +29,7 @@ export const SEED_MODULES: SeedModule[] = [
   contactsSeed,
   inquiriesSeed,
   viewingsSeed,
+  crmTasksSeed,
   contentSeed,
   documentsSeed,
 ];

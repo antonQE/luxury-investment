@@ -1,7 +1,7 @@
 # LI-067: Offers register (basic)
 
 - Epic: EPIC-09
-- Status: Backlog
+- Status: In Progress
 - Priority: P1
 - Size: M
 - Area: api

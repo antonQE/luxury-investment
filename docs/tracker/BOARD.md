@@ -48,7 +48,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
-| [LI-066](tasks/LI-066-crm-tasks-basic.md) | CRM tasks schema + basic admin | EPIC-09 | M |
+| [LI-067](tasks/LI-067-offers-basic.md) | Offers register (basic) | EPIC-09 | M |
 
 ## Review
 
@@ -69,13 +69,13 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-067](tasks/LI-067-offers-basic.md) | Offers register (basic) | EPIC-09 | P1 | M | LI-059 |
 | [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 | P1 | M | LI-067 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-066](tasks/LI-066-crm-tasks-basic.md) | CRM tasks schema + basic admin | EPIC-09 |
 | [LI-065](tasks/LI-065-viewings-calendar-ui.md) | Viewings calendar UI (basic) | EPIC-09 |
 | [LI-064](tasks/LI-064-viewings-schema-api.md) | Viewings schema + admin API | EPIC-09 |
 | [LI-063](tasks/LI-063-contact-duplicate-hints.md) | Contact duplicate detection hints | EPIC-09 |

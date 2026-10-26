@@ -13,6 +13,7 @@ export const ROUTES = {
   INQUIRIES: '/inquiries',
   CONTACTS: '/contacts',
   VIEWINGS: '/viewings',
+  CRM_TASKS: '/crm-tasks',
   ARTICLES: '/articles',
   HANDBOOK: '/handbook',
   NOT_FOUND: '*',

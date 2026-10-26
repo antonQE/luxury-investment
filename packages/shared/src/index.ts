@@ -71,6 +71,22 @@ export {
   updateContactSchema,
   upsertPropertyOwnershipSchema,
 } from './crm.ts';
+export type {
+  CreateCrmTaskInput,
+  CrmTaskKind,
+  CrmTaskStatus,
+  ListCrmTasksQuery,
+  UpdateCrmTaskInput,
+} from './crm-tasks.ts';
+export {
+  createCrmTaskSchema,
+  CRM_TASK_KINDS,
+  CRM_TASK_STATUSES,
+  crmTaskKindSchema,
+  crmTaskStatusSchema,
+  listCrmTasksQuerySchema,
+  updateCrmTaskSchema,
+} from './crm-tasks.ts';
 export type { DocumentAccessLevel, DocumentKind } from './documents.ts';
 export {
   DOCUMENT_ACCESS_LEVELS,
