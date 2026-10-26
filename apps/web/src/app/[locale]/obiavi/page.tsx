@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
+import { SearchRequestForm } from '@/components/search/SearchRequestForm';
 import { Link } from '@/i18n/navigation';
 import { type CatalogFilters, fetchProperties } from '@/lib/api/catalog';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -55,6 +56,18 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
     return encoded === '' ? '/obiavi' : `/obiavi?${encoded}`;
   }
 
+  const filterSummary = new URLSearchParams(
+    Object.fromEntries(
+      Object.entries(filters).filter(
+        (entry): entry is [string, string] =>
+          typeof entry[1] === 'string' &&
+          entry[1] !== '' &&
+          entry[0] !== 'offset' &&
+          entry[0] !== 'limit',
+      ),
+    ),
+  ).toString();
+
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-12">
       <h1 className="font-serif text-4xl">{t('title')}</h1>
@@ -68,12 +81,13 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
         {loadError ? (
           <p data-testid="listings-error">{t('error')}</p>
         ) : result.data.length === 0 ? (
-          <div className="bg-paper p-10 text-center" data-testid="listings-empty">
+          <div className="mx-auto max-w-xl bg-paper p-10 text-center" data-testid="listings-empty">
             <p>{t('empty')}</p>
             <p className="mt-2 text-sm text-ink-soft">{t('emptyHint')}</p>
             <Link href="/obiavi" className="mt-4 inline-block text-gold-dark">
               {t('retry')}
             </Link>
+            <SearchRequestForm filterSummary={filterSummary} />
           </div>
         ) : (
           <PropertyGrid items={result.data} />

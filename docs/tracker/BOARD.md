@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-053`
+Next IDs: `EPIC-19`, `LI-055`
 
 
 ## Releases
@@ -41,7 +41,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
-| [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | In Progress |
+| [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Blocked |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
 
 ## In Progress
@@ -73,6 +73,8 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-054](tasks/LI-054-empty-search-inquiry.md) | Empty search results inquiry form | EPIC-07 |
+| [LI-053](tasks/LI-053-admin-offices-ui.md) | Admin offices CRUD UI | EPIC-08 |
 | [LI-052](tasks/LI-052-redirect-map-expansion.md) | Expand redirect map from current-site inventory | EPIC-17 |
 | [LI-050](tasks/LI-050-migration-runbook.md) | Migration runbook and launch checklist | EPIC-17 |
 | [LI-049](tasks/LI-049-consent-ga4-form-notices.md) | Consent-gated GA4 + form privacy links | EPIC-16 |

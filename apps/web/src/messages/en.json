@@ -168,6 +168,20 @@
     "legalTitle": "Legal services",
     "legalLead": "A separate track for legal advice and document samples. Stub page until the content epic."
   },
+  "SearchRequest": {
+    "title": "Send us your search",
+    "filtersLabel": "Current filters",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "What are you looking for?",
+    "consent": "I agree that my personal data may be processed for this search request.",
+    "privacyLink": "Privacy notice",
+    "submit": "Send request",
+    "submitting": "Sending…",
+    "success": "Thank you. We received your search and will get back to you.",
+    "error": "We could not send the request. Please try again."
+  },
   "Inquiry": {
     "title": "Enquiry",
     "inquiry": "Enquiry",

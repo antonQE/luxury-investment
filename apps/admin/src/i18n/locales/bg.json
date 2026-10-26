@@ -7,6 +7,7 @@
     "dashboard": "Табло",
     "properties": "Имоти",
     "team": "Екип",
+    "offices": "Офиси",
     "partners": "Партньори",
     "inquiries": "Запитвания",
     "articles": "Статии",
@@ -61,6 +62,22 @@
     "status_new": "Ново",
     "status_in_progress": "В процес",
     "status_closed": "Затворено"
+  },
+  "offices": {
+    "title": "Офиси",
+    "lead": "Публични адреси и заявки за карта. Архивиране вместо изтриване.",
+    "create": "Добави офис",
+    "slug": "Slug",
+    "nameBg": "Име (BG)",
+    "nameEn": "Име (EN)",
+    "addressBg": "Адрес (BG)",
+    "addressEn": "Адрес (EN)",
+    "mapQuery": "Заявка за карта",
+    "phone": "Телефон",
+    "email": "Имейл",
+    "archive": "Архивирай",
+    "loadError": "Офисите не можаха да се заредят.",
+    "saveError": "Записът не успя."
   },
   "partners": {
     "title": "Партньори",

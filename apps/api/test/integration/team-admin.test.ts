@@ -77,4 +77,27 @@ describe('admin team API', () => {
     await agent.post(`/v1/admin/team/${id}/archive`).expect(200);
     await request(buildApp()).get('/v1/admin/team').expect(401);
   });
+
+  it('lists, creates and archives offices', async () => {
+    const agent = await loginAgent();
+    const list = await agent.get('/v1/admin/offices').expect(200);
+    expect((list.body as { data: unknown[] }).data.length).toBeGreaterThan(0);
+
+    const created = await agent
+      .post('/v1/admin/offices')
+      .send({
+        slug: 'demo-new-office',
+        nameBg: 'Нов офис',
+        nameEn: 'New office',
+        addressBg: 'ул. Демо 1',
+        addressEn: 'Demo St 1',
+        mapQuery: 'Sofia Demo Office',
+        phone: '+359 000 000 099',
+        email: 'office.new@example.com',
+      })
+      .expect(201);
+    const id = (created.body as { data: { id: string } }).data.id;
+
+    await agent.post(`/v1/admin/offices/${id}/archive`).expect(200);
+  });
 });

@@ -8,6 +8,7 @@ export const ROUTES = {
   PROPERTY_NEW: '/properties/new',
   PROPERTY_EDIT: '/properties/:id',
   TEAM: '/team',
+  OFFICES: '/offices',
   PARTNERS: '/partners',
   INQUIRIES: '/inquiries',
   ARTICLES: '/articles',

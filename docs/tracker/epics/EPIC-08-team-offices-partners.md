@@ -21,4 +21,4 @@ Admins manage team members (agents, staff, lawyers, external partners), offices 
 
 ## Notes
 
-Basic R1: URL-based photos/logos; media pipeline can attach later. Qualifications stored as text on the member for now. Offices admin UI deferred (API ready); Team + Partners screens ship for R1.
+Basic R1: URL-based photos/logos; media pipeline can attach later. Qualifications stored as text on the member for now. Team, Partners and Offices admin screens ship for R1 (LI-053).
