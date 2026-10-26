@@ -4,6 +4,7 @@ import { PROPERTY_INQUIRY_TYPES, type PropertyInquiryType } from '@luxury-invest
 import { useTranslations } from 'next-intl';
 import { type SyntheticEvent, useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { postInquiry } from '@/lib/api/post-inquiry';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -126,7 +127,15 @@ export function InquiryForm({ propertySlug }: { propertySlug: string }) {
           className="mt-1"
           data-testid="inquiry-consent"
         />
-        <span>{t('consent')}</span>
+        <span>
+          {t('consent')}{' '}
+          <Link
+            href="/stranici/privacy"
+            className="underline underline-offset-2 hover:text-brass-dark"
+          >
+            {t('privacyLink')}
+          </Link>
+        </span>
       </label>
       {error !== null ? (
         <p className="text-sm text-red-800" data-testid="inquiry-error">

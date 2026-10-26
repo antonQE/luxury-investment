@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { Link } from '@/i18n/navigation';
 
 import { PRIMARY_NAV } from './nav';
@@ -55,6 +56,7 @@ export async function SiteFooter() {
           >
             {t('privacy')}
           </Link>
+          <CookieSettingsButton />
         </nav>
       </div>
       <div className="border-t border-brass/15 px-6 py-4 text-center text-xs text-stone/50">

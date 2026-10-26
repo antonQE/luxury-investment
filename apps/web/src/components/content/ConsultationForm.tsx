@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { type SyntheticEvent, useState } from 'react';
 
+import { Link } from '@/i18n/navigation';
 import { postInquiry } from '@/lib/api/post-inquiry';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -97,7 +98,15 @@ export function ConsultationForm() {
       </label>
       <label className="flex items-start gap-2 text-sm">
         <input name="consent" type="checkbox" required className="mt-1" />
-        <span>{t('consent')}</span>
+        <span>
+          {t('consent')}{' '}
+          <Link
+            href="/stranici/privacy"
+            className="underline underline-offset-2 hover:text-brass-dark"
+          >
+            {t('privacyLink')}
+          </Link>
+        </span>
       </label>
       <input
         name="website"

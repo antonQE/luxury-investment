@@ -6,6 +6,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 
+import { Analytics } from '@/components/consent/Analytics';
+import { CookieConsentBanner } from '@/components/consent/CookieConsentBanner';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { routing } from '@/i18n/routing';
@@ -46,6 +48,8 @@ export default async function LocaleLayout({ children }: { children: ReactNode }
           <SiteHeader />
           {children}
           <SiteFooter />
+          <CookieConsentBanner />
+          <Analytics measurementId={serverEnv().NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
         </NextIntlClientProvider>
       </body>
     </html>

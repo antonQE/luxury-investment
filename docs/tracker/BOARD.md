@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-048`
+Next IDs: `EPIC-19`, `LI-050`
 
 
 ## Releases
@@ -40,7 +40,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Backlog |
 | [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
-| [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Backlog |
+| [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
 | [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Backlog |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
 
@@ -72,6 +72,8 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-049](tasks/LI-049-consent-ga4-form-notices.md) | Consent-gated GA4 + form privacy links | EPIC-16 |
+| [LI-048](tasks/LI-048-cookie-consent-banner.md) | Cookie consent banner + preference storage | EPIC-16 |
 | [LI-047](tasks/LI-047-admin-handbook-upload.md) | Admin handbook upload/version UI (basic) | EPIC-13 |
 | [LI-046](tasks/LI-046-public-handbook-download.md) | Public handbook download API + page | EPIC-13 |
 | [LI-045](tasks/LI-045-documents-schema-seed.md) | Documents schema + download events + seed | EPIC-13 |

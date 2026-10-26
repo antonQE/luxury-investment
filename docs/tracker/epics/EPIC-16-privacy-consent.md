@@ -1,6 +1,6 @@
 # EPIC-16: Privacy and consent
 
-- Status: Backlog
+- Status: Done
 - Priority: P1
 - Source: 09 PRIV-001, SEC-001; 05 ANL-003; 11 I-02
 
@@ -10,9 +10,15 @@ Forms, CRM, analytics and marketing tracking follow consent and data-minimizatio
 
 ## Scope
 
-- In: consent management on the public site (analytics and advertising categories) wired to GA4/Meta tags and internal tracking; privacy notices on forms; legal basis and marketing consent / unsubscribe on contacts; export, anonymize and delete operations; retention settings and scheduled clean-up; backup and restore procedure with a test restore.
+- In (R1 basic): cookie consent banner (necessary vs analytics), privacy notices/links on public forms, GA4 loaded only after analytics consent when configured.
+- In (later): marketing consent/unsubscribe on contacts, export/anonymize/delete, retention jobs, backup/restore procedure.
 - Out: legal texts (provided by the client).
 
 ## Tasks
 
-Decomposed when the epic starts. Parts of it (form notices, consent checks) are added inside EPIC-07, EPIC-09 and EPIC-11 as those features are built.
+- LI-048: Cookie consent banner + preference storage — Done
+- LI-049: Consent-gated GA4 + form privacy links — Done
+
+## Notes
+
+R1 basics delivered. DSAR tooling and retention jobs remain for later releases.

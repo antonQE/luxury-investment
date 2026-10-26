@@ -31,6 +31,14 @@
     "legal": "Legal",
     "privacy": "Privacy"
   },
+  "CookieConsent": {
+    "title": "Cookies",
+    "body": "We use necessary cookies to run the site. Analytics cookies help us improve it and load only if you allow them.",
+    "privacyLink": "Privacy notice",
+    "necessaryOnly": "Necessary only",
+    "acceptAll": "Accept all",
+    "settings": "Cookie settings"
+  },
   "Home": {
     "eyebrow": "Boutique agency",
     "title": "Properties in Sofia, the Black Sea, Dubai and abroad",
@@ -169,6 +177,7 @@
     "phone": "Phone",
     "message": "Message",
     "consent": "I agree that my personal data may be processed to answer this enquiry.",
+    "privacyLink": "Privacy notice",
     "submit": "Send",
     "submitting": "Sending…",
     "success": "Thank you. We received your enquiry and will get back to you soon.",
@@ -207,6 +216,7 @@
     "phone": "Phone",
     "message": "Message",
     "consent": "I agree that my personal data may be processed for this consultation request.",
+    "privacyLink": "Privacy notice",
     "submit": "Send request",
     "submitting": "Sending…",
     "success": "Thank you. We received your request and will get back to you soon.",
