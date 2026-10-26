@@ -6,6 +6,9 @@ export {
   seededAttributeKeySchema,
 } from './attributes.ts';
 export type {
+  AcquisitionCostLine,
+  AcquisitionEstimate,
+  AcquisitionEstimateQuery,
   CalculatorCostGroup,
   CalculatorKind,
   CalculatorLineType,
@@ -17,6 +20,9 @@ export type {
   UpsertCalculatorToggleInput,
 } from './calculators.ts';
 export {
+  acquisitionCostLineSchema,
+  acquisitionEstimateQuerySchema,
+  acquisitionEstimateSchema,
   CALCULATOR_COST_GROUPS,
   CALCULATOR_KINDS,
   CALCULATOR_LINE_TYPES,

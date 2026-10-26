@@ -130,7 +130,21 @@
     "stage_act_14": "Act 14",
     "stage_act_16": "Act 16",
     "vat": "VAT: {label}",
-    "perMonth": "/ month"
+    "perMonth": "/ month",
+    "calculator": {
+      "title": "Acquisition estimate",
+      "lead": "Purchase price shown separately from accompanying costs for this country.",
+      "loading": "Calculating…",
+      "loadError": "Could not load the estimate.",
+      "disabled": "This calculator is disabled for this market.",
+      "insufficientData": "Not enough configured rates to show a reliable estimate.",
+      "purchasePrice": "Purchase price",
+      "costsTotal": "Accompanying costs",
+      "total": "Estimated total funds",
+      "assumed": "assumed",
+      "unknown": "—",
+      "disclaimer": "Indicative only — not a binding financial or legal offer."
+    }
   },
   "About": {
     "title": "About us",

@@ -95,3 +95,34 @@ export const listCalculatorRuleSetsQuerySchema = z
   }));
 
 export type ListCalculatorRuleSetsQuery = z.infer<typeof listCalculatorRuleSetsQuerySchema>;
+
+export const acquisitionEstimateQuerySchema = z.object({
+  /** Override price; defaults to the property listing price when slug is used. */
+  price: z.coerce.number().positive().optional(),
+});
+
+export type AcquisitionEstimateQuery = z.infer<typeof acquisitionEstimateQuerySchema>;
+
+export const acquisitionCostLineSchema = z.object({
+  costGroup: calculatorCostGroupSchema,
+  label: z.string(),
+  amount: z.number().nullable(),
+  optional: z.boolean(),
+  status: z.enum(['included', 'assumed', 'unknown']),
+});
+
+export type AcquisitionCostLine = z.infer<typeof acquisitionCostLineSchema>;
+
+export const acquisitionEstimateSchema = z.object({
+  status: z.enum(['ok', 'disabled', 'insufficient_data']),
+  countryCode: z.string().nullable(),
+  currency: z.string(),
+  purchasePrice: z.number(),
+  costs: z.array(acquisitionCostLineSchema),
+  costsTotal: z.number().nullable(),
+  totalAcquisition: z.number().nullable(),
+  warning: z.string().nullable(),
+  disclaimer: z.string(),
+});
+
+export type AcquisitionEstimate = z.infer<typeof acquisitionEstimateSchema>;

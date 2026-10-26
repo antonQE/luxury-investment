@@ -58,7 +58,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size |
 |---|---|---|---|---|
-| [LI-071](tasks/LI-071-acquisition-cost-calculator.md) | Acquisition cost calculator (API + property page) | EPIC-14 | P1 | M |
+| [LI-072](tasks/LI-072-deposit-calculator.md) | Deposit calculator (no double-counting) | EPIC-14 | P1 | M |
 
 ## Blocked
 
@@ -69,7 +69,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
-| [LI-072](tasks/LI-072-deposit-calculator.md) | Deposit calculator (no double-counting) | EPIC-14 | P1 | M | LI-071 |
 | [LI-073](tasks/LI-073-mortgage-estimate-cta.md) | Mortgage estimate + consultant CTA | EPIC-14 | P1 | M | LI-069 |
 | [LI-074](tasks/LI-074-exchange-rates-normalized-prices.md) | Exchange rates for normalized prices | EPIC-14 | P1 | M | — |
 
@@ -77,6 +76,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-071](tasks/LI-071-acquisition-cost-calculator.md) | Acquisition cost calculator (API + property page) | EPIC-14 |
 | [LI-070](tasks/LI-070-calculator-rules-admin-api.md) | Calculator rules admin API + audit | EPIC-14 |
 | [LI-069](tasks/LI-069-calculator-rules-schema-seed.md) | Calculator rules schema + seed | EPIC-14 |
 | [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 |

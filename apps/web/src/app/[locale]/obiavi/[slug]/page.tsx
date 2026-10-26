@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { AcquisitionCalculator } from '@/components/property/AcquisitionCalculator';
 import { InquiryForm } from '@/components/property/InquiryForm';
 import { MobileAgentBar } from '@/components/property/MobileAgentBar';
 import { PrintButton } from '@/components/property/PrintButton';
@@ -180,6 +181,13 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           <div className="mt-8 no-print">
             <InquiryForm propertySlug={property.slug} />
           </div>
+          {property.transactionType === 'sale' ? (
+            <AcquisitionCalculator
+              slug={property.slug}
+              price={property.price}
+              currency={property.currency}
+            />
+          ) : null}
         </aside>
       </div>
       <section className="mt-16 no-print" data-testid="similar-properties">

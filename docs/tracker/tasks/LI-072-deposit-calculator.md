@@ -1,7 +1,7 @@
 # LI-072: Deposit calculator (no double-counting)
 
 - Epic: EPIC-14
-- Status: Backlog
+- Status: Ready
 - Priority: P1
 - Size: M
 - Area: web
