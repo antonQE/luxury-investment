@@ -6,6 +6,7 @@ export { auditEntries } from '../../modules/audit/repo/audit.schema.ts';
 export { articles, pages } from '../../modules/content/repo/content.schema.ts';
 export { contactRoles, contacts } from '../../modules/crm/repo/contacts.schema.ts';
 export { crmTasks } from '../../modules/crm/repo/crm-tasks.schema.ts';
+export { deals } from '../../modules/crm/repo/deals.schema.ts';
 export { offers } from '../../modules/crm/repo/offers.schema.ts';
 export { propertyOwnerships } from '../../modules/crm/repo/property-ownerships.schema.ts';
 export { viewings } from '../../modules/crm/repo/viewings.schema.ts';

@@ -33,7 +33,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-06](epics/EPIC-06-public-site-shell-seo.md) | Public site shell, design system and SEO foundation | P1 | Done |
 | [EPIC-07](epics/EPIC-07-public-search-property-page.md) | Home page, search, results and property page | P1 | Done |
 | [EPIC-08](epics/EPIC-08-team-offices-partners.md) | Team, offices and partners | P1 | Done |
-| [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | In Progress |
+| [EPIC-09](epics/EPIC-09-crm.md) | CRM: contacts, inquiries, viewings, tasks, offers, deal stages | P1 | Done |
 | [EPIC-10](epics/EPIC-10-marketing-portals.md) | Marketing plan and external portal tracking | P1 | Backlog |
 | [EPIC-11](epics/EPIC-11-analytics-owner-reports.md) | Internal analytics, GA4 / Search Console, owner reports | P1 | Backlog |
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
@@ -48,7 +48,6 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
-| [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 | M |
 
 ## Review
 
@@ -74,6 +73,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-068](tasks/LI-068-deal-stages-basic.md) | Deal stages (basic) | EPIC-09 |
 | [LI-067](tasks/LI-067-offers-basic.md) | Offers register (basic) | EPIC-09 |
 | [LI-066](tasks/LI-066-crm-tasks-basic.md) | CRM tasks schema + basic admin | EPIC-09 |
 | [LI-065](tasks/LI-065-viewings-calendar-ui.md) | Viewings calendar UI (basic) | EPIC-09 |

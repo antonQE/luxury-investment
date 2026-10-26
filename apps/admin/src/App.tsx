@@ -21,6 +21,7 @@ const ContactsList = lazy(() => import('@/pages/Contacts/ContactsList'));
 const ViewingsCalendar = lazy(() => import('@/pages/Viewings/ViewingsCalendar'));
 const CrmTasksList = lazy(() => import('@/pages/CrmTasks/CrmTasksList'));
 const OffersList = lazy(() => import('@/pages/Offers/OffersList'));
+const DealsList = lazy(() => import('@/pages/Deals/DealsList'));
 const OfficesList = lazy(() => import('@/pages/Offices/OfficesList'));
 const PartnersList = lazy(() => import('@/pages/Partners/PartnersList'));
 const TeamList = lazy(() => import('@/pages/Team/TeamList'));
@@ -68,6 +69,7 @@ export default function App() {
             <Route path={ROUTES.VIEWINGS} element={<ViewingsCalendar />} />
             <Route path={ROUTES.CRM_TASKS} element={<CrmTasksList />} />
             <Route path={ROUTES.OFFERS} element={<OffersList />} />
+            <Route path={ROUTES.DEALS} element={<DealsList />} />
             <Route path={ROUTES.ARTICLES} element={<ArticlesList />} />
             <Route path={ROUTES.HANDBOOK} element={<HandbookAdmin />} />
           </Route>

@@ -1,6 +1,6 @@
 # EPIC-09: CRM: contacts, inquiries, viewings, tasks, offers and deal stages
 
-- Status: In Progress
+- Status: Done
 - Priority: P1
 - Source: 04 CRM-001..CRM-004; 07 INT-003 (basic); 11 D-02..D-04; FLOW-007, FLOW-012
 
@@ -31,8 +31,8 @@ Every inquiry from the site or entered manually lands in the CRM linked to the r
 - LI-065: Viewings calendar UI (basic) — Done
 - LI-066: CRM tasks schema + basic admin — Done
 - LI-067: Offers register (basic) — Done
-- LI-068: Deal stages (basic) — In Progress
+- LI-068: Deal stages (basic) — Done
 
 ## Notes
 
-R1 inbox delivered. R2 decomposition started 2026-10-26.
+R1 inbox delivered. R2 CRM (LI-059–068) completed 2026-10-26.

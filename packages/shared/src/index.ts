@@ -87,6 +87,14 @@ export {
   listCrmTasksQuerySchema,
   updateCrmTaskSchema,
 } from './crm-tasks.ts';
+export type { CreateDealInput, DealStage, ListDealsQuery, UpdateDealInput } from './deals.ts';
+export {
+  createDealSchema,
+  DEAL_STAGES,
+  dealStageSchema,
+  listDealsQuerySchema,
+  updateDealSchema,
+} from './deals.ts';
 export type { DocumentAccessLevel, DocumentKind } from './documents.ts';
 export {
   DOCUMENT_ACCESS_LEVELS,

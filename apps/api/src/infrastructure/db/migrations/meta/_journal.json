@@ -162,6 +162,13 @@
       "when": 1793011315023,
       "tag": "0022_little_stingray",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1793011476447,
+      "tag": "0023_simple_captain_marvel",
+      "breakpoints": true
     }
   ]
 }

@@ -3,6 +3,7 @@ import { attributesSeed } from './attributes.ts';
 import { contactsSeed } from './contacts.ts';
 import { contentSeed } from './content.ts';
 import { crmTasksSeed } from './crm-tasks.ts';
+import { dealsSeed } from './deals.ts';
 import { documentsSeed } from './documents.ts';
 import { inquiriesSeed } from './inquiries.ts';
 import { locationsSeed } from './locations.ts';
@@ -32,6 +33,7 @@ export const SEED_MODULES: SeedModule[] = [
   viewingsSeed,
   crmTasksSeed,
   offersSeed,
+  dealsSeed,
   contentSeed,
   documentsSeed,
 ];
