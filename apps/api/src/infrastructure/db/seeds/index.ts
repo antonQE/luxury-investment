@@ -12,6 +12,8 @@ import { locationsSeed } from './locations.ts';
 import { marketingSeed } from './marketing.ts';
 import { offersSeed } from './offers.ts';
 import { propertiesSeed } from './properties.ts';
+import { siteSettingsSeed } from './site-settings.ts';
+import { studioSeed } from './studio.ts';
 import { taxonomiesSeed } from './taxonomies.ts';
 import { teamSeed } from './team.ts';
 import { usersSeed } from './users.ts';
@@ -26,6 +28,7 @@ export interface SeedModule {
 /** Seed modules in the order they run. Reference data first, then content that points to it. */
 export const SEED_MODULES: SeedModule[] = [
   usersSeed,
+  siteSettingsSeed,
   locationsSeed,
   taxonomiesSeed,
   attributesSeed,
@@ -42,4 +45,5 @@ export const SEED_MODULES: SeedModule[] = [
   exchangeRatesSeed,
   contentSeed,
   documentsSeed,
+  studioSeed,
 ];

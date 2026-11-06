@@ -1,9 +1,12 @@
-/** Public R1 navigation — shared by header, mobile nav and footer. */
+/**
+ * Public navigation — shared by header, mobile nav and footer.
+ * Items with `children` are dropdown parents: the parent label does not navigate;
+ * only child links navigate (and close the menu).
+ */
 export const PRIMARY_NAV = [
   { href: '/', key: 'home' },
   { href: '/obiavi', key: 'properties' },
   {
-    href: '/investicii',
     key: 'investments',
     children: [
       { href: '/investicii', key: 'investmentsOverview' },

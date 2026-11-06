@@ -22,6 +22,8 @@ Until an ADR says otherwise, the baseline in `.cursor/skills/luxury-investment-w
 | [0010](0010-media-storage-and-jobs.md) | Media storage interface and background jobs | Accepted (delegated) | 2026-10-26 |
 | [0011](0011-transactional-email.md) | Transactional email (inquiry notifications) | Accepted (delegated) | 2026-10-26 |
 | [0012](0012-api-security-hardening.md) | API security hardening (sessions, login limit, admin Origin) | Accepted (delegated) | 2026-10-26 |
+| [0013](0013-pdf-and-image-rendering.md) | PDF and social image rendering (Playwright HTML → PDF/PNG) | Accepted (delegated) | 2026-11-03 |
+| [0014](0014-site-settings-key-value.md) | Site settings as key-value store | Accepted (delegated) | 2026-11-06 |
 
 ## Pending decisions
 
@@ -40,4 +42,4 @@ Taken when the epic that needs them starts (details and options in the [requirem
 | Consent management and GA4 | R12 | EPIC-16 | R1 |
 | Error monitoring (e.g. Sentry) | | first deployment | R1 |
 | Hosting | R8 | first deployment | R1 |
-| PDF and image rendering | R6 | EPIC-11, EPIC-15 | R2 |
+| PDF and image rendering | R6 | EPIC-11, EPIC-15 | R3 — decided: [ADR-0013](0013-pdf-and-image-rendering.md) |

@@ -17,9 +17,12 @@ export const ROUTES = {
   OFFERS: '/offers',
   DEALS: '/deals',
   ARTICLES: '/articles',
+  LANDINGS: '/landings',
   DOCUMENTS: '/documents',
   HANDBOOK: '/handbook',
   MARKETING: '/marketing',
+  STUDIO: '/studio',
+  SETTINGS: '/settings',
   NOT_FOUND: '*',
 } as const;
 

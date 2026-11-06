@@ -4,6 +4,7 @@ import type {
   Locale,
   PublicArticle,
   PublicArticleListItem,
+  PublicLanding,
   PublicPage,
 } from '@luxury-investment/shared';
 
@@ -33,6 +34,14 @@ export async function fetchArticle(locale: Locale, slug: string): Promise<Public
 export async function fetchPage(locale: Locale, slug: string): Promise<PublicPage> {
   const body = await apiGet<{ data: PublicPage }>(
     `/v1/public/pages/${encodeURIComponent(slug)}${queryString(locale)}`,
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: [CACHE_TAGS.content] },
+  );
+  return body.data;
+}
+
+export async function fetchLanding(locale: Locale, slug: string): Promise<PublicLanding> {
+  const body = await apiGet<{ data: PublicLanding }>(
+    `/v1/public/landings/${encodeURIComponent(slug)}${queryString(locale)}`,
     { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: [CACHE_TAGS.content] },
   );
   return body.data;

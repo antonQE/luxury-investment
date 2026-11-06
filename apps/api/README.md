@@ -63,6 +63,10 @@ For SQL that drizzle-kit cannot generate (extensions, triggers, data fixes): `np
 | `API_PORT` | `4000` | HTTP port |
 | `API_LOG_LEVEL` | `info` | pino level |
 | `API_CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Allowed browser origins (web, admin) |
+| `PUBLIC_SITE_URL` | `http://localhost:3000` | Public site origin for brochure QR / listing links (no trailing slash) |
+| `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` | (optional) | Override Chromium binary for PDF rendering (ADR-0013); otherwise Playwright browsers or system Chrome |
+
+Brochure PDF generation needs Chromium: CI runs `npx playwright install chromium`; locally `npx playwright install chromium` once, or rely on the system Chrome channel fallback.
 
 ## Catalog reference data (EPIC-03)
 

@@ -130,7 +130,7 @@ The reference stack is Fantasy_Web / Fantasy_Web_Admin (Vite SPA, Chakra UI, Tan
 - Why it matters: branded PDFs and PNG/JPG exports with toggled sections and previews (MEDIA-005, MEDIA-006, RPT-001). Not needed for the first milestones.
 - Options: A: headless Chromium (Playwright) rendering HTML templates in a separate Cloud Run service; one template technology for PDF and images. B: @react-pdf/renderer for PDF + Satori for images; lighter, two template systems with CSS limits.
 - Recommendation: A, decided when the brochure epic starts.
-- Decision: pending (not blocking)
+- Decision: [ADR-0013](../adr/0013-pdf-and-image-rendering.md) — Playwright HTML templates in the API (R3).
 
 ### R7: Authentication, 2FA and permissions
 

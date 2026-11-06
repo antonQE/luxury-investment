@@ -14,7 +14,7 @@ packages/
 docs/         requirements, architecture, decisions (ADR), task tracker
 ```
 
-How the parts fit together: [docs/architecture.md](docs/architecture.md). Working agreements for people and AI agents: [AGENTS.md](AGENTS.md). Current work: [docs/tracker/BOARD.md](docs/tracker/BOARD.md).
+How the parts fit together: [docs/architecture.md](docs/architecture.md). What each app does in the UI (filters, forms, tabs): [docs/guides/](docs/guides/README.md). Working agreements for people and AI agents: [AGENTS.md](AGENTS.md). Current work: [docs/tracker/BOARD.md](docs/tracker/BOARD.md).
 
 ## Prerequisites
 

@@ -1,81 +1,67 @@
-import { getTranslations } from 'next-intl/server';
+import { toTelHref } from '@luxury-investment/shared';
 
 import { Link } from '@/i18n/navigation';
+import { fetchSiteSettings } from '@/lib/api/site-settings';
 
+import { DesktopNav } from './DesktopNav';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { MobileNav } from './MobileNav';
-import { PRIMARY_NAV } from './nav';
+
+function PhoneIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      className={className}
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.528-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+      />
+    </svg>
+  );
+}
 
 export async function SiteHeader() {
-  const t = await getTranslations('Nav');
+  const settings = await fetchSiteSettings().catch(() => ({
+    publicPhone: null as string | null,
+    publicEmail: null as string | null,
+  }));
+  const phoneLabel = settings.publicPhone;
+  const phoneHref = toTelHref(phoneLabel);
 
   return (
     <header
       className="relative z-40 animate-fade-in border-b border-white/10 bg-void/95 text-stone backdrop-blur-md"
       data-testid="site-header"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4 md:py-5">
+      <div className="mx-auto flex max-w-7xl flex-nowrap items-center gap-3 px-4 py-3 lg:gap-5 lg:px-6 lg:py-4">
         <Link
           href="/"
-          className="font-serif text-lg tracking-[0.04em] text-stone md:text-xl"
+          className="shrink-0 whitespace-nowrap font-serif text-base tracking-[0.04em] text-stone lg:text-lg"
           data-testid="site-logo"
         >
           Luxury Investment
         </Link>
-        <nav
-          className="hidden items-center gap-8 md:flex"
-          aria-label={t('mainNav')}
-          data-testid="desktop-nav"
-        >
-          {PRIMARY_NAV.map((item) =>
-            'children' in item ? (
-              <div key={item.href} className="group relative">
-                <Link
-                  href={item.href}
-                  className="text-[13px] tracking-[0.04em] text-stone/70 transition hover:text-brass"
-                  data-testid={`nav-${item.key}`}
-                >
-                  {t(item.key)}
-                </Link>
-                <div
-                  className="invisible absolute left-0 top-full z-30 min-w-[12rem] pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
-                  data-testid={`nav-${item.key}-submenu`}
-                >
-                  <ul className="border border-white/10 bg-void/95 py-2 backdrop-blur-md">
-                    {item.children.map((child) => (
-                      <li key={child.href}>
-                        <Link
-                          href={child.href}
-                          className="block px-4 py-2.5 text-[13px] text-stone/70 transition hover:text-brass"
-                          data-testid={`nav-${child.key}`}
-                        >
-                          {t(child.key)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-[13px] tracking-[0.04em] text-stone/70 transition hover:text-brass"
-                data-testid={`nav-${item.key}`}
-              >
-                {t(item.key)}
-              </Link>
-            ),
-          )}
-        </nav>
-        <div className="flex items-center gap-5">
-          <a
-            href="tel:+35920000000"
-            className="hidden text-[13px] tracking-wide text-brass md:inline"
-            data-testid="header-phone"
-          >
-            {t('phone')}
-          </a>
+
+        <DesktopNav />
+
+        <div className="ml-auto flex shrink-0 flex-nowrap items-center gap-3 lg:gap-4">
+          {phoneHref !== null && phoneLabel !== null ? (
+            <a
+              href={phoneHref}
+              className="inline-flex size-9 items-center justify-center text-brass transition hover:text-brass-dark"
+              aria-label={phoneLabel}
+              title={phoneLabel}
+              data-testid="header-phone"
+            >
+              <PhoneIcon className="size-5" />
+            </a>
+          ) : null}
           <LanguageSwitcher />
           <MobileNav />
         </div>

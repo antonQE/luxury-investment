@@ -34,6 +34,8 @@ const envSchema = z.object({
    * Only this profile should carry a credit-consultant qualification.
    */
   CREDIT_CONSULTANT_TEAM_SLUG: z.string().min(1).default('demo-credit-consultant'),
+  /** Public site origin for brochure QR / listing links (no trailing slash). */
+  PUBLIC_SITE_URL: z.url().default('http://localhost:3000'),
 });
 
 export type Env = z.infer<typeof envSchema>;

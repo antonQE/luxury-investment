@@ -117,12 +117,12 @@ export class ContentAdminService {
     return inserted;
   }
 
-  async publishArticle(id: string) {
+  async publishArticle(id: string, publishAt?: Date) {
     const [row] = await this.#db
       .update(articles)
       .set({
         status: 'published',
-        publishedAt: new Date(),
+        publishedAt: publishAt ?? new Date(),
         updatedAt: new Date(),
       })
       .where(and(eq(articles.id, id), isNull(articles.archivedAt)))
@@ -194,12 +194,12 @@ export class ContentAdminService {
     return inserted;
   }
 
-  async publishPage(id: string) {
+  async publishPage(id: string, publishAt?: Date) {
     const [row] = await this.#db
       .update(pages)
       .set({
         status: 'published',
-        publishedAt: new Date(),
+        publishedAt: publishAt ?? new Date(),
         updatedAt: new Date(),
       })
       .where(and(eq(pages.id, id), isNull(pages.archivedAt)))

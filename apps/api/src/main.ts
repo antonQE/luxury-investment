@@ -20,8 +20,11 @@ import { catalogAdminRouter } from './modules/catalog/handlers/catalog-admin-han
 import { CatalogRepo } from './modules/catalog/repo/catalog-repo.ts';
 import { ContentAdminService } from './modules/content/app/content-admin-service.ts';
 import { ContentPublicService } from './modules/content/app/content-public-service.ts';
+import { LandingAdminService } from './modules/content/app/landing-admin-service.ts';
+import { LandingPublicService } from './modules/content/app/landing-public-service.ts';
 import { contentAdminRouter } from './modules/content/handlers/content-admin-handlers.ts';
 import { contentPublicRouter } from './modules/content/handlers/content-public-handlers.ts';
+import { landingAdminRouter } from './modules/content/handlers/landing-admin-handlers.ts';
 import { PropertyOwnershipService } from './modules/crm/app/property-ownership-service.ts';
 import { contactAdminRouter } from './modules/crm/handlers/contact-admin-handlers.ts';
 import { crmTaskAdminRouter } from './modules/crm/handlers/crm-task-admin-handlers.ts';
@@ -54,6 +57,13 @@ import { PropertyHistoryService } from './modules/properties/app/property-histor
 import { propertyAdminRouter } from './modules/properties/handlers/property-admin-handlers.ts';
 import { propertyPublicRouter } from './modules/properties/handlers/property-public-handlers.ts';
 import { PropertyRepo } from './modules/properties/repo/property-repo.ts';
+import { SiteSettingsService } from './modules/site-settings/app/site-settings-service.ts';
+import { siteSettingsAdminRouter } from './modules/site-settings/handlers/site-settings-admin-handlers.ts';
+import { siteSettingsPublicRouter } from './modules/site-settings/handlers/site-settings-public-handlers.ts';
+import { BrochureService } from './modules/studio/app/brochure-service.ts';
+import { PdfRenderer } from './modules/studio/app/pdf-renderer.ts';
+import { studioAdminRouter } from './modules/studio/handlers/studio-admin-handlers.ts';
+import { StudioRepo } from './modules/studio/repo/studio-repo.ts';
 import { TeamAdminService } from './modules/team/app/team-admin-service.ts';
 import { TeamPublicService } from './modules/team/app/team-public-service.ts';
 import { teamAdminRouter } from './modules/team/handlers/team-admin-handlers.ts';
@@ -78,6 +88,9 @@ const teamPublic = new TeamPublicService(database.db);
 const teamAdmin = new TeamAdminService(database.db);
 const contentPublic = new ContentPublicService(database.db);
 const contentAdmin = new ContentAdminService(database.db);
+const landingAdmin = new LandingAdminService(database.db);
+const landingPublic = new LandingPublicService(database.db);
+const siteSettings = new SiteSettingsService(database.db);
 const documentPublic = new DocumentPublicService(database.db, storage);
 const documentAdmin = new DocumentAdminService(database.db, storage);
 const userRepo = new UserRepo(database.db);
@@ -95,6 +108,13 @@ const exchangeRatesRepo = new ExchangeRatesRepo(database.db);
 const marketingRepo = new MarketingRepo(database.db);
 const analyticsRepo = new AnalyticsRepo(database.db);
 const ownerReportService = new OwnerReportService(analyticsRepo);
+const pdfRenderer = new PdfRenderer();
+const brochureService = new BrochureService(
+  new StudioRepo(database.db),
+  storage,
+  pdfRenderer,
+  env.PUBLIC_SITE_URL,
+);
 const acquisitionEstimate = new AcquisitionEstimateService(database.db);
 const depositEstimate = new DepositEstimateService(database.db);
 const mortgageEstimate = new MortgageEstimateService(database.db, env.CREDIT_CONSULTANT_TEAM_SLUG);
@@ -114,7 +134,8 @@ const app = createApp({
     analyticsPublicRouter(analyticsRepo),
     mediaPublicRouter(mediaService),
     teamPublicRouter(teamPublic),
-    contentPublicRouter(contentPublic),
+    contentPublicRouter(contentPublic, landingPublic),
+    siteSettingsPublicRouter(siteSettings),
     documentPublicRouter(documentPublic),
   ],
   adminPublicRouters: [adminAuth.publicRouter],
@@ -134,10 +155,13 @@ const app = createApp({
     exchangeRatesAdminRouter(exchangeRatesRepo, auditService),
     marketingAdminRouter(marketingRepo),
     analyticsAdminRouter(analyticsRepo, ownerReportService),
+    studioAdminRouter(brochureService),
     mediaAdminRouter(mediaService),
     teamAdminRouter(teamAdmin),
     inquiryAdminRouter(inquiryRepo),
     contentAdminRouter(contentAdmin),
+    landingAdminRouter(landingAdmin),
+    siteSettingsAdminRouter(siteSettings),
     documentAdminRouter(documentAdmin),
   ],
 });
@@ -149,7 +173,12 @@ const server = app.listen(env.API_PORT, () => {
 function shutdown(signal: string): void {
   logger.info(`${signal} received, shutting down`);
   server.close(() => {
-    void database.close().finally(() => process.exit(0));
+    void pdfRenderer
+      .close()
+      .catch(() => undefined)
+      .finally(() => {
+        void database.close().finally(() => process.exit(0));
+      });
   });
 }
 

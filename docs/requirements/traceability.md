@@ -84,7 +84,7 @@ Releases: R1 replace the current site, R2 agency operations, R3 growth ([02-curr
 | SEO-001 Metadata, slugs, 301, hreflang, sitemap, robots | EPIC-06, EPIC-04 | R1 |
 | SEO-001 SEO assistant, curated SEO pages | EPIC-12 | R3 |
 | CONTENT-001 Articles (basic: sources, BG/EN, linked properties, drafts) | EPIC-12 | R1 |
-| CONTENT-001 Scheduling, approval roles, AI tools | EPIC-12 | R3 |
+| CONTENT-001 Scheduling, approval roles (AI tools deferred) | EPIC-12 | R3 (scheduling); AI out of R3 |
 | CONTENT-002 "Sell with us" | EPIC-12 | R1 |
 | CONTENT-003 Partners carousel, team | EPIC-08 | R1 |
 | CONTENT-003 Landing page builder | EPIC-12 | R3 |

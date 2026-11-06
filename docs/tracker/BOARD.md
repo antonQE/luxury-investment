@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-084`
+Next IDs: `EPIC-19`, `LI-096`
 
 
 ## Releases
@@ -17,7 +17,7 @@ R1 approved on 2026-10-25; R2 and R3 are the planned order. Details: [02-current
 |---|---|---|
 | R1 | Replace the current site: same public functionality, new platform and design, seller handbook, full migration | EPIC-01..08 (basic scope), EPIC-09 inquiries inbox, EPIC-12 articles, pages and "Sell with us", EPIC-13 seller handbook, EPIC-16 basics, EPIC-17 |
 | R2 | Agency operations: CRM, marketing tracking, owner reports, document library, calculators | EPIC-09 rest, EPIC-10, EPIC-11, EPIC-13 rest, EPIC-14 |
-| R3 | Growth: landing builder, AI assistant, brochures and studio, later extensions | EPIC-12 rest, EPIC-15, EPIC-18 |
+| R3 | Growth: landing builder, brochures and studio, later extensions (no AI assistant) | EPIC-12 rest, EPIC-15, EPIC-18 later |
 
 ## Epics
 
@@ -39,7 +39,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-12](epics/EPIC-12-content-landing-pages.md) | Content: articles, pages, "Sell with us", landing pages | P1 / P2 | Done |
 | [EPIC-13](epics/EPIC-13-documents-handbook.md) | Document library, seller handbook, download counters | P1 | Done |
 | [EPIC-14](epics/EPIC-14-calculators-markets.md) | Calculators and market rules | P1 | Done |
-| [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Backlog |
+| [EPIC-15](epics/EPIC-15-brochures-marketing-studio.md) | Brochures, print and marketing studio | P1 / P2 | Done |
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
 | [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Done |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
@@ -73,6 +73,18 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-095](tasks/LI-095-site-public-phone-setting.md) | Site public phone setting (admin) | EPIC-06 |
+| [LI-094](tasks/LI-094-content-publish-at-basic.md) | Content publish-at scheduling (basic) | EPIC-12 |
+| [LI-093](tasks/LI-093-curated-seo-landings.md) | Curated SEO category landings (basic) | EPIC-12 |
+| [LI-092](tasks/LI-092-public-landing-routes.md) | Public landing routes + inquiry attribution | EPIC-12 |
+| [LI-091](tasks/LI-091-landing-admin-builder.md) | Landing admin builder (basic) | EPIC-12 |
+| [LI-090](tasks/LI-090-landing-pages-schema.md) | Landing pages schema + section types | EPIC-12 |
+| [LI-089](tasks/LI-089-studio-channel-copy.md) | Studio channel copy snippets (BG/EN) | EPIC-15 |
+| [LI-088](tasks/LI-088-social-asset-export.md) | Social asset image export | EPIC-15 |
+| [LI-087](tasks/LI-087-marketing-studio-admin-ui.md) | Marketing studio admin UI (basic) | EPIC-15 |
+| [LI-086](tasks/LI-086-brochure-pdf-generate-api.md) | Property brochure PDF generate API | EPIC-15 |
+| [LI-085](tasks/LI-085-brochure-templates-schema.md) | Brochure templates schema + seed | EPIC-15 |
+| [LI-084](tasks/LI-084-pdf-image-rendering-adr.md) | PDF and social image rendering ADR | EPIC-15 |
 | [LI-083](tasks/LI-083-owner-reports-basic.md) | Owner report basic (JSON + admin) | EPIC-11 |
 | [LI-082](tasks/LI-082-property-events-schema.md) | Property event tracking schema + ingest | EPIC-11 |
 | [LI-081](tasks/LI-081-marketing-portals-admin-ui.md) | Marketing + portals admin UI (basic) | EPIC-10 |

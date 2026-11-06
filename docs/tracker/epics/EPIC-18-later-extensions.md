@@ -10,9 +10,9 @@ Extensions the architecture must allow from the start but that ship after the co
 
 ## Scope
 
-- In: map search with viewport filtering; favorites, compare, saved and shared searches; free-text search improvements; deals with commissions and payments under restricted access; matching client searches with properties; Google/Outlook calendar sync; analytics alerts and period comparisons; agency analytics and campaign efficiency; AI writing assistant; direct publishing to Meta and portals where APIs and permissions exist.
-- Out: anything requiring unavailable APIs; such features get an honest "not supported" message instead.
+- In: map search with viewport filtering; favorites, compare, saved and shared searches; free-text search improvements; deals with commissions and payments under restricted access; matching client searches with properties; Google/Outlook calendar sync; analytics alerts and period comparisons; agency analytics and campaign efficiency; direct publishing to Meta and portals where APIs and permissions exist.
+- Out: anything requiring unavailable APIs; such features get an honest "not supported" message instead. **AI writing assistant** is not scheduled in R3 (product decision 2026-11-03); keep it here only if revived later.
 
 ## Tasks
 
-Each item becomes its own epic or task when it is scheduled.
+Not decomposed for the first R3 slice (EPIC-15 + EPIC-12 landing builder). Each item becomes its own epic or task when scheduled after studio/landings.

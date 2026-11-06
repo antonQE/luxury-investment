@@ -204,6 +204,34 @@
       "when": 1793014964090,
       "tag": "0028_blushing_secret_warriors",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1793691146297,
+      "tag": "0029_tired_genesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1793691293933,
+      "tag": "0030_damp_the_order",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1793692755870,
+      "tag": "0031_tough_johnny_blaze",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1793960685300,
+      "tag": "0032_sloppy_weapon_omega",
+      "breakpoints": true
     }
   ]
 }

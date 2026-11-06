@@ -1,5 +1,6 @@
 import { MARKETS, type PublicPartner } from '@luxury-investment/shared';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PropertyGrid } from '@/components/property/PropertyGrid';
@@ -53,11 +54,18 @@ export default async function HomePage() {
         <RemoteImage src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-void/75 via-void/70 to-void/90" />
         <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-6 pb-16 pt-28 md:pb-24 md:pt-32">
-          <p className="animate-fade-up font-serif text-3xl tracking-[0.04em] text-stone md:text-5xl">
-            Luxury Investment
-          </p>
+          <div className="animate-fade-up" data-testid="home-brand-logo">
+            <Image
+              src="/brand/logo-luxury-investment.png"
+              alt="Luxury Investment — Boutique Real Estate Agency"
+              width={1024}
+              height={237}
+              priority
+              className="h-auto w-full max-w-xl md:max-w-2xl"
+            />
+          </div>
           <h1
-            className="animate-fade-up mt-5 max-w-2xl font-serif text-2xl leading-snug text-stone/90 md:text-3xl md:leading-snug"
+            className="animate-fade-up mt-8 max-w-2xl font-serif text-2xl leading-snug text-stone/90 md:text-3xl md:leading-snug"
             style={{ animationDelay: '80ms' }}
           >
             {t('title')}

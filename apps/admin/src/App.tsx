@@ -15,9 +15,12 @@ const PropertiesList = lazy(() => import('@/pages/Properties/PropertiesList'));
 const PropertyEditor = lazy(() => import('@/pages/Properties/PropertyEditor'));
 const PropertyTypes = lazy(() => import('@/pages/PropertyTypes/PropertyTypes'));
 const ArticlesList = lazy(() => import('@/pages/Articles/ArticlesList'));
+const LandingsAdmin = lazy(() => import('@/pages/Landings/LandingsAdmin'));
 const DocumentLibraryAdmin = lazy(() => import('@/pages/Documents/DocumentLibraryAdmin'));
 const HandbookAdmin = lazy(() => import('@/pages/Documents/HandbookAdmin'));
 const MarketingAdmin = lazy(() => import('@/pages/Marketing/MarketingAdmin'));
+const MarketingStudio = lazy(() => import('@/pages/Studio/MarketingStudio'));
+const SiteSettingsPage = lazy(() => import('@/pages/Settings/SiteSettings'));
 const InquiriesInbox = lazy(() => import('@/pages/Inquiries/InquiriesInbox'));
 const ContactsList = lazy(() => import('@/pages/Contacts/ContactsList'));
 const ViewingsCalendar = lazy(() => import('@/pages/Viewings/ViewingsCalendar'));
@@ -73,9 +76,12 @@ export default function App() {
             <Route path={ROUTES.OFFERS} element={<OffersList />} />
             <Route path={ROUTES.DEALS} element={<DealsList />} />
             <Route path={ROUTES.ARTICLES} element={<ArticlesList />} />
+            <Route path={ROUTES.LANDINGS} element={<LandingsAdmin />} />
             <Route path={ROUTES.DOCUMENTS} element={<DocumentLibraryAdmin />} />
             <Route path={ROUTES.HANDBOOK} element={<HandbookAdmin />} />
             <Route path={ROUTES.MARKETING} element={<MarketingAdmin />} />
+            <Route path={ROUTES.STUDIO} element={<MarketingStudio />} />
+            <Route path={ROUTES.SETTINGS} element={<SiteSettingsPage />} />
           </Route>
         </Route>
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />

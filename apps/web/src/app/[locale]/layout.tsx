@@ -36,6 +36,10 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(serverEnv().SITE_URL),
     title: { default: t('defaultTitle'), template: `%s | ${t('siteName')}` },
     description: t('defaultDescription'),
+    icons: {
+      icon: [{ url: '/favicon.png', type: 'image/png', sizes: '120x120' }],
+      apple: [{ url: '/apple-icon.png', type: 'image/png', sizes: '120x120' }],
+    },
   };
 }
 
@@ -44,11 +48,15 @@ export default async function LocaleLayout({ children }: { children: ReactNode }
 
   return (
     <html lang={locale} className={`${display.variable} ${body.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans antialiased">
+      <body className="flex min-h-screen flex-col bg-void font-sans antialiased">
         <NextIntlClientProvider>
           <NavigationProgress />
           <SiteHeader />
-          <div className="page-enter flex flex-1 flex-col">{children}</div>
+          {/*
+            Content is only as tall as the page — do not flex-grow.
+            Growing left a large cream band under the dark header on short pages.
+          */}
+          <div className="page-enter page-surface">{children}</div>
           <SiteFooter />
           <CookieConsentBanner />
           <Analytics measurementId={serverEnv().NEXT_PUBLIC_GA4_MEASUREMENT_ID} />

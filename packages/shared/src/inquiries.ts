@@ -15,6 +15,7 @@ export const INQUIRY_SOURCES = [
   'website',
   'property_form',
   'seller_landing',
+  'landing',
   'phone',
   'email',
   'portal',

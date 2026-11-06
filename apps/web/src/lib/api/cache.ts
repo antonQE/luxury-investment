@@ -6,4 +6,5 @@ export const CACHE_TAGS = {
   property: (slug: string) => `property:${slug}`,
   team: 'team',
   content: 'content',
+  siteSettings: 'site-settings',
 } as const;

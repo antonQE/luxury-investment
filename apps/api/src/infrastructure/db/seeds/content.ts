@@ -1,6 +1,7 @@
+import { DEMO_SELLERS_LANDING_SLUG } from '@luxury-investment/shared';
 import { eq } from 'drizzle-orm';
 
-import { articles, pages, translations } from '../schema.ts';
+import { articles, landingPages, landingSections, pages, translations } from '../schema.ts';
 import type { SeedModule } from './index.ts';
 
 async function writeTranslation(
@@ -203,6 +204,196 @@ export const contentSeed: SeedModule = {
       await writeTranslation(db, 'page', id, 'title', 'en', row.titleEn);
       await writeTranslation(db, 'page', id, 'body', 'bg', row.bodyBg);
       await writeTranslation(db, 'page', id, 'body', 'en', row.bodyEn);
+    }
+
+    const [existingLanding] = await db
+      .select({ id: landingPages.id })
+      .from(landingPages)
+      .where(eq(landingPages.key, 'demo-sellers'))
+      .limit(1);
+
+    let landingId = existingLanding?.id;
+    if (landingId === undefined) {
+      const [inserted] = await db
+        .insert(landingPages)
+        .values({
+          key: 'demo-sellers',
+          slug: DEMO_SELLERS_LANDING_SLUG,
+          status: 'published',
+          titleBg: 'Демо: За продавачи',
+          titleEn: 'Demo: For sellers',
+          seoTitleBg: 'Продайте имота си с Luxury Investment',
+          seoTitleEn: 'Sell your property with Luxury Investment',
+          seoDescriptionBg: 'Демо лендинг за продавачи. Не е в главното меню.',
+          seoDescriptionEn: 'Demo sellers landing. Not in the main nav.',
+          robots: 'index,follow',
+          showInNav: false,
+          campaignKey: 'sellers_demo',
+          publishedAt: new Date('2026-03-01T10:00:00.000Z'),
+          sortOrder: 1,
+        })
+        .returning({ id: landingPages.id });
+      landingId = inserted?.id;
+    } else {
+      await db
+        .update(landingPages)
+        .set({
+          slug: DEMO_SELLERS_LANDING_SLUG,
+          status: 'published',
+          titleBg: 'Демо: За продавачи',
+          titleEn: 'Demo: For sellers',
+          seoTitleBg: 'Продайте имота си с Luxury Investment',
+          seoTitleEn: 'Sell your property with Luxury Investment',
+          seoDescriptionBg: 'Демо лендинг за продавачи. Не е в главното меню.',
+          seoDescriptionEn: 'Demo sellers landing. Not in the main nav.',
+          robots: 'index,follow',
+          showInNav: false,
+          campaignKey: 'sellers_demo',
+          publishedAt: new Date('2026-03-01T10:00:00.000Z'),
+          sortOrder: 1,
+          archivedAt: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(landingPages.id, landingId));
+    }
+
+    if (landingId !== undefined) {
+      await db.delete(landingSections).where(eq(landingSections.landingPageId, landingId));
+      await db.insert(landingSections).values([
+        {
+          landingPageId: landingId,
+          type: 'hero',
+          sortOrder: 0,
+          payload: {
+            headline: { bg: 'Продайте спокойно', en: 'Sell with confidence' },
+            subheadline: {
+              bg: 'Демо лендинг за продавачи — измислено съдържание.',
+              en: 'Demo sellers landing — fictional content.',
+            },
+            ctaLabel: { bg: 'Заявете консултация', en: 'Request a consultation' },
+            ctaHref: '#cta',
+          },
+        },
+        {
+          landingPageId: landingId,
+          type: 'benefits',
+          sortOrder: 1,
+          payload: {
+            title: { bg: 'Защо с нас', en: 'Why work with us' },
+            items: [
+              {
+                title: { bg: 'Локален опит', en: 'Local expertise' },
+                body: { bg: 'Демо предимство.', en: 'Demo benefit.' },
+              },
+              {
+                title: { bg: 'Прозрачен процес', en: 'Transparent process' },
+                body: { bg: 'Демо предимство.', en: 'Demo benefit.' },
+              },
+            ],
+          },
+        },
+        {
+          landingPageId: landingId,
+          type: 'cta_form',
+          sortOrder: 2,
+          payload: {
+            title: { bg: 'Свържете се с нас', en: 'Get in touch' },
+            body: {
+              bg: 'Формата записва запитване с source=landing и UTM от кампанията.',
+              en: 'The form records an inquiry with source=landing and campaign UTMs.',
+            },
+            inquirySource: 'landing_sellers',
+            submitLabel: { bg: 'Изпрати', en: 'Send' },
+          },
+        },
+      ]);
+    }
+
+    const [existingSeo] = await db
+      .select({ id: landingPages.id })
+      .from(landingPages)
+      .where(eq(landingPages.key, 'demo-seo-sofia-apartments'))
+      .limit(1);
+
+    let seoId = existingSeo?.id;
+    if (seoId === undefined) {
+      const [inserted] = await db
+        .insert(landingPages)
+        .values({
+          key: 'demo-seo-sofia-apartments',
+          slug: 'apartamenti-sofia',
+          status: 'published',
+          titleBg: 'Демо: Апартаменти в София',
+          titleEn: 'Demo: Apartments in Sofia',
+          seoTitleBg: 'Апартаменти за продажба в София | Luxury Investment',
+          seoTitleEn: 'Apartments for sale in Sofia | Luxury Investment',
+          seoDescriptionBg: 'Подбрани апартаменти в София. Демо SEO категория.',
+          seoDescriptionEn: 'Curated Sofia apartments. Demo SEO category landing.',
+          robots: 'index,follow',
+          showInNav: false,
+          campaignKey: 'seo_sofia_apartments',
+          publishedAt: new Date('2026-03-01T10:00:00.000Z'),
+          sortOrder: 2,
+        })
+        .returning({ id: landingPages.id });
+      seoId = inserted?.id;
+    } else {
+      await db
+        .update(landingPages)
+        .set({
+          slug: 'apartamenti-sofia',
+          status: 'published',
+          titleBg: 'Демо: Апартаменти в София',
+          titleEn: 'Demo: Apartments in Sofia',
+          seoTitleBg: 'Апартаменти за продажба в София | Luxury Investment',
+          seoTitleEn: 'Apartments for sale in Sofia | Luxury Investment',
+          seoDescriptionBg: 'Подбрани апартаменти в София. Демо SEO категория.',
+          seoDescriptionEn: 'Curated Sofia apartments. Demo SEO category landing.',
+          robots: 'index,follow',
+          showInNav: false,
+          campaignKey: 'seo_sofia_apartments',
+          publishedAt: new Date('2026-03-01T10:00:00.000Z'),
+          sortOrder: 2,
+          archivedAt: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(landingPages.id, seoId));
+    }
+
+    if (seoId !== undefined) {
+      await db.delete(landingSections).where(eq(landingSections.landingPageId, seoId));
+      await db.insert(landingSections).values([
+        {
+          landingPageId: seoId,
+          type: 'hero',
+          sortOrder: 0,
+          payload: {
+            headline: {
+              bg: 'Апартаменти в София',
+              en: 'Apartments in Sofia',
+            },
+            subheadline: {
+              bg: 'Редакционен SEO лендинг с филтрирани обяви от каталога.',
+              en: 'Editorial SEO landing with filtered catalogue listings.',
+            },
+          },
+        },
+        {
+          landingPageId: seoId,
+          type: 'related_listings',
+          sortOrder: 1,
+          payload: {
+            title: { bg: 'Подбрани обяви', en: 'Featured listings' },
+            propertyIds: [],
+            filter: {
+              market: 'sofia',
+              propertyType: 'apartment',
+              transactionType: 'sale',
+              limit: 12,
+            },
+          },
+        },
+      ]);
     }
   },
 };

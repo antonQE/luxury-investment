@@ -107,7 +107,7 @@ Same public functionality as today, built properly, plus migration. Everything h
 
 | Release 1 | Release 2 | Release 3 |
 |---|---|---|
-| EPIC-01..08 (basic scope of each), EPIC-09 inquiries inbox only, EPIC-12 articles, pages and "Sell with us", EPIC-13 seller handbook with versions and download counter, EPIC-16 cookie consent and form notices, EPIC-17 | EPIC-09 rest, EPIC-10, EPIC-11, EPIC-13 rest (library, legal templates), EPIC-14 | EPIC-12 landing builder and AI assistant, EPIC-15, EPIC-18 |
+| EPIC-01..08 (basic scope of each), EPIC-09 inquiries inbox only, EPIC-12 articles, pages and "Sell with us", EPIC-13 seller handbook with versions and download counter, EPIC-16 cookie consent and form notices, EPIC-17 | EPIC-09 rest, EPIC-10, EPIC-11, EPIC-13 rest (library, legal templates), EPIC-14 | EPIC-12 landing builder (no AI), EPIC-15, EPIC-18 later |
 
 Release 1 scope approved by the product owner on 2026-10-25, including the seller handbook and "Sell with us".
 

@@ -13,7 +13,12 @@ export {
   calculatorRuleSets,
   calculatorToggles,
 } from '../../modules/calculators/repo/calculators.schema.ts';
-export { articles, pages } from '../../modules/content/repo/content.schema.ts';
+export {
+  articles,
+  landingPages,
+  landingSections,
+  pages,
+} from '../../modules/content/repo/content.schema.ts';
 export { contactRoles, contacts } from '../../modules/crm/repo/contacts.schema.ts';
 export { crmTasks } from '../../modules/crm/repo/crm-tasks.schema.ts';
 export { deals } from '../../modules/crm/repo/deals.schema.ts';
@@ -39,6 +44,8 @@ export {
   propertyPriceHistory,
   propertySlugHistory,
 } from '../../modules/properties/repo/property-history.schema.ts';
+export { siteSettings } from '../../modules/site-settings/repo/site-settings.schema.ts';
+export { brochureExports, brochureTemplates } from '../../modules/studio/repo/studio.schema.ts';
 export {
   badges,
   constructionStages,

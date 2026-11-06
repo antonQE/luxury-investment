@@ -7,6 +7,13 @@ import { withValidation } from '../../../infrastructure/server/middleware/valida
 import type { ContentAdminService } from '../app/content-admin-service.ts';
 
 const idParams = z.object({ id: z.uuid() });
+const publishBody = z.preprocess(
+  (value) => value ?? {},
+  z.object({
+    /** Schedule go-live; omit for immediate publish (LI-094). */
+    publishAt: z.iso.datetime().optional(),
+  }),
+);
 
 const createArticleBody = z.object({
   slug: z
@@ -76,10 +83,19 @@ export function contentAdminRouter(admin: ContentAdminService): Router {
 
   router.post(
     '/articles/:id/publish',
-    withValidation({ params: idParams }, async ({ params }, req, res) => {
+    withValidation({ params: idParams, body: publishBody }, async ({ params, body }, req, res) => {
       requireContent('content:write', req.auth?.permissions);
-      const row = await admin.publishArticle(params.id);
-      res.json({ data: { id: row.id, status: row.status } });
+      const row = await admin.publishArticle(
+        params.id,
+        body.publishAt !== undefined ? new Date(body.publishAt) : undefined,
+      );
+      res.json({
+        data: {
+          id: row.id,
+          status: row.status,
+          publishedAt: row.publishedAt?.toISOString() ?? null,
+        },
+      });
     }),
   );
 
@@ -120,10 +136,19 @@ export function contentAdminRouter(admin: ContentAdminService): Router {
 
   router.post(
     '/pages/:id/publish',
-    withValidation({ params: idParams }, async ({ params }, req, res) => {
+    withValidation({ params: idParams, body: publishBody }, async ({ params, body }, req, res) => {
       requireContent('content:write', req.auth?.permissions);
-      const row = await admin.publishPage(params.id);
-      res.json({ data: { id: row.id, status: row.status } });
+      const row = await admin.publishPage(
+        params.id,
+        body.publishAt !== undefined ? new Date(body.publishAt) : undefined,
+      );
+      res.json({
+        data: {
+          id: row.id,
+          status: row.status,
+          publishedAt: row.publishedAt?.toISOString() ?? null,
+        },
+      });
     }),
   );
 
