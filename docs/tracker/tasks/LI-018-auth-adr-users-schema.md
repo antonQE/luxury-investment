@@ -30,5 +30,5 @@ ADR-0006 is accepted (email + password). Add Postgres tables for users (email, p
 ## Result
 
 - Migration `0002` for users/roles/permissions/role_permissions; argon2 hashes.
-- Shared `PERMISSION_KEYS` / `ROLE_PERMISSIONS`; seed demo `admin@example.com` / `DemoAdmin!234`.
+- Shared `PERMISSION_KEYS` / `ROLE_PERMISSIONS`; seed demo `mple.com` / `DemoAdmin!234`.
 - Integration tests cover seed idempotency and password verify.

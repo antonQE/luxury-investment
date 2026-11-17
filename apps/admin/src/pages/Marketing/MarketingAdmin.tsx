@@ -29,6 +29,11 @@ import {
   marketingKeys,
 } from '@/api/endpoints/marketing';
 import { fetchAdminProperties, propertyKeys } from '@/api/endpoints/properties';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ApiError } from '@/types/api';
 
 export default function MarketingAdmin() {
@@ -163,42 +168,28 @@ export default function MarketingAdmin() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="marketing-admin-page">
-      <Box>
-        <Heading size="xl" color="text.primary">
-          {t('marketing.title')}
-        </Heading>
-        <Text color="text.muted" fontSize="sm" mt={1}>
-          {t('marketing.lead')}
-        </Text>
-      </Box>
+      <PageHeader title={t('marketing.title')} lead={t('marketing.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={4}
-        borderRadius="md"
-      >
-        <Text fontSize="sm" mb={1}>
-          {t('marketing.property')}
-        </Text>
-        <select
-          value={propertyId}
-          onChange={(e) => {
-            setPropertyId(e.target.value);
-            setSelectedListingId(null);
-            setFormError(null);
-          }}
-          data-testid="marketing-property"
-        >
-          <option value="">{t('marketing.selectProperty')}</option>
-          {(propertiesQuery.data ?? []).map((property) => (
-            <option key={property.id} value={property.id}>
-              {property.referenceNumber} — {property.titleBg}
-            </option>
-          ))}
-        </select>
-      </Box>
+      <Panel>
+        <Field label={t('marketing.property')}>
+          <AdminSelect
+            value={propertyId}
+            onChange={(value) => {
+              setPropertyId(value);
+              setSelectedListingId(null);
+              setFormError(null);
+            }}
+            data-testid="marketing-property"
+            options={[
+              { value: '', label: t('marketing.selectProperty') },
+              ...(propertiesQuery.data ?? []).map((property) => ({
+                value: property.id,
+                label: `${property.referenceNumber} — ${property.titleBg}`,
+              })),
+            ]}
+          />
+        </Field>
+      </Panel>
 
       {formError !== null ? (
         <Text color="status.down" data-testid="marketing-form-error">
@@ -210,13 +201,7 @@ export default function MarketingAdmin() {
         <Text color="text.muted">{t('marketing.pickProperty')}</Text>
       ) : (
         <>
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-          >
+          <Panel>
             <Heading size="md" mb={4}>
               {t('marketing.activities')}
             </Heading>
@@ -226,10 +211,7 @@ export default function MarketingAdmin() {
               }}
             >
               <HStack gap={3} flexWrap="wrap" mb={4}>
-                <Box minW="120px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.activityType')}
-                  </Text>
+                <Field label={t('marketing.activityType')} minW="120px" required>
                   <Input
                     value={activityType}
                     onChange={(e) => {
@@ -238,11 +220,8 @@ export default function MarketingAdmin() {
                     required
                     data-testid="marketing-activity-type"
                   />
-                </Box>
-                <Box flex="1" minW="160px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.activityTitle')}
-                  </Text>
+                </Field>
+                <Field label={t('marketing.activityTitle')} minW="160px" required>
                   <Input
                     value={activityTitle}
                     onChange={(e) => {
@@ -251,25 +230,20 @@ export default function MarketingAdmin() {
                     required
                     data-testid="marketing-activity-title"
                   />
-                </Box>
-                <Box minW="120px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.status')}
-                  </Text>
-                  <select
+                </Field>
+                <Field label={t('marketing.status')} minW="120px">
+                  <AdminSelect
                     value={activityStatus}
-                    onChange={(e) => {
-                      setActivityStatus(e.target.value as MarketingActivityStatus);
+                    onChange={(value) => {
+                      setActivityStatus(value as MarketingActivityStatus);
                     }}
                     data-testid="marketing-activity-status"
-                  >
-                    {MARKETING_ACTIVITY_STATUSES.map((status) => (
-                      <option key={status} value={status}>
-                        {t(`marketing.activityStatus_${status}`)}
-                      </option>
-                    ))}
-                  </select>
-                </Box>
+                    options={MARKETING_ACTIVITY_STATUSES.map((status) => ({
+                      value: status,
+                      label: t(`marketing.activityStatus_${status}`),
+                    }))}
+                  />
+                </Field>
                 <Button
                   type="submit"
                   mt={5}
@@ -301,21 +275,22 @@ export default function MarketingAdmin() {
                     <Table.Row key={row.id}>
                       <Table.Cell>{row.title}</Table.Cell>
                       <Table.Cell>{row.activityType}</Table.Cell>
-                      <Table.Cell>{t(`marketing.activityStatus_${row.status}`)}</Table.Cell>
+                      <Table.Cell>
+                        <StatusBadge
+                          value={row.status}
+                          label={t(`marketing.activityStatus_${row.status}`, {
+                            defaultValue: row.status,
+                          })}
+                        />
+                      </Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
               </Table.Root>
             )}
-          </Box>
+          </Panel>
 
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-          >
+          <Panel>
             <Heading size="md" mb={4}>
               {t('marketing.portals')}
             </Heading>
@@ -325,10 +300,7 @@ export default function MarketingAdmin() {
               }}
             >
               <HStack gap={3} flexWrap="wrap" mb={4}>
-                <Box minW="140px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.portalName')}
-                  </Text>
+                <Field label={t('marketing.portalName')} minW="140px" required>
                   <Input
                     value={portalName}
                     onChange={(e) => {
@@ -337,11 +309,8 @@ export default function MarketingAdmin() {
                     required
                     data-testid="marketing-portal-name"
                   />
-                </Box>
-                <Box flex="1" minW="180px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.listingUrl')}
-                  </Text>
+                </Field>
+                <Field label={t('marketing.listingUrl')} minW="180px">
                   <Input
                     value={listingUrl}
                     onChange={(e) => {
@@ -349,25 +318,20 @@ export default function MarketingAdmin() {
                     }}
                     data-testid="marketing-listing-url"
                   />
-                </Box>
-                <Box minW="120px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('marketing.status')}
-                  </Text>
-                  <select
+                </Field>
+                <Field label={t('marketing.status')} minW="120px">
+                  <AdminSelect
                     value={portalStatus}
-                    onChange={(e) => {
-                      setPortalStatus(e.target.value as PortalListingStatus);
+                    onChange={(value) => {
+                      setPortalStatus(value as PortalListingStatus);
                     }}
                     data-testid="marketing-portal-status"
-                  >
-                    {PORTAL_LISTING_STATUSES.map((status) => (
-                      <option key={status} value={status}>
-                        {t(`marketing.portalStatus_${status}`)}
-                      </option>
-                    ))}
-                  </select>
-                </Box>
+                    options={PORTAL_LISTING_STATUSES.map((status) => ({
+                      value: status,
+                      label: t(`marketing.portalStatus_${status}`),
+                    }))}
+                  />
+                </Field>
                 <Button
                   type="submit"
                   mt={5}
@@ -398,7 +362,14 @@ export default function MarketingAdmin() {
                   {portalsQuery.data.map((row) => (
                     <Table.Row key={row.id}>
                       <Table.Cell>{row.portalName}</Table.Cell>
-                      <Table.Cell>{t(`marketing.portalStatus_${row.status}`)}</Table.Cell>
+                      <Table.Cell>
+                        <StatusBadge
+                          value={row.status}
+                          label={t(`marketing.portalStatus_${row.status}`, {
+                            defaultValue: row.status,
+                          })}
+                        />
+                      </Table.Cell>
                       <Table.Cell textAlign="end">
                         <Button
                           size="xs"
@@ -428,10 +399,7 @@ export default function MarketingAdmin() {
                   }}
                 >
                   <HStack gap={3} flexWrap="wrap" mb={4}>
-                    <Box>
-                      <Text fontSize="sm" mb={1}>
-                        {t('marketing.measuredOn')}
-                      </Text>
+                    <Field label={t('marketing.measuredOn')} minW="140px" required>
                       <Input
                         type="date"
                         value={measuredOn}
@@ -441,11 +409,8 @@ export default function MarketingAdmin() {
                         required
                         data-testid="marketing-measured-on"
                       />
-                    </Box>
-                    <Box>
-                      <Text fontSize="sm" mb={1}>
-                        {t('marketing.views')}
-                      </Text>
+                    </Field>
+                    <Field label={t('marketing.views')} minW="100px">
                       <Input
                         value={views}
                         onChange={(e) => {
@@ -453,11 +418,8 @@ export default function MarketingAdmin() {
                         }}
                         data-testid="marketing-views"
                       />
-                    </Box>
-                    <Box>
-                      <Text fontSize="sm" mb={1}>
-                        {t('marketing.saves')}
-                      </Text>
+                    </Field>
+                    <Field label={t('marketing.saves')} minW="100px">
                       <Input
                         value={saves}
                         onChange={(e) => {
@@ -465,7 +427,7 @@ export default function MarketingAdmin() {
                         }}
                         data-testid="marketing-saves"
                       />
-                    </Box>
+                    </Field>
                     <Button
                       type="submit"
                       mt={5}
@@ -505,7 +467,7 @@ export default function MarketingAdmin() {
                 )}
               </Box>
             ) : null}
-          </Box>
+          </Panel>
         </>
       )}
     </VStack>

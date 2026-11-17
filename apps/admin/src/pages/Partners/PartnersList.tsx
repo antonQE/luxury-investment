@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +9,10 @@ import {
   fetchAdminPartners,
   partnerKeys,
 } from '@/api/endpoints/partners';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function PartnersList() {
@@ -72,20 +66,9 @@ export default function PartnersList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="partners-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('partners.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('partners.lead')}
-      </Text>
+      <PageHeader title={t('partners.title')} lead={t('partners.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -96,10 +79,7 @@ export default function PartnersList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('partners.slug')}
-                </Text>
+              <Field label={t('partners.slug')} required>
                 <Input
                   value={slug}
                   onChange={(e) => {
@@ -108,11 +88,8 @@ export default function PartnersList() {
                   required
                   data-testid="partner-slug"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('partners.logoUrl')}
-                </Text>
+              </Field>
+              <Field label={t('partners.logoUrl')} required>
                 <Input
                   value={logoUrl}
                   onChange={(e) => {
@@ -121,13 +98,10 @@ export default function PartnersList() {
                   required
                   data-testid="partner-logo-url"
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('partners.nameBg')}
-                </Text>
+              <Field label={t('partners.nameBg')} required>
                 <Input
                   value={nameBg}
                   onChange={(e) => {
@@ -135,11 +109,8 @@ export default function PartnersList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('partners.nameEn')}
-                </Text>
+              </Field>
+              <Field label={t('partners.nameEn')} required>
                 <Input
                   value={nameEn}
                   onChange={(e) => {
@@ -147,12 +118,9 @@ export default function PartnersList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('partners.websiteUrl')}
-              </Text>
+            <Field label={t('partners.websiteUrl')}>
               <Input
                 value={websiteUrl}
                 onChange={(e) => {
@@ -160,7 +128,7 @@ export default function PartnersList() {
                 }}
                 data-testid="partner-website-url"
               />
-            </Box>
+            </Field>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
                 {formError}
@@ -176,16 +144,9 @@ export default function PartnersList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -215,7 +176,7 @@ export default function PartnersList() {
                   <Table.Cell textAlign="end">
                     <Button
                       size="xs"
-                      variant="outline"
+                      variant={dangerVariant}
                       onClick={() => {
                         archiveMutation.mutate(row.id);
                       }}
@@ -229,7 +190,7 @@ export default function PartnersList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

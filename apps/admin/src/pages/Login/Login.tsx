@@ -72,6 +72,7 @@ export default function Login() {
         bg="background.panel"
         borderWidth="1px"
         borderColor="border.default"
+        borderRadius="l3"
         px={10}
         py={12}
       >
@@ -101,14 +102,15 @@ export default function Login() {
                 color="text.muted"
               >
                 {t('login.email')}
+                <Text as="span" color="status.down" aria-hidden="true">
+                  {' '}
+                  *
+                </Text>
               </Text>
               <Input
                 type="email"
                 autoComplete="username"
                 value={email}
-                borderRadius="0"
-                borderColor="border.default"
-                _focusVisible={{ borderColor: 'accent.gold', boxShadow: 'none' }}
                 onChange={(event) => {
                   setEmail(event.target.value);
                 }}
@@ -125,14 +127,15 @@ export default function Login() {
                 color="text.muted"
               >
                 {t('login.password')}
+                <Text as="span" color="status.down" aria-hidden="true">
+                  {' '}
+                  *
+                </Text>
               </Text>
               <Input
                 type="password"
                 autoComplete="current-password"
                 value={password}
-                borderRadius="0"
-                borderColor="border.default"
-                _focusVisible={{ borderColor: 'accent.gold', boxShadow: 'none' }}
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
@@ -150,7 +153,6 @@ export default function Login() {
               loading={submitting}
               bg="accent.gold"
               color="background.sidebar"
-              borderRadius="0"
               fontWeight="600"
               letterSpacing="0.12em"
               textTransform="uppercase"

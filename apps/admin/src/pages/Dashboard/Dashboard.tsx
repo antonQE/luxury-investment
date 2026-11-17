@@ -1,6 +1,9 @@
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useHealthQuery } from '@/hooks/common/useHealthQuery';
 
 export default function Dashboard() {
@@ -9,17 +12,8 @@ export default function Dashboard() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="dashboard-page">
-      <Heading size="xl" color="text.primary">
-        {t('dashboard.title')}
-      </Heading>
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        data-testid="api-health-card"
-      >
+      <PageHeader title={t('dashboard.title')} />
+      <Panel testId="api-health-card">
         <Heading size="md" mb={4}>
           {t('dashboard.apiStatus')}
         </Heading>
@@ -46,12 +40,14 @@ export default function Dashboard() {
           </Text>
         ) : (
           <VStack align="stretch" gap={2} fontSize="sm">
-            <Text data-testid="api-health-status">
-              {t('dashboard.status')}:{' '}
-              <Box as="span" color={data.status === 'ok' ? 'status.ok' : 'status.down'}>
-                {data.status}
-              </Box>
-            </Text>
+            <Box data-testid="api-health-status" display="flex" alignItems="center" gap={2}>
+              <Text as="span">{t('dashboard.status')}:</Text>
+              <StatusBadge
+                value={data.status}
+                label={data.status}
+                tone={data.status === 'ok' ? 'ok' : 'down'}
+              />
+            </Box>
             <Text>
               {t('dashboard.version')}: {data.version}
             </Text>
@@ -65,7 +61,7 @@ export default function Dashboard() {
             </Box>
           </VStack>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

@@ -26,6 +26,10 @@ import {
   generateSocialAsset,
   studioKeys,
 } from '@/api/endpoints/studio';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function MarketingStudio() {
@@ -161,41 +165,27 @@ export default function MarketingStudio() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="marketing-studio-page">
-      <Box>
-        <Heading size="xl" color="text.primary">
-          {t('studio.title')}
-        </Heading>
-        <Text color="text.muted" fontSize="sm" mt={1}>
-          {t('studio.lead')}
-        </Text>
-      </Box>
+      <PageHeader title={t('studio.title')} lead={t('studio.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={4}
-        borderRadius="md"
-      >
-        <Text fontSize="sm" mb={1}>
-          {t('studio.property')}
-        </Text>
-        <select
-          value={propertyId}
-          onChange={(e) => {
-            setPropertyId(e.target.value);
-            setFormError(null);
-          }}
-          data-testid="studio-property"
-        >
-          <option value="">{t('studio.selectProperty')}</option>
-          {(propertiesQuery.data ?? []).map((property) => (
-            <option key={property.id} value={property.id}>
-              {property.referenceNumber} — {property.titleBg}
-            </option>
-          ))}
-        </select>
-      </Box>
+      <Panel>
+        <Field label={t('studio.property')}>
+          <AdminSelect
+            value={propertyId}
+            onChange={(value) => {
+              setPropertyId(value);
+              setFormError(null);
+            }}
+            data-testid="studio-property"
+            options={[
+              { value: '', label: t('studio.selectProperty') },
+              ...(propertiesQuery.data ?? []).map((property) => ({
+                value: property.id,
+                label: `${property.referenceNumber} — ${property.titleBg}`,
+              })),
+            ]}
+          />
+        </Field>
+      </Panel>
 
       {formError !== null ? (
         <Text color="status.down" data-testid="studio-form-error">
@@ -211,37 +201,27 @@ export default function MarketingStudio() {
         <Text color="status.down">{t('studio.loadError')}</Text>
       ) : (
         <>
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-          >
+          <Panel>
             <Heading size="md" mb={4}>
               {t('studio.generate')}
             </Heading>
-            <Text fontSize="sm" mb={1}>
-              {t('studio.template')}
-            </Text>
-            <select
-              value={templateKey}
-              onChange={(e) => {
-                const next = e.target.value;
-                setTemplateOverride(next);
-                const found = pdfTemplates.find((row) => row.key === next);
-                if (found !== undefined) {
-                  setTogglesOverride({ ...DEFAULT_BROCHURE_TOGGLES, ...found.defaultToggles });
-                }
-              }}
-              data-testid="studio-template"
-            >
-              {pdfTemplates.map((row) => (
-                <option key={row.id} value={row.key}>
-                  {templateLabel(row)}
-                </option>
-              ))}
-            </select>
+            <Field label={t('studio.template')}>
+              <AdminSelect
+                value={templateKey}
+                onChange={(next) => {
+                  setTemplateOverride(next);
+                  const found = pdfTemplates.find((row) => row.key === next);
+                  if (found !== undefined) {
+                    setTogglesOverride({ ...DEFAULT_BROCHURE_TOGGLES, ...found.defaultToggles });
+                  }
+                }}
+                data-testid="studio-template"
+                options={pdfTemplates.map((row) => ({
+                  value: row.key,
+                  label: templateLabel(row),
+                }))}
+              />
+            </Field>
 
             <Text fontSize="sm" mt={4} mb={2}>
               {t('studio.toggles')}
@@ -271,65 +251,54 @@ export default function MarketingStudio() {
             >
               {t('studio.generateDownload')}
             </Button>
-          </Box>
+          </Panel>
 
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-          >
+          <Panel>
             <Heading size="md" mb={4}>
               {t('studio.social')}
             </Heading>
-            <Text fontSize="sm" mb={1}>
-              {t('studio.template')}
-            </Text>
-            <select
-              value={socialTemplateKey}
-              onChange={(e) => {
-                const next = e.target.value;
-                setSocialTemplateOverride(next);
-                const found = socialTemplates.find((row) => row.key === next);
-                if (found !== undefined) {
-                  setSocialTogglesOverride({
-                    ...DEFAULT_SOCIAL_TOGGLES,
-                    ...found.defaultToggles,
-                  });
-                  if (
-                    found.badgePreset !== '' &&
-                    (SOCIAL_BADGE_PRESETS as readonly string[]).includes(found.badgePreset)
-                  ) {
-                    setBadgeOverride(found.badgePreset as SocialBadgePreset);
+            <Field label={t('studio.template')}>
+              <AdminSelect
+                value={socialTemplateKey}
+                onChange={(next) => {
+                  setSocialTemplateOverride(next);
+                  const found = socialTemplates.find((row) => row.key === next);
+                  if (found !== undefined) {
+                    setSocialTogglesOverride({
+                      ...DEFAULT_SOCIAL_TOGGLES,
+                      ...found.defaultToggles,
+                    });
+                    if (
+                      found.badgePreset !== '' &&
+                      (SOCIAL_BADGE_PRESETS as readonly string[]).includes(found.badgePreset)
+                    ) {
+                      setBadgeOverride(found.badgePreset as SocialBadgePreset);
+                    }
                   }
-                }
-              }}
-              data-testid="studio-social-template"
-            >
-              {socialTemplates.map((row) => (
-                <option key={row.id} value={row.key}>
-                  {templateLabel(row)} ({row.format})
-                </option>
-              ))}
-            </select>
+                }}
+                data-testid="studio-social-template"
+                options={socialTemplates.map((row) => ({
+                  value: row.key,
+                  label: `${templateLabel(row)} (${row.format})`,
+                }))}
+              />
+            </Field>
 
-            <Text fontSize="sm" mt={4} mb={1}>
-              {t('studio.badge')}
-            </Text>
-            <select
-              value={badgePreset}
-              onChange={(e) => {
-                setBadgeOverride(e.target.value as SocialBadgePreset);
-              }}
-              data-testid="studio-badge"
-            >
-              {SOCIAL_BADGE_PRESETS.map((preset) => (
-                <option key={preset || 'none'} value={preset}>
-                  {preset === '' ? t('studio.badgeNone') : t(`studio.badge_${preset}`)}
-                </option>
-              ))}
-            </select>
+            <Box mt={4}>
+              <Field label={t('studio.badge')}>
+                <AdminSelect
+                  value={badgePreset}
+                  onChange={(value) => {
+                    setBadgeOverride(value as SocialBadgePreset);
+                  }}
+                  data-testid="studio-badge"
+                  options={SOCIAL_BADGE_PRESETS.map((preset) => ({
+                    value: preset,
+                    label: preset === '' ? t('studio.badgeNone') : t(`studio.badge_${preset}`),
+                  }))}
+                />
+              </Field>
+            </Box>
 
             <Text fontSize="sm" mt={4} mb={2}>
               {t('studio.toggles')}
@@ -361,16 +330,9 @@ export default function MarketingStudio() {
             >
               {t('studio.generateSocial')}
             </Button>
-          </Box>
+          </Panel>
 
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-            data-testid="studio-channel-copy"
-          >
+          <Panel testId="studio-channel-copy">
             <Heading size="md" mb={2}>
               {t('studio.channelCopy')}
             </Heading>
@@ -384,57 +346,45 @@ export default function MarketingStudio() {
             ) : (
               <>
                 <HStack gap={3} flexWrap="wrap" mb={3}>
-                  <Box>
-                    <Text fontSize="sm" mb={1}>
-                      {t('studio.channel')}
-                    </Text>
-                    <select
+                  <Field label={t('studio.channel')} minW="140px">
+                    <AdminSelect
                       value={copyChannel}
-                      onChange={(e) => {
-                        setCopyChannel(e.target.value as (typeof CHANNEL_COPY_CHANNELS)[number]);
+                      onChange={(value) => {
+                        setCopyChannel(value as (typeof CHANNEL_COPY_CHANNELS)[number]);
                       }}
                       data-testid="studio-channel"
-                    >
-                      {CHANNEL_COPY_CHANNELS.map((channel) => (
-                        <option key={channel} value={channel}>
-                          {t(`studio.channel_${channel}`)}
-                        </option>
-                      ))}
-                    </select>
-                  </Box>
-                  <Box>
-                    <Text fontSize="sm" mb={1}>
-                      {t('studio.copyLocale')}
-                    </Text>
-                    <select
+                      options={CHANNEL_COPY_CHANNELS.map((channel) => ({
+                        value: channel,
+                        label: t(`studio.channel_${channel}`),
+                      }))}
+                    />
+                  </Field>
+                  <Field label={t('studio.copyLocale')} minW="100px">
+                    <AdminSelect
                       value={copyLocale}
-                      onChange={(e) => {
-                        setCopyLocale(e.target.value as 'bg' | 'en');
+                      onChange={(value) => {
+                        setCopyLocale(value as 'bg' | 'en');
                       }}
                       data-testid="studio-copy-locale"
-                    >
-                      <option value="bg">BG</option>
-                      <option value="en">EN</option>
-                    </select>
-                  </Box>
-                  <Box>
-                    <Text fontSize="sm" mb={1}>
-                      {t('studio.copyLength')}
-                    </Text>
-                    <select
+                      options={[
+                        { value: 'bg', label: 'BG' },
+                        { value: 'en', label: 'EN' },
+                      ]}
+                    />
+                  </Field>
+                  <Field label={t('studio.copyLength')} minW="120px">
+                    <AdminSelect
                       value={copyLength}
-                      onChange={(e) => {
-                        setCopyLength(e.target.value as (typeof CHANNEL_COPY_LENGTHS)[number]);
+                      onChange={(value) => {
+                        setCopyLength(value as (typeof CHANNEL_COPY_LENGTHS)[number]);
                       }}
                       data-testid="studio-copy-length"
-                    >
-                      {CHANNEL_COPY_LENGTHS.map((length) => (
-                        <option key={length} value={length}>
-                          {t(`studio.length_${length}`)}
-                        </option>
-                      ))}
-                    </select>
-                  </Box>
+                      options={CHANNEL_COPY_LENGTHS.map((length) => ({
+                        value: length,
+                        label: t(`studio.length_${length}`),
+                      }))}
+                    />
+                  </Field>
                 </HStack>
                 <Text
                   as="pre"
@@ -463,15 +413,9 @@ export default function MarketingStudio() {
                 </Button>
               </>
             )}
-          </Box>
+          </Panel>
 
-          <Box
-            bg="background.panel"
-            borderWidth="1px"
-            borderColor="border.default"
-            p={6}
-            borderRadius="md"
-          >
+          <Panel>
             <Heading size="md" mb={4}>
               {t('studio.exports')}
             </Heading>
@@ -516,7 +460,7 @@ export default function MarketingStudio() {
                 </Table.Body>
               </Table.Root>
             )}
-          </Box>
+          </Panel>
         </>
       )}
     </VStack>

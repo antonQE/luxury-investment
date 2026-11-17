@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-096`
+Next IDs: `EPIC-19`, `LI-097`
 
 
 ## Releases
@@ -73,6 +73,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-096](tasks/LI-096-admin-ui-readability-polish.md) | Admin UI readability polish | EPIC-02 |
 | [LI-095](tasks/LI-095-site-public-phone-setting.md) | Site public phone setting (admin) | EPIC-06 |
 | [LI-094](tasks/LI-094-content-publish-at-basic.md) | Content publish-at scheduling (basic) | EPIC-12 |
 | [LI-093](tasks/LI-093-curated-seo-landings.md) | Curated SEO category landings (basic) | EPIC-12 |

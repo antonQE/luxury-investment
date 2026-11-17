@@ -1,7 +1,6 @@
-import { Box, Heading, Spinner, Table, Text, VStack } from '@chakra-ui/react';
+import { HStack, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { INQUIRY_STATUSES, type InquiryStatus } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -9,6 +8,10 @@ import {
   inquiryKeys,
   updateAdminInquiryStatus,
 } from '@/api/endpoints/inquiries';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ApiError } from '@/types/api';
 
 function formatWhen(iso: string): string {
@@ -38,12 +41,7 @@ export default function InquiriesInbox() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="inquiries-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('inquiries.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('inquiries.lead')}
-      </Text>
+      <PageHeader title={t('inquiries.title')} lead={t('inquiries.lead')} />
 
       {statusMutation.isError ? (
         <Text color="status.down" fontSize="sm">
@@ -53,14 +51,7 @@ export default function InquiriesInbox() {
         </Text>
       ) : null}
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -81,7 +72,6 @@ export default function InquiriesInbox() {
                 <Table.ColumnHeader>{t('inquiries.email')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('inquiries.status')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('inquiries.created')}</Table.ColumnHeader>
-                <Table.ColumnHeader />
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -91,34 +81,37 @@ export default function InquiriesInbox() {
                   <Table.Cell>{row.propertySlug}</Table.Cell>
                   <Table.Cell>{row.name}</Table.Cell>
                   <Table.Cell>{row.email}</Table.Cell>
-                  <Table.Cell>{t(`inquiries.status_${row.status}`)}</Table.Cell>
-                  <Table.Cell>{formatWhen(row.createdAt)}</Table.Cell>
-                  <Table.Cell textAlign="end">
-                    <select
-                      style={{ height: '2rem', padding: '0 0.5rem' }}
-                      value={row.status}
-                      disabled={statusMutation.isPending}
-                      aria-label={t('inquiries.status')}
-                      data-testid={`inquiry-status-${row.id}`}
-                      onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                        const status = event.target.value as InquiryStatus;
-                        if (status === row.status) return;
-                        statusMutation.mutate({ id: row.id, status });
-                      }}
-                    >
-                      {INQUIRY_STATUSES.map((status) => (
-                        <option key={status} value={status}>
-                          {t(`inquiries.status_${status}`)}
-                        </option>
-                      ))}
-                    </select>
+                  <Table.Cell>
+                    <HStack gap={2}>
+                      <StatusBadge
+                        value={row.status}
+                        label={t(`inquiries.status_${row.status}`, { defaultValue: row.status })}
+                      />
+                      <AdminSelect
+                        size="sm"
+                        value={row.status}
+                        disabled={statusMutation.isPending}
+                        aria-label={t('inquiries.status')}
+                        data-testid={`inquiry-status-${row.id}`}
+                        options={INQUIRY_STATUSES.map((status) => ({
+                          value: status,
+                          label: t(`inquiries.status_${status}`),
+                        }))}
+                        onChange={(value) => {
+                          const status = value as InquiryStatus;
+                          if (status === row.status) return;
+                          statusMutation.mutate({ id: row.id, status });
+                        }}
+                      />
+                    </HStack>
                   </Table.Cell>
+                  <Table.Cell>{formatWhen(row.createdAt)}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

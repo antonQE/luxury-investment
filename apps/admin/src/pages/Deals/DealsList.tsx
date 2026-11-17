@@ -1,22 +1,17 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { DEAL_STAGES, type DealStage } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { contactKeys, fetchAdminContacts } from '@/api/endpoints/contacts';
 import { createAdminDeal, dealKeys, fetchAdminDeals, updateAdminDeal } from '@/api/endpoints/deals';
 import { fetchAdminProperties, propertyKeys } from '@/api/endpoints/properties';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { ApiError } from '@/types/api';
 
@@ -90,20 +85,9 @@ export default function DealsList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="deals-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('deals.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('deals.lead')}
-      </Text>
+      <PageHeader title={t('deals.title')} lead={t('deals.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -114,52 +98,39 @@ export default function DealsList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('deals.property')}
-                </Text>
-                <select
+              <Field label={t('deals.property')} required>
+                <AdminSelect
                   value={propertyId}
                   required
-                  onChange={(e) => {
-                    setPropertyId(e.target.value);
-                  }}
+                  onChange={setPropertyId}
                   data-testid="deal-property"
-                >
-                  <option value="">{t('deals.selectProperty')}</option>
-                  {(propertiesQuery.data ?? []).map((property) => (
-                    <option key={property.id} value={property.id}>
-                      {property.referenceNumber} — {property.titleBg}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('deals.buyer')}
-                </Text>
-                <select
+                  options={[
+                    { value: '', label: t('deals.selectProperty') },
+                    ...(propertiesQuery.data ?? []).map((property) => ({
+                      value: property.id,
+                      label: `${property.referenceNumber} — ${property.titleBg}`,
+                    })),
+                  ]}
+                />
+              </Field>
+              <Field label={t('deals.buyer')} required>
+                <AdminSelect
                   value={buyerContactId}
                   required
-                  onChange={(e) => {
-                    setBuyerContactId(e.target.value);
-                  }}
+                  onChange={setBuyerContactId}
                   data-testid="deal-buyer"
-                >
-                  <option value="">{t('deals.selectContact')}</option>
-                  {(contactsQuery.data ?? []).map((contact) => (
-                    <option key={contact.id} value={contact.id}>
-                      {contact.displayName}
-                    </option>
-                  ))}
-                </select>
-              </Box>
+                  options={[
+                    { value: '', label: t('deals.selectContact') },
+                    ...(contactsQuery.data ?? []).map((contact) => ({
+                      value: contact.id,
+                      label: contact.displayName,
+                    })),
+                  ]}
+                />
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="120px">
-                <Text fontSize="sm" mb={1}>
-                  {t('deals.agreedPrice')}
-                </Text>
+              <Field label={t('deals.agreedPrice')} minW="120px">
                 <Input
                   value={agreedPrice}
                   onChange={(e) => {
@@ -168,12 +139,9 @@ export default function DealsList() {
                   placeholder="285000.00"
                   data-testid="deal-agreed-price"
                 />
-              </Box>
+              </Field>
               {canFinance ? (
-                <Box flex="1" minW="120px">
-                  <Text fontSize="sm" mb={1}>
-                    {t('deals.commission')}
-                  </Text>
+                <Field label={t('deals.commission')} minW="120px">
                   <Input
                     value={commissionAmount}
                     onChange={(e) => {
@@ -182,12 +150,9 @@ export default function DealsList() {
                     placeholder="8550.00"
                     data-testid="deal-commission"
                   />
-                </Box>
+                </Field>
               ) : null}
-              <Box flex="2" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('deals.notes')}
-                </Text>
+              <Field label={t('deals.notes')} minW="160px">
                 <Input
                   value={notes}
                   onChange={(e) => {
@@ -195,7 +160,7 @@ export default function DealsList() {
                   }}
                   data-testid="deal-notes"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -212,16 +177,9 @@ export default function DealsList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -259,30 +217,35 @@ export default function DealsList() {
                     </Table.Cell>
                   ) : null}
                   <Table.Cell>
-                    <select
-                      value={row.stage}
-                      disabled={stageMutation.isPending}
-                      aria-label={t('deals.stage')}
-                      data-testid={`deal-stage-${row.id}`}
-                      onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                        const stage = event.target.value as DealStage;
-                        if (stage === row.stage) return;
-                        stageMutation.mutate({ id: row.id, stage });
-                      }}
-                    >
-                      {DEAL_STAGES.map((stage) => (
-                        <option key={stage} value={stage}>
-                          {t(`deals.stage_${stage}`)}
-                        </option>
-                      ))}
-                    </select>
+                    <HStack gap={2}>
+                      <StatusBadge
+                        value={row.stage}
+                        label={t(`deals.stage_${row.stage}`, { defaultValue: row.stage })}
+                      />
+                      <AdminSelect
+                        size="sm"
+                        value={row.stage}
+                        disabled={stageMutation.isPending}
+                        aria-label={t('deals.stage')}
+                        data-testid={`deal-stage-${row.id}`}
+                        options={DEAL_STAGES.map((stage) => ({
+                          value: stage,
+                          label: t(`deals.stage_${stage}`),
+                        }))}
+                        onChange={(value) => {
+                          const stage = value as DealStage;
+                          if (stage === row.stage) return;
+                          stageMutation.mutate({ id: row.id, stage });
+                        }}
+                      />
+                    </HStack>
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

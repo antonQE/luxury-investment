@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Button, Input, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,9 @@ import {
   siteSettingsKeys,
   updateSiteSettings,
 } from '@/api/endpoints/site-settings';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function SiteSettingsPage() {
@@ -52,22 +55,9 @@ export default function SiteSettingsPage() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="site-settings-page">
-      <Box>
-        <Heading size="xl" color="text.primary">
-          {t('settings.title')}
-        </Heading>
-        <Text color="text.muted" fontSize="sm" mt={1}>
-          {t('settings.lead')}
-        </Text>
-      </Box>
+      <PageHeader title={t('settings.title')} lead={t('settings.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         {settingsQuery.isPending ? (
           <Spinner />
         ) : settingsQuery.isError ? (
@@ -75,13 +65,7 @@ export default function SiteSettingsPage() {
         ) : (
           <form onSubmit={onSubmit}>
             <VStack align="stretch" gap={4}>
-              <Box>
-                <Text fontSize="sm" mb={1}>
-                  {t('settings.publicPhone')}
-                </Text>
-                <Text color="text.muted" fontSize="xs" mb={2}>
-                  {t('settings.publicPhoneHint')}
-                </Text>
+              <Field label={t('settings.publicPhone')} hint={t('settings.publicPhoneHint')}>
                 <Input
                   value={publicPhone}
                   onChange={(e) => {
@@ -92,14 +76,8 @@ export default function SiteSettingsPage() {
                   maxW="320px"
                   data-testid="settings-public-phone"
                 />
-              </Box>
-              <Box>
-                <Text fontSize="sm" mb={1}>
-                  {t('settings.publicEmail')}
-                </Text>
-                <Text color="text.muted" fontSize="xs" mb={2}>
-                  {t('settings.publicEmailHint')}
-                </Text>
+              </Field>
+              <Field label={t('settings.publicEmail')} hint={t('settings.publicEmailHint')}>
                 <Input
                   type="email"
                   value={publicEmail}
@@ -111,7 +89,7 @@ export default function SiteSettingsPage() {
                   maxW="320px"
                   data-testid="settings-public-email"
                 />
-              </Box>
+              </Field>
             </VStack>
             {formError !== null ? (
               <Text color="status.down" mt={3} data-testid="settings-form-error">
@@ -133,7 +111,7 @@ export default function SiteSettingsPage() {
             </Button>
           </form>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

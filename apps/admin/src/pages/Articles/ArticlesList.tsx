@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Heading,
   HStack,
@@ -21,6 +20,11 @@ import {
   fetchAdminArticles,
   publishAdminArticle,
 } from '@/api/endpoints/articles';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ApiError } from '@/types/api';
 
 export default function ArticlesList() {
@@ -87,20 +91,9 @@ export default function ArticlesList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="articles-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('articles.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('articles.lead')}
-      </Text>
+      <PageHeader title={t('articles.title')} lead={t('articles.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -110,10 +103,7 @@ export default function ArticlesList() {
             {t('articles.create')}
           </Heading>
           <VStack align="stretch" gap={3}>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('articles.slug')}
-              </Text>
+            <Field label={t('articles.slug')} required>
               <Input
                 value={slug}
                 onChange={(e) => {
@@ -122,12 +112,9 @@ export default function ArticlesList() {
                 required
                 data-testid="article-slug"
               />
-            </Box>
+            </Field>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.titleBg')}
-                </Text>
+              <Field label={t('articles.titleBg')} required>
                 <Input
                   value={titleBg}
                   onChange={(e) => {
@@ -135,11 +122,8 @@ export default function ArticlesList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.titleEn')}
-                </Text>
+              </Field>
+              <Field label={t('articles.titleEn')} required>
                 <Input
                   value={titleEn}
                   onChange={(e) => {
@@ -147,13 +131,10 @@ export default function ArticlesList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap" align="flex-start">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.excerptBg')}
-                </Text>
+              <Field label={t('articles.excerptBg')} required>
                 <Textarea
                   value={excerptBg}
                   onChange={(e) => {
@@ -162,11 +143,8 @@ export default function ArticlesList() {
                   required
                   rows={2}
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.excerptEn')}
-                </Text>
+              </Field>
+              <Field label={t('articles.excerptEn')} required>
                 <Textarea
                   value={excerptEn}
                   onChange={(e) => {
@@ -175,13 +153,10 @@ export default function ArticlesList() {
                   required
                   rows={2}
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap" align="flex-start">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.bodyBg')}
-                </Text>
+              <Field label={t('articles.bodyBg')} required>
                 <Textarea
                   value={bodyBg}
                   onChange={(e) => {
@@ -190,11 +165,8 @@ export default function ArticlesList() {
                   required
                   rows={4}
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('articles.bodyEn')}
-                </Text>
+              </Field>
+              <Field label={t('articles.bodyEn')} required>
                 <Textarea
                   value={bodyEn}
                   onChange={(e) => {
@@ -203,7 +175,7 @@ export default function ArticlesList() {
                   required
                   rows={4}
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -220,16 +192,9 @@ export default function ArticlesList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -249,7 +214,12 @@ export default function ArticlesList() {
                 <Table.Row key={row.id}>
                   <Table.Cell>{row.slug}</Table.Cell>
                   <Table.Cell>{row.title.bg}</Table.Cell>
-                  <Table.Cell>{row.status}</Table.Cell>
+                  <Table.Cell>
+                    <StatusBadge
+                      value={row.status}
+                      label={t(`articles.status_${row.status}`, { defaultValue: row.status })}
+                    />
+                  </Table.Cell>
                   <Table.Cell textAlign="end">
                     <HStack gap={2} justify="flex-end">
                       {row.status !== 'published' ? (
@@ -265,7 +235,7 @@ export default function ArticlesList() {
                       ) : null}
                       <Button
                         size="xs"
-                        variant="outline"
+                        variant={dangerVariant}
                         onClick={() => {
                           archiveMutation.mutate(row.id);
                         }}
@@ -280,7 +250,7 @@ export default function ArticlesList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

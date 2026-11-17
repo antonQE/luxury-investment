@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +9,10 @@ import {
   crmTaskKeys,
   fetchAdminCrmTasks,
 } from '@/api/endpoints/crm-tasks';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { ApiError } from '@/types/api';
 
@@ -78,20 +72,9 @@ export default function CrmTasksList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="crm-tasks-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('crmTasks.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('crmTasks.lead')}
-      </Text>
+      <PageHeader title={t('crmTasks.title')} lead={t('crmTasks.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -101,10 +84,7 @@ export default function CrmTasksList() {
             {t('crmTasks.create')}
           </Heading>
           <VStack align="stretch" gap={3}>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('crmTasks.taskTitle')}
-              </Text>
+            <Field label={t('crmTasks.taskTitle')} required>
               <Input
                 value={title}
                 onChange={(e) => {
@@ -113,12 +93,9 @@ export default function CrmTasksList() {
                 required
                 data-testid="crm-task-title"
               />
-            </Box>
+            </Field>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('crmTasks.dueAt')}
-                </Text>
+              <Field label={t('crmTasks.dueAt')} minW="180px" required>
                 <Input
                   type="datetime-local"
                   value={dueLocal}
@@ -128,11 +105,8 @@ export default function CrmTasksList() {
                   required
                   data-testid="crm-task-due"
                 />
-              </Box>
-              <Box flex="2" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('crmTasks.notes')}
-                </Text>
+              </Field>
+              <Field label={t('crmTasks.notes')} minW="180px">
                 <Input
                   value={notes}
                   onChange={(e) => {
@@ -140,7 +114,7 @@ export default function CrmTasksList() {
                   }}
                   data-testid="crm-task-notes"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -157,16 +131,9 @@ export default function CrmTasksList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -199,7 +166,12 @@ export default function CrmTasksList() {
                       {new Date(row.dueAt).toLocaleString()}
                       {overdue ? ` · ${t('crmTasks.overdue')}` : ''}
                     </Table.Cell>
-                    <Table.Cell>{t(`crmTasks.status_${row.status}`)}</Table.Cell>
+                    <Table.Cell>
+                      <StatusBadge
+                        value={row.status === 'open' ? 'new' : 'completed'}
+                        label={t(`crmTasks.status_${row.status}`, { defaultValue: row.status })}
+                      />
+                    </Table.Cell>
                     <Table.Cell textAlign="end">
                       {row.status === 'open' ? (
                         <Button
@@ -221,7 +193,7 @@ export default function CrmTasksList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

@@ -3,6 +3,10 @@
     "title": "Luxury Investment Admin",
     "tagline": "Вътрешен панел"
   },
+  "ui": {
+    "clear": "Изчисти",
+    "selectPlaceholder": "Избери…"
+  },
   "nav": {
     "dashboard": "Табло",
     "properties": "Имоти",
@@ -422,6 +426,9 @@
     "reference": "Референция",
     "titleCol": "Заглавие",
     "status": "Статус",
+    "status_draft": "Чернова",
+    "status_published": "Публикуван",
+    "status_archived": "Архивиран",
     "market": "Пазар",
     "titleBg": "Заглавие (BG)",
     "titleEn": "Заглавие (EN)",

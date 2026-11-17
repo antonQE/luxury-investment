@@ -1,17 +1,7 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { LOCATION_KINDS } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -20,6 +10,11 @@ import {
   createLocation,
   fetchLocations,
 } from '@/api/endpoints/catalog';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function Locations() {
@@ -68,21 +63,9 @@ export default function Locations() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="locations-page">
-      <Heading size="xl" color="text.primary">
-        {t('catalog.locationsTitle')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('catalog.locationsLead')}
-      </Text>
+      <PageHeader title={t('catalog.locationsTitle')} lead={t('catalog.locationsLead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        data-testid="location-create-form"
-      >
+      <Panel testId="location-create-form">
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -93,35 +76,17 @@ export default function Locations() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.kind')}
-                </Text>
-                <select
-                  style={{
-                    width: '100%',
-                    height: '2.5rem',
-                    padding: '0 0.75rem',
-                    borderWidth: '1px',
-                    borderRadius: '0.375rem',
-                  }}
+              <Field label={t('catalog.kind')}>
+                <AdminSelect
                   value={kind}
-                  onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                    setKind(event.target.value as (typeof LOCATION_KINDS)[number]);
+                  onChange={(value) => {
+                    setKind(value as (typeof LOCATION_KINDS)[number]);
                   }}
+                  options={LOCATION_KINDS.map((value) => ({ value, label: value }))}
                   data-testid="location-kind"
-                >
-                  {LOCATION_KINDS.map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.slug')}
-                </Text>
+                />
+              </Field>
+              <Field label={t('catalog.slug')} required>
                 <Input
                   value={slug}
                   onChange={(event) => {
@@ -130,13 +95,10 @@ export default function Locations() {
                   required
                   data-testid="location-slug"
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.nameBg')}
-                </Text>
+              <Field label={t('catalog.nameBg')} required>
                 <Input
                   value={nameBg}
                   onChange={(event) => {
@@ -145,11 +107,8 @@ export default function Locations() {
                   required
                   data-testid="location-name-bg"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.nameEn')}
-                </Text>
+              </Field>
+              <Field label={t('catalog.nameEn')} required>
                 <Input
                   value={nameEn}
                   onChange={(event) => {
@@ -158,7 +117,7 @@ export default function Locations() {
                   required
                   data-testid="location-name-en"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -175,16 +134,9 @@ export default function Locations() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner data-testid="locations-loading" />
         ) : listQuery.isError ? (
@@ -210,7 +162,7 @@ export default function Locations() {
                   <Table.Cell textAlign="end">
                     <Button
                       size="xs"
-                      variant="outline"
+                      variant={dangerVariant}
                       loading={archiveMutation.isPending}
                       onClick={() => {
                         archiveMutation.mutate(row.id);
@@ -225,7 +177,7 @@ export default function Locations() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

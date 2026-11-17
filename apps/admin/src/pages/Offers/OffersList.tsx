@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import {
   OFFER_STATUSES,
   OFFER_TYPES,
@@ -16,7 +6,7 @@ import {
   type OfferType,
 } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { contactKeys, fetchAdminContacts } from '@/api/endpoints/contacts';
@@ -27,6 +17,11 @@ import {
   updateAdminOffer,
 } from '@/api/endpoints/offers';
 import { fetchAdminProperties, propertyKeys } from '@/api/endpoints/properties';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ApiError } from '@/types/api';
 
 export default function OffersList() {
@@ -101,20 +96,9 @@ export default function OffersList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="offers-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('offers.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('offers.lead')}
-      </Text>
+      <PageHeader title={t('offers.title')} lead={t('offers.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -125,70 +109,52 @@ export default function OffersList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.property')}
-                </Text>
-                <select
+              <Field label={t('offers.property')} required>
+                <AdminSelect
                   value={propertyId}
                   required
-                  onChange={(e) => {
-                    setPropertyId(e.target.value);
-                  }}
+                  onChange={setPropertyId}
                   data-testid="offer-property"
-                >
-                  <option value="">{t('offers.selectProperty')}</option>
-                  {(propertiesQuery.data ?? []).map((property) => (
-                    <option key={property.id} value={property.id}>
-                      {property.referenceNumber} — {property.titleBg}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.contact')}
-                </Text>
-                <select
+                  options={[
+                    { value: '', label: t('offers.selectProperty') },
+                    ...(propertiesQuery.data ?? []).map((property) => ({
+                      value: property.id,
+                      label: `${property.referenceNumber} — ${property.titleBg}`,
+                    })),
+                  ]}
+                />
+              </Field>
+              <Field label={t('offers.contact')} required>
+                <AdminSelect
                   value={contactId}
                   required
-                  onChange={(e) => {
-                    setContactId(e.target.value);
-                  }}
+                  onChange={setContactId}
                   data-testid="offer-contact"
-                >
-                  <option value="">{t('offers.selectContact')}</option>
-                  {(contactsQuery.data ?? []).map((contact) => (
-                    <option key={contact.id} value={contact.id}>
-                      {contact.displayName}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box minW="120px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.type')}
-                </Text>
-                <select
+                  options={[
+                    { value: '', label: t('offers.selectContact') },
+                    ...(contactsQuery.data ?? []).map((contact) => ({
+                      value: contact.id,
+                      label: contact.displayName,
+                    })),
+                  ]}
+                />
+              </Field>
+              <Field label={t('offers.type')} minW="120px">
+                <AdminSelect
                   value={type}
-                  onChange={(e) => {
-                    setType(e.target.value as OfferType);
+                  onChange={(value) => {
+                    setType(value as OfferType);
                   }}
                   data-testid="offer-type"
-                >
-                  {OFFER_TYPES.map((item) => (
-                    <option key={item} value={item}>
-                      {t(`offers.type_${item}`)}
-                    </option>
-                  ))}
-                </select>
-              </Box>
+                  options={OFFER_TYPES.map((item) => ({
+                    value: item,
+                    label: t(`offers.type_${item}`),
+                  }))}
+                />
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="120px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.amount')}
-                </Text>
+              <Field label={t('offers.amount')} minW="120px" required>
                 <Input
                   value={amount}
                   onChange={(e) => {
@@ -198,11 +164,8 @@ export default function OffersList() {
                   placeholder="285000.00"
                   data-testid="offer-amount"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.validUntil')}
-                </Text>
+              </Field>
+              <Field label={t('offers.validUntil')} minW="140px">
                 <Input
                   type="date"
                   value={validUntil}
@@ -211,11 +174,8 @@ export default function OffersList() {
                   }}
                   data-testid="offer-valid-until"
                 />
-              </Box>
-              <Box flex="2" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offers.terms')}
-                </Text>
+              </Field>
+              <Field label={t('offers.terms')} minW="160px">
                 <Input
                   value={terms}
                   onChange={(e) => {
@@ -223,7 +183,7 @@ export default function OffersList() {
                   }}
                   data-testid="offer-terms"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -240,16 +200,9 @@ export default function OffersList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -279,30 +232,35 @@ export default function OffersList() {
                     {row.amount} {row.currency}
                   </Table.Cell>
                   <Table.Cell>
-                    <select
-                      value={row.status}
-                      disabled={statusMutation.isPending}
-                      aria-label={t('offers.status')}
-                      data-testid={`offer-status-${row.id}`}
-                      onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                        const status = event.target.value as OfferStatus;
-                        if (status === row.status) return;
-                        statusMutation.mutate({ id: row.id, status });
-                      }}
-                    >
-                      {OFFER_STATUSES.map((status) => (
-                        <option key={status} value={status}>
-                          {t(`offers.status_${status}`)}
-                        </option>
-                      ))}
-                    </select>
+                    <HStack gap={2}>
+                      <StatusBadge
+                        value={row.status}
+                        label={t(`offers.status_${row.status}`, { defaultValue: row.status })}
+                      />
+                      <AdminSelect
+                        size="sm"
+                        value={row.status}
+                        disabled={statusMutation.isPending}
+                        aria-label={t('offers.status')}
+                        data-testid={`offer-status-${row.id}`}
+                        options={OFFER_STATUSES.map((status) => ({
+                          value: status,
+                          label: t(`offers.status_${status}`),
+                        }))}
+                        onChange={(value) => {
+                          const status = value as OfferStatus;
+                          if (status === row.status) return;
+                          statusMutation.mutate({ id: row.id, status });
+                        }}
+                      />
+                    </HStack>
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

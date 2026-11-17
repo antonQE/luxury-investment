@@ -3,6 +3,10 @@
     "title": "Luxury Investment Admin",
     "tagline": "Internal panel"
   },
+  "ui": {
+    "clear": "Clear",
+    "selectPlaceholder": "Select…"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "properties": "Properties",
@@ -422,6 +426,9 @@
     "reference": "Reference",
     "titleCol": "Title",
     "status": "Status",
+    "status_draft": "Draft",
+    "status_published": "Published",
+    "status_archived": "Archived",
     "market": "Market",
     "titleBg": "Title (BG)",
     "titleEn": "Title (EN)",

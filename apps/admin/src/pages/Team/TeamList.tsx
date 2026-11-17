@@ -1,17 +1,7 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { TEAM_MEMBER_KINDS } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -20,6 +10,11 @@ import {
   fetchAdminTeam,
   teamKeys,
 } from '@/api/endpoints/team';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function TeamList() {
@@ -75,20 +70,9 @@ export default function TeamList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="team-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('team.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('team.lead')}
-      </Text>
+      <PageHeader title={t('team.title')} lead={t('team.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -99,10 +83,7 @@ export default function TeamList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.slug')}
-                </Text>
+              <Field label={t('team.slug')} required>
                 <Input
                   value={slug}
                   onChange={(e) => {
@@ -111,32 +92,20 @@ export default function TeamList() {
                   required
                   data-testid="team-slug"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.kind')}
-                </Text>
-                <select
-                  style={{ width: '100%', height: '2.5rem', padding: '0 0.75rem' }}
+              </Field>
+              <Field label={t('team.kind')}>
+                <AdminSelect
                   value={kind}
-                  onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                    setKind(event.target.value as (typeof TEAM_MEMBER_KINDS)[number]);
+                  onChange={(value) => {
+                    setKind(value as (typeof TEAM_MEMBER_KINDS)[number]);
                   }}
+                  options={TEAM_MEMBER_KINDS.map((value) => ({ value, label: value }))}
                   data-testid="team-kind"
-                >
-                  {TEAM_MEMBER_KINDS.map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
-              </Box>
+                />
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.nameBg')}
-                </Text>
+              <Field label={t('team.nameBg')} required>
                 <Input
                   value={nameBg}
                   onChange={(e) => {
@@ -144,11 +113,8 @@ export default function TeamList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.nameEn')}
-                </Text>
+              </Field>
+              <Field label={t('team.nameEn')} required>
                 <Input
                   value={nameEn}
                   onChange={(e) => {
@@ -156,13 +122,10 @@ export default function TeamList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.roleBg')}
-                </Text>
+              <Field label={t('team.roleBg')} required>
                 <Input
                   value={roleBg}
                   onChange={(e) => {
@@ -170,11 +133,8 @@ export default function TeamList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('team.roleEn')}
-                </Text>
+              </Field>
+              <Field label={t('team.roleEn')} required>
                 <Input
                   value={roleEn}
                   onChange={(e) => {
@@ -182,7 +142,7 @@ export default function TeamList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -199,16 +159,9 @@ export default function TeamList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -234,7 +187,7 @@ export default function TeamList() {
                   <Table.Cell textAlign="end">
                     <Button
                       size="xs"
-                      variant="outline"
+                      variant={dangerVariant}
                       onClick={() => {
                         archiveMutation.mutate(row.id);
                       }}
@@ -248,7 +201,7 @@ export default function TeamList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

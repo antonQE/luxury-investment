@@ -16,7 +16,7 @@ import {
   type ContactRole,
 } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -29,6 +29,11 @@ import {
   fetchContactDuplicates,
   updateAdminContact,
 } from '@/api/endpoints/contacts';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 interface ContactFormState {
@@ -143,20 +148,9 @@ export default function ContactsList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="contacts-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('contacts.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('contacts.lead')}
-      </Text>
+      <PageHeader title={t('contacts.title')} lead={t('contacts.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -167,31 +161,23 @@ export default function ContactsList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('contacts.kind')}
-                </Text>
-                <select
+              <Field label={t('contacts.kind')} minW="140px">
+                <AdminSelect
                   value={form.kind}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  onChange={(value) => {
                     setForm((prev) => ({
                       ...prev,
-                      kind: e.target.value as ContactKind,
+                      kind: value as ContactKind,
                     }));
                   }}
                   data-testid="contact-kind"
-                >
-                  {CONTACT_KINDS.map((kind) => (
-                    <option key={kind} value={kind}>
-                      {t(`contacts.kind_${kind}`)}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="2" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('contacts.displayName')}
-                </Text>
+                  options={CONTACT_KINDS.map((kind) => ({
+                    value: kind,
+                    label: t(`contacts.kind_${kind}`),
+                  }))}
+                />
+              </Field>
+              <Field label={t('contacts.displayName')} minW="180px" required>
                 <Input
                   value={form.displayName}
                   onChange={(e) => {
@@ -200,13 +186,10 @@ export default function ContactsList() {
                   required
                   data-testid="contact-display-name"
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('contacts.email')}
-                </Text>
+              <Field label={t('contacts.email')}>
                 <Input
                   type="email"
                   value={form.email}
@@ -215,11 +198,8 @@ export default function ContactsList() {
                   }}
                   data-testid="contact-email"
                 />
-              </Box>
-              <Box flex="1" minW="160px">
-                <Text fontSize="sm" mb={1}>
-                  {t('contacts.phone')}
-                </Text>
+              </Field>
+              <Field label={t('contacts.phone')}>
                 <Input
                   value={form.phone}
                   onChange={(e) => {
@@ -227,12 +207,9 @@ export default function ContactsList() {
                   }}
                   data-testid="contact-phone"
                 />
-              </Box>
+              </Field>
             </HStack>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('contacts.notes')}
-              </Text>
+            <Field label={t('contacts.notes')}>
               <Input
                 value={form.notes}
                 onChange={(e) => {
@@ -240,9 +217,9 @@ export default function ContactsList() {
                 }}
                 data-testid="contact-notes"
               />
-            </Box>
+            </Field>
             <Box>
-              <Text fontSize="sm" mb={2}>
+              <Text fontSize="sm" fontWeight="600" color="text.secondary" mb={2}>
                 {t('contacts.roles')}
               </Text>
               <HStack gap={3} flexWrap="wrap" data-testid="contact-roles">
@@ -323,16 +300,9 @@ export default function ContactsList() {
             </HStack>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -377,7 +347,7 @@ export default function ContactsList() {
                       </Button>
                       <Button
                         size="xs"
-                        variant="outline"
+                        variant={dangerVariant}
                         onClick={() => {
                           archiveMutation.mutate(row.id);
                         }}
@@ -392,7 +362,7 @@ export default function ContactsList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +11,10 @@ import {
   fetchDocuments,
   uploadDocumentVersion,
 } from '@/api/endpoints/documents';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ROUTES } from '@/constants/routes';
 
 export default function DocumentLibraryAdmin() {
@@ -80,33 +74,22 @@ export default function DocumentLibraryAdmin() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="document-library-admin-page">
-      <HStack justify="space-between" align="start">
-        <Box>
-          <Heading size="xl" color="text.primary">
-            {t('documents.title')}
-          </Heading>
-          <Text color="text.muted" fontSize="sm" mt={1}>
-            {t('documents.lead')}
-          </Text>
-        </Box>
-        <Link to={ROUTES.HANDBOOK} data-testid="documents-open-handbook">
-          {t('documents.openHandbook')}
-        </Link>
-      </HStack>
+      <PageHeader
+        title={t('documents.title')}
+        lead={t('documents.lead')}
+        actions={
+          <Link to={ROUTES.HANDBOOK} data-testid="documents-open-handbook">
+            {t('documents.openHandbook')}
+          </Link>
+        }
+      />
 
       {listQuery.isPending ? (
         <Spinner />
       ) : listQuery.isError ? (
         <Text color="status.down">{t('documents.loadError')}</Text>
       ) : (
-        <Box
-          bg="background.panel"
-          borderWidth="1px"
-          borderColor="border.default"
-          p={4}
-          borderRadius="md"
-          overflowX="auto"
-        >
+        <Panel overflowX="auto">
           <Table.Root size="sm" data-testid="document-library-table">
             <Table.Header>
               <Table.Row>
@@ -140,7 +123,7 @@ export default function DocumentLibraryAdmin() {
                       </Button>
                       <Button
                         size="xs"
-                        variant="ghost"
+                        variant={dangerVariant}
                         onClick={() => {
                           archiveMutation.mutate(row.id);
                         }}
@@ -154,18 +137,11 @@ export default function DocumentLibraryAdmin() {
               ))}
             </Table.Body>
           </Table.Root>
-        </Box>
+        </Panel>
       )}
 
       {selectedId !== null ? (
-        <Box
-          bg="background.panel"
-          borderWidth="1px"
-          borderColor="border.default"
-          p={6}
-          borderRadius="md"
-          data-testid="document-library-detail"
-        >
+        <Panel testId="document-library-detail">
           {detailQuery.isPending ? (
             <Spinner />
           ) : detailQuery.data ? (
@@ -227,7 +203,12 @@ export default function DocumentLibraryAdmin() {
                       <Table.Cell>{version.fileName}</Table.Cell>
                       <Table.Cell>{version.downloadCount}</Table.Cell>
                       <Table.Cell>
-                        {version.isCurrent ? t('documents.current') : t('documents.notCurrent')}
+                        <StatusBadge
+                          value={version.isCurrent ? 'published' : 'archived'}
+                          label={
+                            version.isCurrent ? t('documents.current') : t('documents.notCurrent')
+                          }
+                        />
                       </Table.Cell>
                     </Table.Row>
                   ))}
@@ -237,7 +218,7 @@ export default function DocumentLibraryAdmin() {
           ) : (
             <Text color="status.down">{t('documents.loadError')}</Text>
           )}
-        </Box>
+        </Panel>
       ) : null}
     </VStack>
   );

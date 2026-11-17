@@ -1,17 +1,7 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Text,
-  Textarea,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, HStack, Input, Spinner, Text, Textarea, VStack } from '@chakra-ui/react';
 import { MARKETS, PROPERTY_TYPES, TRANSACTION_TYPES } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type CSSProperties, type ReactNode, type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -25,6 +15,12 @@ import {
   publishAdminProperty,
   updateAdminProperty,
 } from '@/api/endpoints/properties';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/contexts/AuthContext';
 import { PropertyGallery } from '@/pages/Properties/PropertyGallery';
@@ -207,22 +203,22 @@ function PropertyEditorForm({
 
   return (
     <VStack align="stretch" gap={6} data-testid="property-editor-page">
-      <HStack justify="space-between" flexWrap="wrap" gap={3}>
-        <Heading size="xl" color="text.primary">
-          {isNew ? t('properties.create') : t('properties.edit')}
-        </Heading>
-        <Text fontSize="sm" color="text.muted" data-testid="property-status">
-          {t('properties.status')}: {status}
-        </Text>
-      </HStack>
+      <PageHeader
+        title={isNew ? t('properties.create') : t('properties.edit')}
+        actions={
+          <HStack gap={2} data-testid="property-status">
+            <Text fontSize="sm" color="text.muted">
+              {t('properties.status')}:
+            </Text>
+            <StatusBadge
+              value={status}
+              label={t(`properties.status_${status}`, { defaultValue: status })}
+            />
+          </HStack>
+        }
+      />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -230,7 +226,7 @@ function PropertyEditorForm({
         >
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Field label={t('properties.titleBg')}>
+              <Field label={t('properties.titleBg')} required>
                 <Input
                   value={form.titleBg}
                   onChange={(e) => {
@@ -240,7 +236,7 @@ function PropertyEditorForm({
                   data-testid="property-title-bg"
                 />
               </Field>
-              <Field label={t('properties.titleEn')}>
+              <Field label={t('properties.titleEn')} required>
                 <Input
                   value={form.titleEn}
                   onChange={(e) => {
@@ -252,7 +248,7 @@ function PropertyEditorForm({
               </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Field label={t('properties.excerptBg')}>
+              <Field label={t('properties.excerptBg')} required>
                 <Input
                   value={form.excerptBg}
                   onChange={(e) => {
@@ -261,7 +257,7 @@ function PropertyEditorForm({
                   required
                 />
               </Field>
-              <Field label={t('properties.excerptEn')}>
+              <Field label={t('properties.excerptEn')} required>
                 <Input
                   value={form.excerptEn}
                   onChange={(e) => {
@@ -271,7 +267,7 @@ function PropertyEditorForm({
                 />
               </Field>
             </HStack>
-            <Field label={t('properties.descriptionBg')}>
+            <Field label={t('properties.descriptionBg')} required>
               <Textarea
                 value={form.descriptionBg}
                 onChange={(e) => {
@@ -281,7 +277,7 @@ function PropertyEditorForm({
                 rows={3}
               />
             </Field>
-            <Field label={t('properties.descriptionEn')}>
+            <Field label={t('properties.descriptionEn')} required>
               <Textarea
                 value={form.descriptionEn}
                 onChange={(e) => {
@@ -293,53 +289,35 @@ function PropertyEditorForm({
             </Field>
             <HStack gap={3} flexWrap="wrap">
               <Field label={t('properties.transactionType')}>
-                <select
-                  style={selectStyle}
+                <AdminSelect
                   value={form.transactionType}
-                  onChange={(e) => {
-                    setField('transactionType', e.target.value);
+                  onChange={(value) => {
+                    setField('transactionType', value);
                   }}
-                >
-                  {TRANSACTION_TYPES.map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
+                  options={TRANSACTION_TYPES.map((value) => ({ value, label: value }))}
+                />
               </Field>
               <Field label={t('properties.propertyType')}>
-                <select
-                  style={selectStyle}
+                <AdminSelect
                   value={form.propertyType}
-                  onChange={(e) => {
-                    setField('propertyType', e.target.value);
+                  onChange={(value) => {
+                    setField('propertyType', value);
                   }}
-                >
-                  {PROPERTY_TYPES.map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
+                  options={PROPERTY_TYPES.map((value) => ({ value, label: value }))}
+                />
               </Field>
               <Field label={t('properties.market')}>
-                <select
-                  style={selectStyle}
+                <AdminSelect
                   value={form.market}
-                  onChange={(e) => {
-                    setField('market', e.target.value);
+                  onChange={(value) => {
+                    setField('market', value);
                   }}
-                >
-                  {MARKETS.map((value) => (
-                    <option key={value} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
+                  options={MARKETS.map((value) => ({ value, label: value }))}
+                />
               </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Field label={t('properties.city')}>
+              <Field label={t('properties.city')} required>
                 <Input
                   value={form.city}
                   onChange={(e) => {
@@ -356,7 +334,7 @@ function PropertyEditorForm({
                   }}
                 />
               </Field>
-              <Field label={t('properties.price')}>
+              <Field label={t('properties.price')} required>
                 <Input
                   value={form.price}
                   onChange={(e) => {
@@ -366,7 +344,7 @@ function PropertyEditorForm({
                   data-testid="property-price"
                 />
               </Field>
-              <Field label={t('properties.area')}>
+              <Field label={t('properties.area')} required>
                 <Input
                   value={form.area}
                   onChange={(e) => {
@@ -402,7 +380,7 @@ function PropertyEditorForm({
                   </Button>
                   <Button
                     type="button"
-                    variant="outline"
+                    variant={dangerVariant}
                     loading={archiveMutation.isPending}
                     onClick={() => {
                       archiveMutation.mutate();
@@ -416,28 +394,9 @@ function PropertyEditorForm({
             </HStack>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
       {propertyId !== null ? <PropertyGallery propertyId={propertyId} /> : null}
     </VStack>
-  );
-}
-
-const selectStyle: CSSProperties = {
-  width: '100%',
-  height: '2.5rem',
-  padding: '0 0.75rem',
-  borderWidth: '1px',
-  borderRadius: '0.375rem',
-};
-
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <Box flex="1" minW="160px">
-      <Text fontSize="sm" mb={1}>
-        {label}
-      </Text>
-      {children}
-    </Box>
   );
 }

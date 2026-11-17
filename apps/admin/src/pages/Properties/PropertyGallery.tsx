@@ -10,6 +10,8 @@ import {
   updatePropertyMedia,
   uploadPropertyMedia,
 } from '@/api/endpoints/media';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Panel } from '@/components/ui/Panel';
 
 interface PropertyGalleryProps {
   propertyId: string;
@@ -61,14 +63,7 @@ export function PropertyGallery({ propertyId }: PropertyGalleryProps) {
   }
 
   return (
-    <Box
-      bg="background.panel"
-      borderWidth="1px"
-      borderColor="border.default"
-      p={6}
-      borderRadius="md"
-      data-testid="property-gallery"
-    >
+    <Panel testId="property-gallery">
       <HStack justify="space-between" mb={4} flexWrap="wrap" gap={3}>
         <Heading size="md">{t('media.title')}</Heading>
         <Box>
@@ -152,7 +147,7 @@ export function PropertyGallery({ propertyId }: PropertyGalleryProps) {
                   </Button>
                   <Button
                     size="xs"
-                    variant="outline"
+                    variant={dangerVariant}
                     onClick={() => {
                       archiveMutation.mutate(asset.id);
                     }}
@@ -171,6 +166,6 @@ export function PropertyGallery({ propertyId }: PropertyGalleryProps) {
           ) : null}
         </VStack>
       )}
-    </Box>
+    </Panel>
   );
 }

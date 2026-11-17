@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
+import { Button, Heading, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,10 @@ import {
   publishSellerHandbookVersion,
   uploadSellerHandbookVersion,
 } from '@/api/endpoints/documents';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 
 export default function HandbookAdmin() {
   const { t } = useTranslation();
@@ -50,12 +54,7 @@ export default function HandbookAdmin() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="handbook-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('handbook.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('handbook.lead')}
-      </Text>
+      <PageHeader title={t('handbook.title')} lead={t('handbook.lead')} />
 
       {listQuery.isPending ? (
         <Spinner />
@@ -67,21 +66,12 @@ export default function HandbookAdmin() {
         </Text>
       )}
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <Heading size="md" mb={4}>
           {t('handbook.upload')}
         </Heading>
         <VStack align="stretch" gap={3}>
-          <Box>
-            <Text fontSize="sm" mb={1}>
-              {t('handbook.versionLabel')}
-            </Text>
+          <Field label={t('handbook.versionLabel')}>
             <Input
               value={versionLabel}
               onChange={(e) => {
@@ -89,11 +79,8 @@ export default function HandbookAdmin() {
               }}
               data-testid="handbook-version-label"
             />
-          </Box>
-          <Box>
-            <Text fontSize="sm" mb={1}>
-              {t('handbook.file')}
-            </Text>
+          </Field>
+          <Field label={t('handbook.file')}>
             <input
               type="file"
               accept="application/pdf"
@@ -102,7 +89,7 @@ export default function HandbookAdmin() {
                 setFile(event.target.files?.[0] ?? null);
               }}
             />
-          </Box>
+          </Field>
           {formError !== null ? (
             <Text color="status.down" fontSize="sm">
               {formError}
@@ -120,16 +107,9 @@ export default function HandbookAdmin() {
             {t('handbook.upload')}
           </Button>
         </VStack>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.data !== undefined ? (
           <Table.Root size="sm" data-testid="handbook-versions-table">
             <Table.Header>
@@ -148,7 +128,10 @@ export default function HandbookAdmin() {
                   <Table.Cell>{version.fileName}</Table.Cell>
                   <Table.Cell>{version.downloadCount}</Table.Cell>
                   <Table.Cell>
-                    {version.isCurrent ? t('handbook.current') : t('handbook.archived')}
+                    <StatusBadge
+                      value={version.isCurrent ? 'published' : 'archived'}
+                      label={version.isCurrent ? t('handbook.current') : t('handbook.archived')}
+                    />
                   </Table.Cell>
                   <Table.Cell textAlign="end">
                     {!version.isCurrent ? (
@@ -168,7 +151,7 @@ export default function HandbookAdmin() {
             </Table.Body>
           </Table.Root>
         ) : null}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

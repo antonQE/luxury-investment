@@ -4,12 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
+import { navIconFor } from '@/components/layout/nav-icons';
 import { ROUTES } from '@/constants/routes';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface AppShellProps {
   children?: ReactNode;
 }
+
+const SIDEBAR_COLLAPSED = '4rem';
+const SIDEBAR_EXPANDED = '15.5rem';
 
 export function AppShell({ children }: AppShellProps) {
   const { t } = useTranslation();
@@ -52,62 +56,115 @@ export function AppShell({ children }: AppShellProps) {
     <Flex minH="100dvh" bg="background.page" data-testid="app-shell">
       <Box
         as="aside"
-        w="248px"
+        role="navigation"
+        aria-label={t('app.title')}
+        w={SIDEBAR_COLLAPSED}
+        minH="100dvh"
+        flexShrink={0}
+        position="sticky"
+        top={0}
+        alignSelf="flex-start"
+        zIndex={20}
         bg="background.sidebar"
         color="text.inverse"
-        px={5}
-        py={7}
-        display="flex"
-        flexDirection="column"
-        gap={10}
+        overflow="hidden"
+        transition="width 0.2s ease"
+        _hover={{ w: SIDEBAR_EXPANDED }}
+        css={{
+          '&:hover [data-sidebar-label]': { opacity: 1, width: 'auto' },
+        }}
         data-testid="admin-sidebar"
       >
-        <Box px={2}>
-          <Text fontFamily="heading" fontSize="xl" letterSpacing="0.02em" lineHeight="1.2">
-            Luxury Investment
-          </Text>
-          <Text
-            fontSize="xs"
-            mt={2}
-            opacity={0.55}
-            letterSpacing="0.14em"
-            textTransform="uppercase"
-          >
-            {t('app.tagline')}
-          </Text>
-        </Box>
-        <Box as="nav" display="flex" flexDirection="column" gap={0.5}>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              data-testid={item.testId}
-              style={{ textDecoration: 'none' }}
+        <Box
+          w={SIDEBAR_EXPANDED}
+          h="100dvh"
+          px={3}
+          py={6}
+          display="flex"
+          flexDirection="column"
+          gap={8}
+        >
+          <HStack px={3} minH="2.5rem" gap={3} align="center">
+            <Text
+              flexShrink={0}
+              w="18px"
+              textAlign="center"
+              fontFamily="heading"
+              fontSize="sm"
+              letterSpacing="0.06em"
+              color="accent.gold"
             >
-              {({ isActive }) => (
-                <Box
-                  px={3}
-                  py={2.5}
-                  borderLeftWidth="2px"
-                  borderLeftColor={isActive ? 'accent.gold' : 'transparent'}
-                  bg={isActive ? 'accent.goldMuted' : 'transparent'}
-                  transition="background 0.15s ease, border-color 0.15s ease"
-                  _hover={{ bg: 'accent.goldMuted' }}
-                >
-                  <Text
+              LI
+            </Text>
+            <Box
+              data-sidebar-label=""
+              opacity={0}
+              width={0}
+              overflow="hidden"
+              whiteSpace="nowrap"
+              transition="opacity 0.15s ease"
+            >
+              <Text fontFamily="heading" fontSize="md" letterSpacing="0.02em" lineHeight="1.2">
+                Luxury Investment
+              </Text>
+              <Text
+                fontSize="xs"
+                mt={1}
+                opacity={0.55}
+                letterSpacing="0.12em"
+                textTransform="uppercase"
+              >
+                {t('app.tagline')}
+              </Text>
+            </Box>
+          </HStack>
+
+          <Box as="nav" display="flex" flexDirection="column" gap={0.5} overflowY="auto" flex="1">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                data-testid={item.testId}
+                title={item.label}
+                style={{ textDecoration: 'none' }}
+              >
+                {({ isActive }) => (
+                  <HStack
+                    gap={3}
+                    px={3}
+                    py={2.5}
+                    borderRadius="l2"
+                    borderLeftWidth="2px"
+                    borderLeftColor={isActive ? 'accent.gold' : 'transparent'}
+                    bg={isActive ? 'accent.goldMuted' : 'transparent'}
+                    transition="background 0.15s ease, border-color 0.15s ease"
+                    _hover={{ bg: 'accent.goldMuted' }}
                     color={isActive ? 'accent.gold' : 'text.inverse'}
-                    fontSize="sm"
-                    opacity={isActive ? 1 : 0.72}
-                    letterSpacing="0.02em"
+                    opacity={isActive ? 1 : 0.78}
                   >
-                    {item.label}
-                  </Text>
-                </Box>
-              )}
-            </NavLink>
-          ))}
+                    <Box flexShrink={0} display="inline-flex" w="18px" justifyContent="center">
+                      {navIconFor(item.to)}
+                    </Box>
+                    <Text
+                      data-sidebar-label=""
+                      fontSize="sm"
+                      letterSpacing="0.02em"
+                      whiteSpace="nowrap"
+                      overflow="hidden"
+                      opacity={0}
+                      width={0}
+                      transition="opacity 0.15s ease"
+                    >
+                      {item.label}
+                    </Text>
+                  </HStack>
+                )}
+              </NavLink>
+            ))}
+          </Box>
         </Box>
       </Box>
+
       <Flex flex={1} direction="column" minW={0}>
         <HStack
           as="header"
@@ -127,13 +184,6 @@ export function AppShell({ children }: AppShellProps) {
             <Button
               size="sm"
               variant="outline"
-              borderColor="border.default"
-              color="text.secondary"
-              borderRadius="0"
-              fontWeight="500"
-              letterSpacing="0.06em"
-              textTransform="uppercase"
-              fontSize="xs"
               onClick={() => void onLogout()}
               data-testid="logout"
             >

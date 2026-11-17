@@ -25,6 +25,12 @@ import {
   publishAdminLanding,
   updateAdminLanding,
 } from '@/api/endpoints/landings';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ApiError } from '@/types/api';
 
 interface DraftSection {
@@ -232,22 +238,9 @@ export default function LandingsAdmin() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="landings-admin-page">
-      <Box>
-        <Heading size="xl" color="text.primary">
-          {t('landings.title')}
-        </Heading>
-        <Text color="text.muted" fontSize="sm" mt={1}>
-          {t('landings.lead')}
-        </Text>
-      </Box>
+      <PageHeader title={t('landings.title')} lead={t('landings.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={4}
-        borderRadius="md"
-      >
+      <Panel>
         <HStack justify="space-between" mb={3}>
           <Heading size="md">{t('landings.list')}</Heading>
           <Button size="sm" variant="outline" onClick={resetCreateForm} data-testid="landings-new">
@@ -276,7 +269,12 @@ export default function LandingsAdmin() {
                 <Table.Row key={row.id}>
                   <Table.Cell>{row.slug}</Table.Cell>
                   <Table.Cell>{row.titleBg}</Table.Cell>
-                  <Table.Cell>{row.status}</Table.Cell>
+                  <Table.Cell>
+                    <StatusBadge
+                      value={row.status}
+                      label={t(`landings.status_${row.status}`, { defaultValue: row.status })}
+                    />
+                  </Table.Cell>
                   <Table.Cell>{row.showInNav ? t('landings.yes') : t('landings.no')}</Table.Cell>
                   <Table.Cell textAlign="end">
                     <Button
@@ -296,16 +294,9 @@ export default function LandingsAdmin() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        data-testid="landings-form"
-      >
+      <Panel testId="landings-form">
         <form onSubmit={onSubmit}>
           <Heading size="md" mb={4}>
             {selectedId === null ? t('landings.create') : t('landings.edit')}
@@ -314,10 +305,7 @@ export default function LandingsAdmin() {
           {selectedId !== null && detailQuery.isPending ? <Spinner /> : null}
 
           <HStack gap={3} flexWrap="wrap" mb={3}>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('landings.key')}
-              </Text>
+            <Field label={t('landings.key')} minW="140px">
               <Input
                 value={key}
                 onChange={(e) => {
@@ -326,11 +314,8 @@ export default function LandingsAdmin() {
                 disabled={selectedId !== null}
                 data-testid="landings-key"
               />
-            </Box>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('landings.slug')}
-              </Text>
+            </Field>
+            <Field label={t('landings.slug')} minW="140px">
               <Input
                 value={slug}
                 onChange={(e) => {
@@ -338,23 +323,19 @@ export default function LandingsAdmin() {
                 }}
                 data-testid="landings-slug"
               />
-            </Box>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('landings.robots')}
-              </Text>
-              <select
+            </Field>
+            <Field label={t('landings.robots')} minW="140px">
+              <AdminSelect
                 value={robots}
-                onChange={(e) => {
-                  setRobots(e.target.value);
-                }}
+                onChange={setRobots}
                 data-testid="landings-robots"
-              >
-                <option value="index,follow">index,follow</option>
-                <option value="noindex,follow">noindex,follow</option>
-                <option value="noindex,nofollow">noindex,nofollow</option>
-              </select>
-            </Box>
+                options={[
+                  { value: 'index,follow', label: 'index,follow' },
+                  { value: 'noindex,follow', label: 'noindex,follow' },
+                  { value: 'noindex,nofollow', label: 'noindex,nofollow' },
+                ]}
+              />
+            </Field>
             <label
               style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', marginTop: '1.5rem' }}
             >
@@ -371,10 +352,7 @@ export default function LandingsAdmin() {
           </HStack>
 
           <HStack gap={3} flexWrap="wrap" mb={3}>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.titleBg')}
-              </Text>
+            <Field label={t('landings.titleBg')}>
               <Input
                 value={titleBg}
                 onChange={(e) => {
@@ -382,11 +360,8 @@ export default function LandingsAdmin() {
                 }}
                 data-testid="landings-title-bg"
               />
-            </Box>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.titleEn')}
-              </Text>
+            </Field>
+            <Field label={t('landings.titleEn')}>
               <Input
                 value={titleEn}
                 onChange={(e) => {
@@ -394,39 +369,30 @@ export default function LandingsAdmin() {
                 }}
                 data-testid="landings-title-en"
               />
-            </Box>
+            </Field>
           </HStack>
 
           <HStack gap={3} flexWrap="wrap" mb={3}>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.seoTitleBg')}
-              </Text>
+            <Field label={t('landings.seoTitleBg')}>
               <Input
                 value={seoTitleBg}
                 onChange={(e) => {
                   setSeoTitleBg(e.target.value);
                 }}
               />
-            </Box>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.seoTitleEn')}
-              </Text>
+            </Field>
+            <Field label={t('landings.seoTitleEn')}>
               <Input
                 value={seoTitleEn}
                 onChange={(e) => {
                   setSeoTitleEn(e.target.value);
                 }}
               />
-            </Box>
+            </Field>
           </HStack>
 
           <HStack gap={3} flexWrap="wrap" mb={3}>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.seoDescriptionBg')}
-              </Text>
+            <Field label={t('landings.seoDescriptionBg')}>
               <Textarea
                 value={seoDescriptionBg}
                 onChange={(e) => {
@@ -434,11 +400,8 @@ export default function LandingsAdmin() {
                 }}
                 rows={2}
               />
-            </Box>
-            <Box flex="1">
-              <Text fontSize="sm" mb={1}>
-                {t('landings.seoDescriptionEn')}
-              </Text>
+            </Field>
+            <Field label={t('landings.seoDescriptionEn')}>
               <Textarea
                 value={seoDescriptionEn}
                 onChange={(e) => {
@@ -446,20 +409,19 @@ export default function LandingsAdmin() {
                 }}
                 rows={2}
               />
-            </Box>
+            </Field>
           </HStack>
 
           <Box mb={4}>
-            <Text fontSize="sm" mb={1}>
-              {t('landings.campaignKey')}
-            </Text>
-            <Input
-              value={campaignKey}
-              onChange={(e) => {
-                setCampaignKey(e.target.value);
-              }}
-              data-testid="landings-campaign-key"
-            />
+            <Field label={t('landings.campaignKey')}>
+              <Input
+                value={campaignKey}
+                onChange={(e) => {
+                  setCampaignKey(e.target.value);
+                }}
+                data-testid="landings-campaign-key"
+              />
+            </Field>
           </Box>
 
           <Heading size="sm" mb={2}>
@@ -526,19 +488,14 @@ export default function LandingsAdmin() {
           </VStack>
 
           <HStack gap={2} mb={4}>
-            <select
+            <AdminSelect
               value={newSectionType}
-              onChange={(e) => {
-                setNewSectionType(e.target.value as LandingSectionType);
+              onChange={(value) => {
+                setNewSectionType(value as LandingSectionType);
               }}
               data-testid="landings-add-type"
-            >
-              {LANDING_SECTION_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
+              options={LANDING_SECTION_TYPES.map((type) => ({ value: type, label: type }))}
+            />
             <Button
               size="sm"
               variant="outline"
@@ -600,7 +557,7 @@ export default function LandingsAdmin() {
                   {t('landings.publish')}
                 </Button>
                 <Button
-                  variant="outline"
+                  variant={dangerVariant}
                   loading={archiveMutation.isPending}
                   onClick={() => {
                     archiveMutation.mutate(selectedId);
@@ -613,7 +570,7 @@ export default function LandingsAdmin() {
             ) : null}
           </HStack>
         </form>
-      </Box>
+      </Panel>
     </VStack>
   );
 }

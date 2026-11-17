@@ -26,7 +26,9 @@ Then log out and log in again so the session picks up new permission keys.
 | `/` | Redirects to `/dashboard` |
 | `*` | Not-found page with link to dashboard |
 
-Shell: sidebar (header: display name, BG/EN language switcher, logout).
+Shell: icon sidebar that expands with labels on hover; header has display name, BG/EN language switcher, logout.
+
+UI conventions (LI-096): theme tokens/recipes drive Input, Button (incl. `danger`), Table and NativeSelect contrast; radii `l1`–`l3` are rounded (not square). Shared helpers under `apps/admin/src/components/ui/`: `PageHeader`, `Field`, `Panel`, `AdminSelect` (Chakra NativeSelect), `StatusBadge` for listing/inquiry/offer/deal/viewing statuses.
 
 ### Sidebar order
 

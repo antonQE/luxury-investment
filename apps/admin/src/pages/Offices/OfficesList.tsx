@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +9,10 @@ import {
   fetchAdminOffices,
   officeKeys,
 } from '@/api/endpoints/offices';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 export default function OfficesList() {
@@ -81,20 +75,9 @@ export default function OfficesList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="offices-admin-page">
-      <Heading size="xl" color="text.primary">
-        {t('offices.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('offices.lead')}
-      </Text>
+      <PageHeader title={t('offices.title')} lead={t('offices.lead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -105,10 +88,7 @@ export default function OfficesList() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.slug')}
-                </Text>
+              <Field label={t('offices.slug')} required>
                 <Input
                   value={slug}
                   onChange={(e) => {
@@ -117,11 +97,8 @@ export default function OfficesList() {
                   required
                   data-testid="office-slug"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.mapQuery')}
-                </Text>
+              </Field>
+              <Field label={t('offices.mapQuery')} required>
                 <Input
                   value={mapQuery}
                   onChange={(e) => {
@@ -130,13 +107,10 @@ export default function OfficesList() {
                   required
                   data-testid="office-map-query"
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.nameBg')}
-                </Text>
+              <Field label={t('offices.nameBg')} required>
                 <Input
                   value={nameBg}
                   onChange={(e) => {
@@ -144,11 +118,8 @@ export default function OfficesList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.nameEn')}
-                </Text>
+              </Field>
+              <Field label={t('offices.nameEn')} required>
                 <Input
                   value={nameEn}
                   onChange={(e) => {
@@ -156,13 +127,10 @@ export default function OfficesList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.addressBg')}
-                </Text>
+              <Field label={t('offices.addressBg')} required>
                 <Input
                   value={addressBg}
                   onChange={(e) => {
@@ -170,11 +138,8 @@ export default function OfficesList() {
                   }}
                   required
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.addressEn')}
-                </Text>
+              </Field>
+              <Field label={t('offices.addressEn')} required>
                 <Input
                   value={addressEn}
                   onChange={(e) => {
@@ -182,24 +147,18 @@ export default function OfficesList() {
                   }}
                   required
                 />
-              </Box>
+              </Field>
             </HStack>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.phone')}
-                </Text>
+              <Field label={t('offices.phone')}>
                 <Input
                   value={phone}
                   onChange={(e) => {
                     setPhone(e.target.value);
                   }}
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('offices.email')}
-                </Text>
+              </Field>
+              <Field label={t('offices.email')}>
                 <Input
                   value={email}
                   onChange={(e) => {
@@ -207,7 +166,7 @@ export default function OfficesList() {
                   }}
                   type="email"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -224,16 +183,9 @@ export default function OfficesList() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -263,7 +215,7 @@ export default function OfficesList() {
                   <Table.Cell textAlign="end">
                     <Button
                       size="xs"
-                      variant="outline"
+                      variant={dangerVariant}
                       onClick={() => {
                         archiveMutation.mutate(row.id);
                       }}
@@ -277,7 +229,7 @@ export default function OfficesList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

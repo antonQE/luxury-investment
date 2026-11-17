@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, Input, Spinner, Text, VStack } from '@chakra-ui/react';
 import { VIEWING_STATUSES, type ViewingStatus } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type ChangeEvent, type SubmitEvent, useMemo, useState } from 'react';
+import { type SubmitEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { contactKeys, fetchAdminContacts } from '@/api/endpoints/contacts';
@@ -13,6 +13,11 @@ import {
   updateAdminViewing,
   viewingKeys,
 } from '@/api/endpoints/viewings';
+import { AdminSelect } from '@/components/ui/AdminSelect';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { ApiError } from '@/types/api';
 
@@ -121,12 +126,7 @@ export default function ViewingsCalendar() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="viewings-calendar-page">
-      <Heading size="xl" color="text.primary">
-        {t('viewings.title')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('viewings.lead')}
-      </Text>
+      <PageHeader title={t('viewings.title')} lead={t('viewings.lead')} />
 
       <HStack gap={3} flexWrap="wrap" data-testid="viewings-calendar-controls">
         {(['day', 'week', 'month'] as const).map((item) => (
@@ -175,16 +175,18 @@ export default function ViewingsCalendar() {
         <Text fontSize="sm" color="text.muted" data-testid="viewings-range-label">
           {rangeLabel}
         </Text>
-        <select
+        <AdminSelect
+          size="sm"
           value={agentFilter}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-            setAgentFilter(e.target.value === 'me' ? 'me' : 'all');
+          onChange={(value) => {
+            setAgentFilter(value === 'me' ? 'me' : 'all');
           }}
           data-testid="viewings-agent-filter"
-        >
-          <option value="all">{t('viewings.agentAll')}</option>
-          <option value="me">{t('viewings.agentMe')}</option>
-        </select>
+          options={[
+            { value: 'all', label: t('viewings.agentAll') },
+            { value: 'me', label: t('viewings.agentMe') },
+          ]}
+        />
       </HStack>
 
       {overlapIds.size > 0 ? (
@@ -201,13 +203,7 @@ export default function ViewingsCalendar() {
         </Box>
       ) : null}
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-      >
+      <Panel>
         <form
           onSubmit={(event) => {
             onCreate(event);
@@ -218,50 +214,37 @@ export default function ViewingsCalendar() {
           </Heading>
           <VStack align="stretch" gap={3}>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('viewings.property')}
-                </Text>
-                <select
+              <Field label={t('viewings.property')} minW="180px" required>
+                <AdminSelect
                   value={propertyId}
-                  onChange={(e) => {
-                    setPropertyId(e.target.value);
-                  }}
+                  onChange={setPropertyId}
                   required
                   data-testid="viewing-property"
-                >
-                  <option value="">{t('viewings.selectProperty')}</option>
-                  {(propertiesQuery.data ?? []).map((property) => (
-                    <option key={property.id} value={property.id}>
-                      {property.referenceNumber} — {property.titleBg}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="1" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('viewings.contact')}
-                </Text>
-                <select
+                  options={[
+                    { value: '', label: t('viewings.selectProperty') },
+                    ...(propertiesQuery.data ?? []).map((property) => ({
+                      value: property.id,
+                      label: `${property.referenceNumber} — ${property.titleBg}`,
+                    })),
+                  ]}
+                />
+              </Field>
+              <Field label={t('viewings.contact')} minW="180px" required>
+                <AdminSelect
                   value={contactId}
-                  onChange={(e) => {
-                    setContactId(e.target.value);
-                  }}
+                  onChange={setContactId}
                   required
                   data-testid="viewing-contact"
-                >
-                  <option value="">{t('viewings.selectContact')}</option>
-                  {(contactsQuery.data ?? []).map((contact) => (
-                    <option key={contact.id} value={contact.id}>
-                      {contact.displayName}
-                    </option>
-                  ))}
-                </select>
-              </Box>
-              <Box flex="1" minW="180px">
-                <Text fontSize="sm" mb={1}>
-                  {t('viewings.when')}
-                </Text>
+                  options={[
+                    { value: '', label: t('viewings.selectContact') },
+                    ...(contactsQuery.data ?? []).map((contact) => ({
+                      value: contact.id,
+                      label: contact.displayName,
+                    })),
+                  ]}
+                />
+              </Field>
+              <Field label={t('viewings.when')} minW="180px" required>
                 <Input
                   type="datetime-local"
                   value={scheduledLocal}
@@ -271,12 +254,9 @@ export default function ViewingsCalendar() {
                   required
                   data-testid="viewing-scheduled-at"
                 />
-              </Box>
+              </Field>
             </HStack>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('viewings.location')}
-              </Text>
+            <Field label={t('viewings.location')}>
               <Input
                 value={locationNote}
                 onChange={(e) => {
@@ -284,7 +264,7 @@ export default function ViewingsCalendar() {
                 }}
                 data-testid="viewing-location"
               />
-            </Box>
+            </Field>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
                 {formError}
@@ -300,16 +280,9 @@ export default function ViewingsCalendar() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        data-testid="viewings-calendar-grid"
-      >
+      <Panel testId="viewings-calendar-grid">
         {listQuery.isPending ? (
           <Spinner />
         ) : listQuery.isError ? (
@@ -365,7 +338,7 @@ export default function ViewingsCalendar() {
             })}
           </VStack>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }
@@ -395,15 +368,24 @@ function ViewingRow({
       data-overlapping={overlapping ? 'true' : 'false'}
     >
       <HStack justify="space-between" flexWrap="wrap" gap={3}>
-        <VStack align="start" gap={0}>
-          <Text fontSize="sm" fontWeight="600">
-            {new Date(viewing.scheduledAt).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}{' '}
-            · {t(`viewings.status_${viewing.status}`)}
-            {overlapping ? ` · ${t('viewings.overlapBadge')}` : ''}
-          </Text>
+        <VStack align="start" gap={1}>
+          <HStack gap={2}>
+            <Text fontSize="sm" fontWeight="600">
+              {new Date(viewing.scheduledAt).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </Text>
+            <StatusBadge
+              value={viewing.status}
+              label={t(`viewings.status_${viewing.status}`, { defaultValue: viewing.status })}
+            />
+            {overlapping ? (
+              <Text fontSize="sm" color="status.down">
+                {t('viewings.overlapBadge')}
+              </Text>
+            ) : null}
+          </HStack>
           <Text fontSize="sm" color="text.muted">
             {viewing.locationNote !== '' ? viewing.locationNote : viewing.propertyId.slice(0, 8)}
           </Text>
@@ -440,21 +422,20 @@ function ViewingRow({
           >
             {t('viewings.decline')}
           </Button>
-          <select
+          <AdminSelect
+            size="sm"
             value={viewing.status}
             disabled={busy}
             aria-label={t('viewings.status')}
             data-testid={`viewing-status-${viewing.id}`}
-            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              onStatus(e.target.value as ViewingStatus);
+            options={VIEWING_STATUSES.map((status) => ({
+              value: status,
+              label: t(`viewings.status_${status}`),
+            }))}
+            onChange={(value) => {
+              onStatus(value as ViewingStatus);
             }}
-          >
-            {VIEWING_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {t(`viewings.status_${status}`)}
-              </option>
-            ))}
-          </select>
+          />
         </HStack>
       </HStack>
     </Box>

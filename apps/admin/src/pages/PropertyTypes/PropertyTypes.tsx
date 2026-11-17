@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Input,
-  Spinner,
-  Table,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +9,10 @@ import {
   createTaxonomy,
   fetchTaxonomy,
 } from '@/api/endpoints/catalog';
+import { dangerVariant } from '@/components/ui/button-variants';
+import { Field } from '@/components/ui/Field';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
 import { ApiError } from '@/types/api';
 
 const KIND = 'property_types';
@@ -68,21 +62,9 @@ export default function PropertyTypes() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="property-types-page">
-      <Heading size="xl" color="text.primary">
-        {t('catalog.propertyTypesTitle')}
-      </Heading>
-      <Text color="text.muted" fontSize="sm">
-        {t('catalog.propertyTypesLead')}
-      </Text>
+      <PageHeader title={t('catalog.propertyTypesTitle')} lead={t('catalog.propertyTypesLead')} />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        data-testid="property-type-create-form"
-      >
+      <Panel testId="property-type-create-form">
         <form
           onSubmit={(event) => {
             onSubmit(event);
@@ -92,10 +74,7 @@ export default function PropertyTypes() {
             {t('catalog.create')}
           </Heading>
           <VStack align="stretch" gap={3}>
-            <Box>
-              <Text fontSize="sm" mb={1}>
-                {t('catalog.key')}
-              </Text>
+            <Field label={t('catalog.key')} required>
               <Input
                 value={key}
                 onChange={(event) => {
@@ -104,12 +83,9 @@ export default function PropertyTypes() {
                 required
                 data-testid="property-type-key"
               />
-            </Box>
+            </Field>
             <HStack gap={3} flexWrap="wrap">
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.nameBg')}
-                </Text>
+              <Field label={t('catalog.nameBg')} required>
                 <Input
                   value={nameBg}
                   onChange={(event) => {
@@ -118,11 +94,8 @@ export default function PropertyTypes() {
                   required
                   data-testid="property-type-name-bg"
                 />
-              </Box>
-              <Box flex="1" minW="140px">
-                <Text fontSize="sm" mb={1}>
-                  {t('catalog.nameEn')}
-                </Text>
+              </Field>
+              <Field label={t('catalog.nameEn')} required>
                 <Input
                   value={nameEn}
                   onChange={(event) => {
@@ -131,7 +104,7 @@ export default function PropertyTypes() {
                   required
                   data-testid="property-type-name-en"
                 />
-              </Box>
+              </Field>
             </HStack>
             {formError !== null ? (
               <Text color="status.down" fontSize="sm">
@@ -148,16 +121,9 @@ export default function PropertyTypes() {
             </Button>
           </VStack>
         </form>
-      </Box>
+      </Panel>
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner data-testid="property-types-loading" />
         ) : listQuery.isError ? (
@@ -181,7 +147,7 @@ export default function PropertyTypes() {
                   <Table.Cell textAlign="end">
                     <Button
                       size="xs"
-                      variant="outline"
+                      variant={dangerVariant}
                       loading={archiveMutation.isPending}
                       onClick={() => {
                         archiveMutation.mutate(row.id);
@@ -196,7 +162,7 @@ export default function PropertyTypes() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }

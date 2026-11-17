@@ -1,9 +1,12 @@
-import { Box, Button, Heading, HStack, Spinner, Table, Text, VStack } from '@chakra-ui/react';
+import { Button, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { fetchAdminProperties, propertyKeys } from '@/api/endpoints/properties';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Panel } from '@/components/ui/Panel';
+import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ROUTES } from '@/constants/routes';
 
 export default function PropertiesList() {
@@ -15,26 +18,17 @@ export default function PropertiesList() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="properties-list-page">
-      <HStack justify="space-between" flexWrap="wrap" gap={3}>
-        <Heading size="xl" color="text.primary">
-          {t('properties.title')}
-        </Heading>
-        <RouterLink to={ROUTES.PROPERTY_NEW} data-testid="property-create-link">
-          <Button type="button">{t('properties.create')}</Button>
-        </RouterLink>
-      </HStack>
-      <Text color="text.muted" fontSize="sm">
-        {t('properties.lead')}
-      </Text>
+      <PageHeader
+        title={t('properties.title')}
+        lead={t('properties.lead')}
+        actions={
+          <RouterLink to={ROUTES.PROPERTY_NEW} data-testid="property-create-link">
+            <Button type="button">{t('properties.create')}</Button>
+          </RouterLink>
+        }
+      />
 
-      <Box
-        bg="background.panel"
-        borderWidth="1px"
-        borderColor="border.default"
-        p={6}
-        borderRadius="md"
-        overflowX="auto"
-      >
+      <Panel overflowX="auto">
         {listQuery.isPending ? (
           <Spinner data-testid="properties-loading" />
         ) : listQuery.isError ? (
@@ -55,7 +49,14 @@ export default function PropertiesList() {
                 <Table.Row key={row.id}>
                   <Table.Cell>{row.referenceNumber}</Table.Cell>
                   <Table.Cell>{row.titleBg}</Table.Cell>
-                  <Table.Cell>{row.listingStatus}</Table.Cell>
+                  <Table.Cell>
+                    <StatusBadge
+                      value={row.listingStatus}
+                      label={t(`properties.status_${row.listingStatus}`, {
+                        defaultValue: row.listingStatus,
+                      })}
+                    />
+                  </Table.Cell>
                   <Table.Cell>{row.market}</Table.Cell>
                   <Table.Cell textAlign="end">
                     <RouterLink
@@ -72,7 +73,7 @@ export default function PropertiesList() {
             </Table.Body>
           </Table.Root>
         )}
-      </Box>
+      </Panel>
     </VStack>
   );
 }
