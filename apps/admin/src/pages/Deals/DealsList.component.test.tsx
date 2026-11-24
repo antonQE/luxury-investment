@@ -7,16 +7,22 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { theme } from '@/config/theme';
 
-const { createAdminDeal, authState } = vi.hoisted(() => ({
-  createAdminDeal: vi.fn(),
-  authState: {
+interface AuthUser {
+  id: string;
+  displayName: string;
+  permissions: string[];
+}
+
+const { createAdminDeal, authState } = vi.hoisted(() => {
+  const state: { user: AuthUser | null } = {
     user: {
       id: 'user-agent-1',
       displayName: 'Demo Agent',
-      permissions: [] as string[],
+      permissions: [],
     },
-  },
-}));
+  };
+  return { createAdminDeal: vi.fn(), authState: state };
+});
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
