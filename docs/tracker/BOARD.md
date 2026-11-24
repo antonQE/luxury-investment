@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-112`
+Next IDs: `EPIC-20`, `LI-118`
 
 
 ## Releases
@@ -43,6 +43,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-16](epics/EPIC-16-privacy-consent.md) | Privacy and consent | P1 | Done |
 | [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Done |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
+| [EPIC-19](epics/EPIC-19-platform-qa.md) | Platform QA (happy paths + API coverage) | P1 | Done |
 
 ## In Progress
 
@@ -74,6 +75,12 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-117](tasks/LI-117-qa-green-guide.md) | Full suite green + QA guide | EPIC-19 |
+| [LI-116](tasks/LI-116-unit-high-risk-ui.md) | Unit/component high-risk UI | EPIC-19 |
+| [LI-115](tasks/LI-115-e2e-tasks-analytics-docs.md) | E2E Tasks / Analytics / Documents | EPIC-19 |
+| [LI-114](tasks/LI-114-e2e-admin-crm.md) | E2E admin CRM happy paths | EPIC-19 |
+| [LI-113](tasks/LI-113-api-coverage-gaps.md) | API endpoint gaps + coverage gate | EPIC-19 |
+| [LI-112](tasks/LI-112-qa-bug-audit.md) | QA bug audit + P0/P1 fixes | EPIC-19 |
 | [LI-110](tasks/LI-110-deal-agent.md) | Deal agent assignment | EPIC-09 |
 | [LI-109](tasks/LI-109-admin-tasks-section-nav.md) | Admin: Tasks section (Marketing / Studio / CRM) | EPIC-09 |
 | [LI-108](tasks/LI-108-property-views-and-site-clicks.md) | Property views + site click tracking (admin) | EPIC-11 |

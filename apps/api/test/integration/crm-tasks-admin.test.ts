@@ -90,8 +90,20 @@ describe('admin crm tasks API', () => {
       })
       .expect(201);
 
-    const createdBody = created.body as { data: { id: string; status: string } };
+    const createdBody = created.body as { data: { id: string; status: string; title: string } };
     expect(createdBody.data.status).toBe('open');
+
+    const detail = await agent.get(`/v1/admin/crm-tasks/${createdBody.data.id}`).expect(200);
+    expect((detail.body as { data: { title: string } }).data.title).toBe('Manual demo task');
+
+    const patched = await agent
+      .patch(`/v1/admin/crm-tasks/${createdBody.data.id}`)
+      .send({ title: 'Updated demo task', notes: 'Patched in test' })
+      .expect(200);
+    expect((patched.body as { data: { title: string; notes: string } }).data.title).toBe(
+      'Updated demo task',
+    );
+    expect((patched.body as { data: { notes: string } }).data.notes).toBe('Patched in test');
 
     const completed = await agent
       .post(`/v1/admin/crm-tasks/${createdBody.data.id}/complete`)

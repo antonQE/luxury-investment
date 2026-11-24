@@ -6,5 +6,6 @@ Human-readable catalogs of what each app does today (R1 + R2 as shipped). They d
 |---|---|---|
 | [Public site](public-site.md) | `apps/web` — http://localhost:3000 | Visitors |
 | [Admin panel](admin-panel.md) | `apps/admin` — http://localhost:5173 | Staff |
+| [QA](qa.md) | Monorepo test suites | Developers |
 
 Update these guides when a user-visible feature ships or changes.

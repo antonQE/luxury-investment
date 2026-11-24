@@ -77,6 +77,11 @@ describe('site settings', () => {
       .send({ email: DEMO_ADMIN_EMAIL, password: DEMO_ADMIN_PASSWORD })
       .expect(200);
 
+    const adminGet = await agent.get('/v1/admin/site-settings').expect(200);
+    expect((adminGet.body as { data: { publicPhone: string } }).data.publicPhone).toBe(
+      '+359 2 000 00 00',
+    );
+
     await agent
       .patch('/v1/admin/site-settings')
       .send({

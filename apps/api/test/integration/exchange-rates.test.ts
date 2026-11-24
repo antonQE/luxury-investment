@@ -116,4 +116,30 @@ describe('exchange rates', () => {
       true,
     );
   });
+
+  it('upserts an exchange rate via PUT', async () => {
+    const agent = await loginAgent();
+    const res = await agent
+      .put('/v1/admin/exchange-rates')
+      .send({
+        baseCurrency: 'eur',
+        quoteCurrency: 'usd',
+        rate: '1.08',
+        asOf: new Date().toISOString().slice(0, 10),
+        source: 'Demo upsert test',
+      })
+      .expect(200);
+
+    const body = res.body as {
+      data: { baseCurrency: string; quoteCurrency: string; rate: string; source: string };
+    };
+    expect(body.data.baseCurrency).toBe('EUR');
+    expect(body.data.quoteCurrency).toBe('USD');
+    expect(body.data.rate).toBe('1.08000000');
+    expect(body.data.source).toBe('Demo upsert test');
+
+    const list = await agent.get('/v1/admin/exchange-rates').expect(200);
+    const rows = (list.body as { data: { quoteCurrency: string }[] }).data;
+    expect(rows.some((row) => row.quoteCurrency === 'USD')).toBe(true);
+  });
 });

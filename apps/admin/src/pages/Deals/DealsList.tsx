@@ -15,6 +15,11 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { ApiError } from '@/types/api';
 
+/** Prefer explicit pick; fall back when auth hydrates after first paint. */
+export function resolveDealAgentId(agentId: string, userId: string | undefined | null): string {
+  return agentId !== '' ? agentId : (userId ?? '');
+}
+
 export default function DealsList() {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -100,17 +105,19 @@ export default function DealsList() {
     },
   });
 
+  /** Prefer explicit pick; fall back when auth hydrates after first paint. */
+  const effectiveAgentId = resolveDealAgentId(agentId, user?.id);
+
   function onSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const resolvedAgentId = agentId !== '' ? agentId : (user?.id ?? '');
-    if (resolvedAgentId === '') {
+    if (effectiveAgentId === '') {
       setFormError(t('deals.agentRequired'));
       return;
     }
     createMutation.mutate({
       propertyId,
       buyerContactId,
-      agentId: resolvedAgentId,
+      agentId: effectiveAgentId,
       stage: 'negotiation',
       agreedPrice: agreedPrice.trim() === '' ? null : agreedPrice.trim(),
       currency: 'EUR',
@@ -177,7 +184,7 @@ export default function DealsList() {
               </Field>
               <Field label={t('deals.agent')} required>
                 <AdminSelect
-                  value={agentId}
+                  value={effectiveAgentId}
                   required
                   onChange={setAgentId}
                   data-testid="deal-agent"
@@ -296,6 +303,7 @@ export default function DealsList() {
                       <AdminSelect
                         size="sm"
                         value={row.stage}
+                        clearable={false}
                         disabled={stageMutation.isPending}
                         aria-label={t('deals.stage')}
                         data-testid={`deal-stage-${row.id}`}

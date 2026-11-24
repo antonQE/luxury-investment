@@ -93,11 +93,16 @@ function detailToForm(detail: AdminTeamMemberDetail): TeamFormState {
   };
 }
 
-function toWriteBody(form: TeamFormState): AdminTeamMemberWrite {
-  const languages = form.languages
+/** Parse comma-separated languages from the team edit form into a write payload array. */
+export function parseLanguagesCsv(value: string): string[] {
+  return value
     .split(',')
     .map((part) => part.trim())
     .filter((part) => part.length > 0);
+}
+
+function toWriteBody(form: TeamFormState): AdminTeamMemberWrite {
+  const languages = parseLanguagesCsv(form.languages);
   return {
     slug: form.slug.trim(),
     kind: form.kind,

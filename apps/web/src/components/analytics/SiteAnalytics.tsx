@@ -11,7 +11,9 @@ function clickLabel(el: HTMLElement): string {
   if (analytics !== null && analytics.trim() !== '') return analytics.trim().slice(0, 200);
   const aria = el.getAttribute('aria-label');
   if (aria !== null && aria.trim() !== '') return aria.trim().slice(0, 200);
-  const text = el.textContent.replace(/\s+/g, ' ').trim();
+  // DOM typings say `string`; some hosts still return null at runtime.
+  const raw = el.textContent as unknown as string | null;
+  const text = (raw ?? '').replace(/\s+/g, ' ').trim();
   return text.slice(0, 200);
 }
 

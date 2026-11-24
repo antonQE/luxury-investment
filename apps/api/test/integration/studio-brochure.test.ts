@@ -75,6 +75,26 @@ afterAll(async () => {
 });
 
 describe('studio brochure PDF API', () => {
+  it('lists templates and brochure exports for a property', async () => {
+    const agent = await loginAgent();
+    const templates = await agent.get('/v1/admin/studio/templates').expect(200);
+    const templateRows = (templates.body as { data: { key: string }[] }).data;
+    expect(templateRows.length).toBeGreaterThan(0);
+
+    const [property] = await connection.db
+      .select({ id: properties.id })
+      .from(properties)
+      .where(eq(properties.slug, 'demo-tristaen-malinova-dolina'))
+      .limit(1);
+    expect(property).toBeDefined();
+    if (property === undefined) return;
+
+    const emptyExports = await agent
+      .get(`/v1/admin/studio/brochures/exports?propertyId=${property.id}`)
+      .expect(200);
+    expect((emptyExports.body as { data: unknown[] }).data).toEqual([]);
+  });
+
   it('generates a PDF from catalog property data with QR listing URL', async () => {
     const agent = await loginAgent();
     const [property] = await connection.db
@@ -120,6 +140,13 @@ describe('studio brochure PDF API', () => {
       .where(eq(brochureExports.propertyId, property.id));
     expect(rows).toHaveLength(1);
     expect(rows[0]?.listingUrl).toContain(property.slug);
+
+    const exportsList = await agent
+      .get(`/v1/admin/studio/brochures/exports?propertyId=${property.id}`)
+      .expect(200);
+    expect(
+      (exportsList.body as { data: { id: string }[] }).data.some((row) => row.id === body.data.id),
+    ).toBe(true);
   }, 60_000);
 
   it('returns channel copy snippets for BG/EN short and long variants', async () => {

@@ -136,5 +136,16 @@ describe('media upload', () => {
     const rows = await connection.db.select().from(mediaAssets).where(eq(mediaAssets.id, assetId));
     expect(rows[0]?.renditions.thumb).toBeTruthy();
     expect(rows[0]?.renditions.social).toBeTruthy();
+
+    const listed = await agent.get(`/v1/admin/properties/${property.id}/media`).expect(200);
+    const listedRows = (listed.body as { data: { id: string }[] }).data;
+    expect(listedRows.some((row) => row.id === assetId)).toBe(true);
+
+    const archived = await agent.post(`/v1/admin/media/${assetId}/archive`).expect(200);
+    expect((archived.body as { data: { archivedAt: string | null } }).data.archivedAt).toBeTruthy();
+
+    const listedAfter = await agent.get(`/v1/admin/properties/${property.id}/media`).expect(200);
+    const afterRows = (listedAfter.body as { data: { id: string }[] }).data;
+    expect(afterRows.some((row) => row.id === assetId)).toBe(false);
   });
 });

@@ -164,4 +164,26 @@ describe('admin team API', () => {
 
     await agent.post(`/v1/admin/offices/${id}/archive`).expect(200);
   });
+
+  it('lists, creates and archives partners', async () => {
+    const agent = await loginAgent();
+    const list = await agent.get('/v1/admin/partners').expect(200);
+    expect((list.body as { data: unknown[] }).data.length).toBeGreaterThan(0);
+
+    const created = await agent
+      .post('/v1/admin/partners')
+      .send({
+        slug: 'demo-new-partner',
+        nameBg: 'Нов партньор',
+        nameEn: 'New partner',
+        logoUrl: 'https://example.com/logo.png',
+        websiteUrl: 'https://example.com',
+        sortOrder: 99,
+      })
+      .expect(201);
+    const id = (created.body as { data: { id: string; slug: string } }).data.id;
+    expect((created.body as { data: { slug: string } }).data.slug).toBe('demo-new-partner');
+
+    await agent.post(`/v1/admin/partners/${id}/archive`).expect(200);
+  });
 });
