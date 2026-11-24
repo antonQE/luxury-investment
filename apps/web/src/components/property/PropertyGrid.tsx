@@ -20,8 +20,7 @@ export async function PropertyGrid({ items }: { items: PublicPropertyListItem[] 
             perMonth: t('perMonth'),
             badge: (key) => t(key as 'badge_new' | 'badge_exclusive' | 'badge_investment'),
             transaction: (key) => search(key as 'sale' | 'rent'),
-            propertyType: (key) =>
-              search(key as 'apartment' | 'house' | 'plot' | 'office' | 'hotel'),
+            propertyType: (key) => search(key as Parameters<typeof search>[0]),
           }}
         />
       ))}

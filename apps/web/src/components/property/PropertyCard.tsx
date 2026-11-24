@@ -18,24 +18,32 @@ export function PropertyCard({
   property,
   locale,
   labels,
+  compact = false,
 }: {
   property: PublicPropertyListItem;
   locale: Locale;
   labels: PropertyCardLabels;
+  compact?: boolean;
 }) {
   const image = property.coverUrl;
 
   return (
     <article
-      className="group flex flex-col overflow-hidden transition duration-500 ease-out hover:-translate-y-1"
+      className={
+        compact
+          ? 'group flex h-full flex-col bg-stone-deep p-3 shadow-[0_1px_0_rgba(20,22,28,0.04)] transition duration-500 ease-out hover:-translate-y-1 hover:bg-stone-deeper hover:shadow-[0_14px_30px_rgba(20,22,28,0.07)]'
+          : 'group flex flex-col overflow-hidden transition duration-500 ease-out hover:-translate-y-1'
+      }
       data-testid={`property-card-${property.slug}`}
     >
       <Link
         href={`/obiavi/${property.slug}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-line"
+        className={`relative block overflow-hidden bg-line ${compact ? 'aspect-[3/2]' : 'aspect-[4/3]'}`}
       >
         {image === null ? (
-          <div className="flex h-full items-center justify-center px-4 text-center text-sm text-ink-soft">
+          <div
+            className={`flex h-full items-center justify-center px-3 text-center text-ink-soft ${compact ? 'text-xs' : 'text-sm'}`}
+          >
             {property.title}
           </div>
         ) : (
@@ -43,13 +51,19 @@ export function PropertyCard({
             src={image}
             alt=""
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes={
+              compact
+                ? '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
+                : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
+            }
             className="object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
           />
         )}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/35 via-transparent to-transparent opacity-80" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/35 via-transparent to-transparent opacity-80 transition duration-500 group-hover:opacity-95" />
         {property.badges.length > 0 ? (
-          <ul className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+          <ul
+            className={`absolute flex flex-wrap ${compact ? 'top-2 left-2 gap-1' : 'top-3 left-3 gap-1.5'}`}
+          >
             {property.badges.map((badge) => {
               const key = badgeMessageKey(badge);
               return (
@@ -63,27 +77,45 @@ export function PropertyCard({
           </ul>
         ) : null}
       </Link>
-      <div className="flex flex-1 flex-col gap-2 pt-5">
-        <p className="text-[11px] tracking-[0.2em] uppercase text-brass">
+      <div
+        className={
+          compact
+            ? 'flex flex-1 flex-col gap-1.5 px-1 pt-3.5 pb-1'
+            : 'flex flex-1 flex-col gap-2 pt-5'
+        }
+      >
+        <p
+          className={`tracking-[0.2em] uppercase text-brass ${compact ? 'text-[10px]' : 'text-[11px]'}`}
+        >
           {labels.transaction(property.transactionType)} ·{' '}
           {labels.propertyType(property.propertyType)}
         </p>
-        <h3 className="font-serif text-xl leading-snug text-ink md:text-[1.35rem]">
+        <h3
+          className={`font-serif leading-snug text-ink ${compact ? 'text-base' : 'text-xl md:text-[1.35rem]'}`}
+        >
           <Link href={`/obiavi/${property.slug}`} className="transition hover:text-brass-dark">
             {property.title}
           </Link>
         </h3>
-        <p className="text-sm text-ink-soft">{locationLabel(property)}</p>
-        <p className="mt-auto pt-4 font-serif text-2xl tracking-tight text-ink">
-          {formatPrice(locale, property)}
-          {property.transactionType === 'rent' ? (
-            <span className="ml-1 font-sans text-sm text-ink-soft">{labels.perMonth}</span>
-          ) : null}
+        <p className={compact ? 'text-xs text-ink-soft' : 'text-sm text-ink-soft'}>
+          {locationLabel(property)}
         </p>
-        <p className="text-sm text-ink-soft">
-          {formatArea(locale, property.area)}
-          {property.bedrooms !== null ? ` · ${labels.bedrooms(property.bedrooms)}` : null}
-        </p>
+        <div className={compact ? 'mt-auto pt-3' : 'mt-auto pt-4'}>
+          <p
+            className={`font-serif tracking-tight text-ink transition group-hover:text-brass-dark ${compact ? 'text-lg' : 'text-2xl'}`}
+          >
+            {formatPrice(locale, property)}
+            {property.transactionType === 'rent' ? (
+              <span className={`ml-1 font-sans text-ink-soft ${compact ? 'text-xs' : 'text-sm'}`}>
+                {labels.perMonth}
+              </span>
+            ) : null}
+          </p>
+          <p className={compact ? 'mt-1 text-xs text-ink-soft' : 'text-sm text-ink-soft'}>
+            {formatArea(locale, property.area)}
+            {property.bedrooms !== null ? ` · ${labels.bedrooms(property.bedrooms)}` : null}
+          </p>
+        </div>
       </div>
     </article>
   );

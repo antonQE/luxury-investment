@@ -28,6 +28,26 @@ export const ingestPropertyEventSchema = z.object({
 });
 export type IngestPropertyEventInput = z.infer<typeof ingestPropertyEventSchema>;
 
+export const SITE_EVENT_TYPES = ['page_view', 'click'] as const;
+export type SiteEventType = (typeof SITE_EVENT_TYPES)[number];
+export const siteEventTypeSchema = z.enum(SITE_EVENT_TYPES);
+
+export const ingestSiteEventSchema = z.object({
+  path: z.string().trim().min(1).max(300),
+  eventType: siteEventTypeSchema,
+  label: z.string().trim().max(200).optional().default(''),
+  href: z.string().trim().max(500).optional().default(''),
+  sessionKey: z.string().trim().min(8).max(128).optional(),
+  deviceClass: z.string().trim().max(40).optional().default(''),
+  website: z.string().optional(),
+});
+export type IngestSiteEventInput = z.infer<typeof ingestSiteEventSchema>;
+
+export const siteAnalyticsQuerySchema = z.object({
+  days: z.coerce.number().int().min(1).max(90).optional().default(30),
+});
+export type SiteAnalyticsQuery = z.infer<typeof siteAnalyticsQuerySchema>;
+
 export const OWNER_REPORT_KINDS = ['short', 'detailed'] as const;
 export type OwnerReportKind = (typeof OWNER_REPORT_KINDS)[number];
 export const ownerReportKindSchema = z.enum(OWNER_REPORT_KINDS);

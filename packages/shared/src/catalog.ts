@@ -3,7 +3,17 @@ import { z } from 'zod';
 import type { PriceEquivalent } from './exchange-rates.ts';
 
 export const TRANSACTION_TYPES = ['sale', 'rent'] as const;
-export const PROPERTY_TYPES = ['apartment', 'house', 'plot', 'office', 'hotel'] as const;
+export const PROPERTY_TYPES = [
+  'apartment',
+  'house',
+  'plot',
+  'office',
+  'hotel',
+  'business',
+  'villa',
+  'garage',
+  'shop',
+] as const;
 export const MARKETS = ['sofia', 'black_sea', 'dubai_abroad'] as const;
 export const PRIMARY_AREA_KEYS = ['built_up', 'with_common'] as const;
 export const PROPERTY_LISTING_STATUSES = ['draft', 'published', 'archived'] as const;
@@ -67,6 +77,11 @@ export const propertyListQuerySchema = z.object({
   areaMax: optionalNonNegNumber,
   /** Reference number or free-text match against titles. */
   q: optionalTrimmed,
+  /**
+   * Filter by listing agent phone (digit-normalized suffix match).
+   * Used on public team member pages to show that agent’s properties.
+   */
+  agentPhone: optionalTrimmed,
   offset: z.coerce.number().int().min(0).default(0),
   limit: z.coerce.number().int().min(1).max(48).default(12),
 });
@@ -136,6 +151,10 @@ export interface PublicProperty {
   imageUrls: string[];
   agentName: string;
   agentPhone: string;
+  /** Public team photo when the listing agent matches a team member by phone. */
+  agentPhotoUrl: string | null;
+  /** Public team profile slug when the listing agent matches a team member by phone. */
+  agentSlug: string | null;
   publishedAt: string;
 }
 

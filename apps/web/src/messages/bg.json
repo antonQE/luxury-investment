@@ -49,8 +49,23 @@
     "newestLead": "Най-новите обяви",
     "viewAll": "Всички имоти",
     "marketsTitle": "Пазари",
+    "articlesTitle": "Статии",
+    "articlesLead": "Поглед към пазара и процеса",
+    "articlesViewAll": "Всички статии",
+    "teamTitle": "Екип",
+    "teamLead": "Хората зад селекцията",
+    "teamViewAll": "Целият екип",
+    "contactStripTitle": "Контакти",
+    "contactStripLead": "Обадете се, пишете ни или ни последвайте",
+    "socialFollow": "Последвайте ни",
+    "socialFacebook": "Facebook",
+    "socialInstagram": "Instagram",
+    "socialTiktok": "TikTok",
     "partnersTitle": "Партньори",
     "partnersLead": "Хората, с които работим",
+    "loadMore": "Зареди още",
+    "loadMorePending": "Зареждане…",
+    "loadMoreError": "Не успяхме да заредим още имоти. Опитайте отново.",
     "error": "Каталогът временно не е достъпен. Опитайте отново след малко."
   },
   "Markets": {
@@ -82,7 +97,11 @@
     "house": "Къща",
     "plot": "Парцел",
     "office": "Офис",
-    "hotel": "Хотел"
+    "hotel": "Хотел",
+    "business": "Бизнес",
+    "villa": "Вила",
+    "garage": "Гараж",
+    "shop": "Магазин"
   },
   "Listings": {
     "title": "Имоти",
@@ -111,6 +130,11 @@
     "galleryCounter": "{current} / {total}",
     "prevImage": "Предишна снимка",
     "nextImage": "Следваща снимка",
+    "openFullscreen": "Отвори снимката на цял екран",
+    "closeFullscreen": "Затвори",
+    "factBedrooms": "Спални",
+    "factBathrooms": "Бани",
+    "factStage": "Етап",
     "pricePerSqm": "{price} / m²",
     "share": "Сподели",
     "print": "Печат",
@@ -194,7 +218,11 @@
     "back": "Всички от екипа",
     "email": "Имейл",
     "phone": "Телефон",
-    "qualifications": "Квалификации"
+    "qualifications": "Квалификации",
+    "listingsTitle": "Имоти",
+    "listingsLead": "Обяви на този брокер",
+    "listingsEmpty": "В момента няма публикувани имоти за този профил.",
+    "listingsError": "Имотите временно не са достъпни."
   },
   "Articles": {
     "title": "Статии",

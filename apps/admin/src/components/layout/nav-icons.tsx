@@ -55,7 +55,7 @@ const ICONS: Record<string, ReactNode> = {
       <path d="M16 3v4" />
     </Icon>
   ),
-  [ROUTES.CRM_TASKS]: (
+  [ROUTES.TASKS]: (
     <Icon>
       <path d="M9 6h12" />
       <path d="M9 12h12" />
@@ -102,19 +102,13 @@ const ICONS: Record<string, ReactNode> = {
       <path d="M13 5h7v15h-7z" />
     </Icon>
   ),
-  [ROUTES.MARKETING]: (
+  [ROUTES.ANALYTICS]: (
     <Icon>
-      <path d="M4 10v4h3l5 4V6l-5 4H4z" />
-      <path d="M16 9a3 3 0 0 1 0 6" />
-    </Icon>
-  ),
-  [ROUTES.STUDIO]: (
-    <Icon>
-      <circle cx="12" cy="12" r="3" />
-      <path d="M4 12h5" />
-      <path d="M15 12h5" />
-      <path d="M12 4v5" />
-      <path d="M12 15v5" />
+      <path d="M4 19V5" />
+      <path d="M4 19h16" />
+      <path d="M8 16v-5" />
+      <path d="M12 16V8" />
+      <path d="M16 16v-3" />
     </Icon>
   ),
   [ROUTES.SETTINGS]: (

@@ -116,6 +116,42 @@ export class TeamPublicService {
     };
   }
 
+  /**
+   * Match a listing agent phone to a public team member.
+   * Compares digit suffixes so "(+359) 897…" and "+359 897…" still match.
+   */
+  async findPublicByPhone(
+    phone: string,
+  ): Promise<{ slug: string; photoUrl: string | null } | null> {
+    const needle = phone.replace(/\D/g, '');
+    if (needle.length < 6) return null;
+    const rows = await this.#db
+      .select({
+        slug: teamMembers.slug,
+        phone: teamMembers.phone,
+        photoUrl: teamMembers.photoUrl,
+      })
+      .from(teamMembers)
+      .where(and(eq(teamMembers.isPublic, true), isNull(teamMembers.archivedAt)));
+    for (const row of rows) {
+      if (row.phone === null) continue;
+      const candidate = row.phone.replace(/\D/g, '');
+      if (candidate.length < 6) continue;
+      const a = needle.length >= 9 ? needle.slice(-9) : needle;
+      const b = candidate.length >= 9 ? candidate.slice(-9) : candidate;
+      if (a === b) {
+        const photoUrl = row.photoUrl === null || row.photoUrl === '' ? null : row.photoUrl;
+        return { slug: row.slug, photoUrl };
+      }
+    }
+    return null;
+  }
+
+  async findPhotoByPhone(phone: string): Promise<string | null> {
+    const match = await this.findPublicByPhone(phone);
+    return match?.photoUrl ?? null;
+  }
+
   async listOffices(locale: Locale): Promise<PublicOffice[]> {
     const rows = await this.#db
       .select()

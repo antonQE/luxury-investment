@@ -7,6 +7,8 @@ export interface AdminDeal {
   propertyId: string;
   buyerContactId: string;
   sellerContactId: string | null;
+  agentId: string;
+  agentName: string;
   offerId: string | null;
   stage: DealStage;
   agreedPrice: string | null;
@@ -21,6 +23,7 @@ export interface DealWriteBody {
   propertyId: string;
   buyerContactId: string;
   sellerContactId?: string | null;
+  agentId: string;
   offerId?: string | null;
   stage?: DealStage;
   agreedPrice?: string | null;

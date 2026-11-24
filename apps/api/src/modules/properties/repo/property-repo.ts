@@ -14,6 +14,13 @@ function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, '\\$&');
 }
 
+/** Digit suffix for agent phone matching (aligned with team photo match). */
+export function agentPhoneSuffix(phone: string): string | null {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 6) return null;
+  return digits.length >= 9 ? digits.slice(-9) : digits;
+}
+
 /** Pure helper for mixed-currency price bounds (original amount unchanged). */
 export function matchesNormalizedPriceBounds(
   price: number,
@@ -123,6 +130,16 @@ export class PropertyRepo {
         ilike(properties.slug, pattern),
       );
       if (textMatch) clauses.push(textMatch);
+    }
+    if (query.agentPhone !== undefined) {
+      const suffix = agentPhoneSuffix(query.agentPhone);
+      if (suffix === null) {
+        clauses.push(sql`false`);
+      } else {
+        clauses.push(
+          sql`right(regexp_replace(${properties.agentPhone}, '[^0-9]', '', 'g'), ${suffix.length}) = ${suffix}`,
+        );
+      }
     }
     return clauses;
   }

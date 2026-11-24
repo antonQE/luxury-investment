@@ -91,11 +91,21 @@ describe('admin deals API', () => {
     expect(buyer).toBeDefined();
     if (property === undefined || buyer === undefined) throw new Error('expected seed refs');
 
+    const me = await agent.get('/v1/admin/auth/me').expect(200);
+    const agentId = (me.body as { data: { user: { id: string } } }).data.user.id;
+
+    const listWithAgent = list.body as {
+      data: { agentId: string; agentName: string }[];
+    };
+    expect(listWithAgent.data[0]?.agentId).toBeTruthy();
+    expect(listWithAgent.data[0]?.agentName).toBeTruthy();
+
     const created = await agent
       .post('/v1/admin/deals')
       .send({
         propertyId: property.id,
         buyerContactId: buyer.id,
+        agentId,
         stage: 'negotiation',
         agreedPrice: '450000.00',
         currency: 'EUR',
@@ -104,8 +114,12 @@ describe('admin deals API', () => {
       })
       .expect(201);
 
-    const createdBody = created.body as { data: { id: string; stage: string } };
+    const createdBody = created.body as {
+      data: { id: string; stage: string; agentId: string; agentName: string };
+    };
     expect(createdBody.data.stage).toBe('negotiation');
+    expect(createdBody.data.agentId).toBe(agentId);
+    expect(createdBody.data.agentName).toBeTruthy();
 
     const patched = await agent
       .patch(`/v1/admin/deals/${createdBody.data.id}`)

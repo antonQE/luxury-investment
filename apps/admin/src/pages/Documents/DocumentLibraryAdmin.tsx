@@ -2,7 +2,6 @@ import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@c
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 import {
   archiveDocument,
@@ -15,7 +14,7 @@ import { dangerVariant } from '@/components/ui/button-variants';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
 import { StatusBadge } from '@/components/ui/StatusBadge';
-import { ROUTES } from '@/constants/routes';
+import { DocumentsSectionNav } from '@/pages/Documents/DocumentsSectionNav';
 
 export default function DocumentLibraryAdmin() {
   const { t, i18n } = useTranslation();
@@ -74,15 +73,8 @@ export default function DocumentLibraryAdmin() {
 
   return (
     <VStack align="stretch" gap={6} data-testid="document-library-admin-page">
-      <PageHeader
-        title={t('documents.title')}
-        lead={t('documents.lead')}
-        actions={
-          <Link to={ROUTES.HANDBOOK} data-testid="documents-open-handbook">
-            {t('documents.openHandbook')}
-          </Link>
-        }
-      />
+      <PageHeader title={t('documents.title')} lead={t('documents.lead')} />
+      <DocumentsSectionNav />
 
       {listQuery.isPending ? (
         <Spinner />

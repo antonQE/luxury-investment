@@ -12,6 +12,7 @@ import { withValidation } from '../../../infrastructure/server/middleware/valida
 import { convertPrice, type FxRateQuote } from '../../exchange-rates/app/convert-price.ts';
 import type { ExchangeRatesRepo } from '../../exchange-rates/repo/exchange-rates-repo.ts';
 import type { MediaService } from '../../media/app/media-service.ts';
+import type { TeamPublicService } from '../../team/app/team-public-service.ts';
 import type { PropertyRepo } from '../repo/property-repo.ts';
 import type { PropertyRow } from '../repo/property-repo.ts';
 import {
@@ -75,6 +76,7 @@ export function propertyPublicRouter(
   repo: PropertyRepo,
   media?: MediaService,
   exchangeRates?: ExchangeRatesRepo,
+  team?: TeamPublicService,
 ): Router {
   const router = Router();
 
@@ -109,10 +111,13 @@ export function propertyPublicRouter(
         const row = await repo.getBySlug(params.slug);
         if (row === undefined) throw new AppError('NOT_FOUND');
         const quotes = await loadQuotes(exchangeRates);
+        const agentMatch = team === undefined ? null : await team.findPublicByPhone(row.agentPhone);
         res.json({
           data: serializeProperty(row, localeFrom(query.lang), {
             imageUrls: await imageUrlsFor(media, row),
             priceEquivalent: equivalentFor(row, query.displayCurrency, quotes),
+            agentPhotoUrl: agentMatch?.photoUrl ?? null,
+            agentSlug: agentMatch?.slug ?? null,
           }),
         });
       },

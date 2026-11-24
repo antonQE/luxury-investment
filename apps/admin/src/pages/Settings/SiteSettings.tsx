@@ -18,6 +18,9 @@ export default function SiteSettingsPage() {
   const queryClient = useQueryClient();
   const [phoneDraft, setPhoneDraft] = useState<string | undefined>(undefined);
   const [emailDraft, setEmailDraft] = useState<string | undefined>(undefined);
+  const [facebookDraft, setFacebookDraft] = useState<string | undefined>(undefined);
+  const [instagramDraft, setInstagramDraft] = useState<string | undefined>(undefined);
+  const [tiktokDraft, setTiktokDraft] = useState<string | undefined>(undefined);
   const [formError, setFormError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
@@ -28,6 +31,9 @@ export default function SiteSettingsPage() {
 
   const publicPhone = phoneDraft ?? settingsQuery.data?.publicPhone ?? '';
   const publicEmail = emailDraft ?? settingsQuery.data?.publicEmail ?? '';
+  const facebookUrl = facebookDraft ?? settingsQuery.data?.facebookUrl ?? '';
+  const instagramUrl = instagramDraft ?? settingsQuery.data?.instagramUrl ?? '';
+  const tiktokUrl = tiktokDraft ?? settingsQuery.data?.tiktokUrl ?? '';
 
   const saveMutation = useMutation({
     mutationFn: updateSiteSettings,
@@ -36,6 +42,9 @@ export default function SiteSettingsPage() {
       setSaved(true);
       setPhoneDraft(undefined);
       setEmailDraft(undefined);
+      setFacebookDraft(undefined);
+      setInstagramDraft(undefined);
+      setTiktokDraft(undefined);
       await queryClient.invalidateQueries({ queryKey: siteSettingsKeys.all() });
     },
     onError: (err) => {
@@ -50,6 +59,9 @@ export default function SiteSettingsPage() {
     saveMutation.mutate({
       publicPhone: publicPhone.trim() === '' ? null : publicPhone.trim(),
       publicEmail: publicEmail.trim() === '' ? null : publicEmail.trim(),
+      facebookUrl: facebookUrl.trim() === '' ? null : facebookUrl.trim(),
+      instagramUrl: instagramUrl.trim() === '' ? null : instagramUrl.trim(),
+      tiktokUrl: tiktokUrl.trim() === '' ? null : tiktokUrl.trim(),
     });
   }
 
@@ -73,7 +85,7 @@ export default function SiteSettingsPage() {
                     setSaved(false);
                   }}
                   placeholder="+359 2 000 00 00"
-                  maxW="320px"
+                  maxW="420px"
                   data-testid="settings-public-phone"
                 />
               </Field>
@@ -86,8 +98,44 @@ export default function SiteSettingsPage() {
                     setSaved(false);
                   }}
                   placeholder="hello@example.com"
-                  maxW="320px"
+                  maxW="420px"
                   data-testid="settings-public-email"
+                />
+              </Field>
+              <Field label={t('settings.facebookUrl')} hint={t('settings.socialHint')}>
+                <Input
+                  value={facebookUrl}
+                  onChange={(e) => {
+                    setFacebookDraft(e.target.value);
+                    setSaved(false);
+                  }}
+                  placeholder="https://www.facebook.com/…"
+                  maxW="420px"
+                  data-testid="settings-facebook-url"
+                />
+              </Field>
+              <Field label={t('settings.instagramUrl')} hint={t('settings.socialHint')}>
+                <Input
+                  value={instagramUrl}
+                  onChange={(e) => {
+                    setInstagramDraft(e.target.value);
+                    setSaved(false);
+                  }}
+                  placeholder="https://www.instagram.com/…"
+                  maxW="420px"
+                  data-testid="settings-instagram-url"
+                />
+              </Field>
+              <Field label={t('settings.tiktokUrl')} hint={t('settings.socialHint')}>
+                <Input
+                  value={tiktokUrl}
+                  onChange={(e) => {
+                    setTiktokDraft(e.target.value);
+                    setSaved(false);
+                  }}
+                  placeholder="https://www.tiktok.com/@…"
+                  maxW="420px"
+                  data-testid="settings-tiktok-url"
                 />
               </Field>
             </VStack>

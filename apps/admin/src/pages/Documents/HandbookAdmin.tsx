@@ -13,6 +13,7 @@ import { Field } from '@/components/ui/Field';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { DocumentsSectionNav } from '@/pages/Documents/DocumentsSectionNav';
 
 export default function HandbookAdmin() {
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ export default function HandbookAdmin() {
   return (
     <VStack align="stretch" gap={6} data-testid="handbook-admin-page">
       <PageHeader title={t('handbook.title')} lead={t('handbook.lead')} />
+      <DocumentsSectionNav />
 
       {listQuery.isPending ? (
         <Spinner />

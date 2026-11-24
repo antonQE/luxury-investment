@@ -1,6 +1,7 @@
 import { numeric, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 import { properties } from '../../properties/repo/properties.schema.ts';
+import { users } from '../../users/repo/users.schema.ts';
 import { contacts } from './contacts.schema.ts';
 import { offers } from './offers.schema.ts';
 
@@ -13,6 +14,10 @@ export const deals = pgTable('deals', {
     .notNull()
     .references(() => contacts.id, { onDelete: 'restrict' }),
   sellerContactId: uuid().references(() => contacts.id, { onDelete: 'set null' }),
+  /** Staff user responsible for the deal (broker). */
+  agentId: uuid()
+    .notNull()
+    .references(() => users.id, { onDelete: 'restrict' }),
   offerId: uuid().references(() => offers.id, { onDelete: 'set null' }),
   stage: text().notNull().default('negotiation'),
   agreedPrice: numeric({ precision: 14, scale: 2 }),

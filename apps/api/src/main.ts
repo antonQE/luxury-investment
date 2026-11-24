@@ -85,7 +85,8 @@ const inquiryRepo = new InquiryRepo(database.db);
 const mailer = new LoggingMailer(logger);
 const catalogRepo = new CatalogRepo(database.db);
 const teamPublic = new TeamPublicService(database.db);
-const teamAdmin = new TeamAdminService(database.db);
+const teamMediaPublicBaseUrl = env.MEDIA_PUBLIC_BASE_URL.replace(/\/media\/?$/, '/team-media');
+const teamAdmin = new TeamAdminService(database.db, storage, teamMediaPublicBaseUrl);
 const contentPublic = new ContentPublicService(database.db);
 const contentAdmin = new ContentAdminService(database.db);
 const landingAdmin = new LandingAdminService(database.db);
@@ -124,7 +125,7 @@ const app = createApp({
   logger,
   healthChecks: [{ name: 'database', check: database.ping }],
   publicRouters: [
-    propertyPublicRouter(propertyRepo, mediaService, exchangeRatesRepo),
+    propertyPublicRouter(propertyRepo, mediaService, exchangeRatesRepo, teamPublic),
     calculatorPublicRouter({
       acquisition: acquisitionEstimate,
       deposit: depositEstimate,
@@ -133,7 +134,7 @@ const app = createApp({
     inquiryPublicRouter(inquiryRepo, mailer, env.INQUIRY_NOTIFY_TO, logger),
     analyticsPublicRouter(analyticsRepo),
     mediaPublicRouter(mediaService),
-    teamPublicRouter(teamPublic),
+    teamPublicRouter(teamPublic, teamAdmin),
     contentPublicRouter(contentPublic, landingPublic),
     siteSettingsPublicRouter(siteSettings),
     documentPublicRouter(documentPublic),

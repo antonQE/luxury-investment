@@ -34,6 +34,7 @@ import { Field } from '@/components/ui/Field';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { TasksSectionNav } from '@/pages/Tasks/TasksSectionNav';
 import { ApiError } from '@/types/api';
 
 export default function MarketingAdmin() {
@@ -169,6 +170,7 @@ export default function MarketingAdmin() {
   return (
     <VStack align="stretch" gap={6} data-testid="marketing-admin-page">
       <PageHeader title={t('marketing.title')} lead={t('marketing.lead')} />
+      <TasksSectionNav />
 
       <Panel>
         <Field label={t('marketing.property')}>

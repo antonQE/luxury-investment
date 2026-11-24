@@ -55,14 +55,17 @@ function DesktopNavInner() {
     setOpenKey(null);
   }
 
+  // Logo already links home — skip "Начало" in the desktop strip to free space.
+  const items = PRIMARY_NAV.filter((item) => !('href' in item && item.href === '/'));
+
   return (
     <nav
       ref={rootRef}
-      className="hidden min-w-0 flex-1 flex-nowrap items-center justify-center gap-3 lg:flex lg:gap-4 xl:gap-5"
+      className="hidden min-w-0 flex-1 items-center justify-center gap-x-2.5 overflow-visible px-1 xl:flex 2xl:gap-x-4"
       aria-label={t('mainNav')}
       data-testid="desktop-nav"
     >
-      {PRIMARY_NAV.map((item) =>
+      {items.map((item) =>
         'children' in item ? (
           <NavMenu
             key={item.key}
@@ -84,7 +87,7 @@ function DesktopNavInner() {
           <Link
             key={item.href}
             href={item.href}
-            className="shrink-0 whitespace-nowrap text-[12px] tracking-[0.03em] text-stone/70 transition hover:text-brass xl:text-[13px]"
+            className="shrink-0 whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
             data-testid={`nav-${item.key}`}
             onClick={closeMenu}
           >
@@ -119,7 +122,7 @@ function NavMenu({
     <div className="relative shrink-0" data-nav-menu={menuKey}>
       <button
         type="button"
-        className="whitespace-nowrap text-[12px] tracking-[0.03em] text-stone/70 transition hover:text-brass xl:text-[13px]"
+        className="cursor-pointer whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
@@ -144,7 +147,7 @@ function NavMenu({
                 <Link
                   href={child.href}
                   role="menuitem"
-                  className="block px-4 py-2.5 text-[13px] text-stone/70 transition hover:text-brass"
+                  className="block px-4 py-2.5 text-[14px] text-stone/80 transition hover:text-brass"
                   data-testid={child.testId}
                   onClick={onClose}
                 >

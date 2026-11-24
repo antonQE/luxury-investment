@@ -1,4 +1,8 @@
-import { generateOwnerReportSchema, listOwnerReportsQuerySchema } from '@luxury-investment/shared';
+import {
+  generateOwnerReportSchema,
+  listOwnerReportsQuerySchema,
+  siteAnalyticsQuerySchema,
+} from '@luxury-investment/shared';
 import { Router } from 'express';
 
 import { AppError } from '../../../errors/app-error.ts';
@@ -53,6 +57,41 @@ export function analyticsAdminRouter(repo: AnalyticsRepo, reports: OwnerReportSe
       });
     }),
   );
+
+  router.get(
+    '/analytics/site',
+    withValidation({ query: siteAnalyticsQuerySchema }, async ({ query }, req, res) => {
+      requireAnalytics('properties:read', req.auth?.permissions);
+      const summary = await repo.siteSummary(query.days);
+      res.json({ data: { days: query.days, ...summary } });
+    }),
+  );
+
+  router.get('/analytics/property-views', async (req, res) => {
+    requireAnalytics('properties:read', req.auth?.permissions);
+    const idsRaw = typeof req.query.ids === 'string' ? req.query.ids : '';
+    const ids = idsRaw
+      .split(',')
+      .map((value) => value.trim())
+      .filter((value) => value.length > 0)
+      .slice(0, 200);
+    if (ids.length === 0) {
+      res.json({ data: [] });
+      return;
+    }
+    const rows = await repo.getPropertyViewStatsForIds(ids);
+    const byId = new Map(rows.map((row) => [row.propertyId, row]));
+    res.json({
+      data: ids.map((propertyId) => {
+        const found = byId.get(propertyId);
+        return {
+          propertyId,
+          viewsTotal: found?.viewsTotal ?? 0,
+          viewsUnique: found?.viewsUnique ?? 0,
+        };
+      }),
+    });
+  });
 
   return router;
 }

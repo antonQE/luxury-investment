@@ -67,7 +67,12 @@ export function serializePropertyListItem(
 export function serializeProperty(
   row: PropertyRow,
   locale: Locale,
-  options?: { imageUrls?: string[]; priceEquivalent?: PriceEquivalent | null },
+  options?: {
+    imageUrls?: string[];
+    priceEquivalent?: PriceEquivalent | null;
+    agentPhotoUrl?: string | null;
+    agentSlug?: string | null;
+  },
 ): PublicProperty {
   const isBg = locale === 'bg';
   const publishedAt = row.publishedAt;
@@ -99,6 +104,8 @@ export function serializeProperty(
     imageUrls: options?.imageUrls ?? row.imageUrls,
     agentName: row.agentName,
     agentPhone: row.agentPhone,
+    agentPhotoUrl: options?.agentPhotoUrl ?? null,
+    agentSlug: options?.agentSlug ?? null,
     publishedAt: (publishedAt ?? row.createdAt).toISOString(),
   };
 }

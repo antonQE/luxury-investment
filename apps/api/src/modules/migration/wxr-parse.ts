@@ -34,12 +34,21 @@ function cdata(block: string, tag: string): string {
 
 function decodeBasicEntities(value: string): string {
   return value
+    .replace(/&nbsp;/gi, ' ')
     .replace(/&#038;/g, '&')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'");
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&apos;|&#0*39;/gi, "'")
+    .replace(/&#(\d+);/g, (_, digits: string) => {
+      const code = Number(digits);
+      return Number.isFinite(code) ? String.fromCodePoint(code) : '';
+    })
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) => {
+      const code = Number.parseInt(hex, 16);
+      return Number.isFinite(code) ? String.fromCodePoint(code) : '';
+    });
 }
 
 function parseMeta(block: string): Record<string, string> {
@@ -94,12 +103,26 @@ export function parseWxr(xml: string): WxrDocument {
   return { baseBlogUrl, items };
 }
 
+/**
+ * Convert HTML body copy to plain text while keeping paragraph breaks.
+ * Block tags and `<br>` become newlines so public pages can render with
+ * `whitespace-pre-line` instead of one collapsed wall of text.
+ */
 export function stripHtml(html: string): string {
-  return html
+  const withBreaks = html
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(/<(?:br|hr)\s*\/?>/gi, '\n')
+    .replace(
+      /<\/(?:p|div|h[1-6]|li|tr|blockquote|section|article|header|footer|figcaption)>/gi,
+      '\n\n',
+    )
+    .replace(/<\/(?:ul|ol|table)>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '');
+
+  return decodeBasicEntities(withBreaks)
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/ *\n */g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }

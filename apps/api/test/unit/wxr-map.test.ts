@@ -40,5 +40,9 @@ describe('WXR parse + map', () => {
       'https://luxuryinvestment.bg/wp-content/uploads/2024/01/demo.jpg',
     ]);
     expect(property?.badges).toContain('new');
+    expect(property?.descriptionBg).toBe('Светъл апартамент.\n\nБлизо до парка.');
+
+    const article = report.articles[0];
+    expect(article?.bodyBg).toBe('Текст на статия.\n\nВтори абзац.');
   });
 });

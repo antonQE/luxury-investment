@@ -73,7 +73,9 @@ export type LandingProcessPayload = z.infer<typeof landingProcessPayloadSchema>;
 /** Saved catalog filter for curated SEO landings (SEO-001). No offset — always first page. */
 export const landingListingFilterSchema = z.object({
   transactionType: z.enum(['sale', 'rent']).optional(),
-  propertyType: z.enum(['apartment', 'house', 'plot', 'office', 'hotel']).optional(),
+  propertyType: z
+    .enum(['apartment', 'house', 'plot', 'office', 'hotel', 'business', 'villa', 'garage', 'shop'])
+    .optional(),
   market: z.enum(['sofia', 'black_sea', 'dubai_abroad']).optional(),
   city: z.string().trim().min(1).max(120).optional(),
   district: z.string().trim().min(1).max(120).optional(),

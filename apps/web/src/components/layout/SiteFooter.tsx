@@ -13,6 +13,9 @@ export async function SiteFooter() {
   const settings = await fetchSiteSettings().catch(() => ({
     publicPhone: null as string | null,
     publicEmail: null as string | null,
+    facebookUrl: null as string | null,
+    instagramUrl: null as string | null,
+    tiktokUrl: null as string | null,
   }));
   const phoneLabel = settings.publicPhone;
   const phoneHref = toTelHref(phoneLabel);

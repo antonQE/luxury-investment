@@ -2,6 +2,7 @@ import type { PublicTeamMember } from '@luxury-investment/shared';
 import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { RemoteImage } from '@/components/ui/RemoteImage';
 import { Link } from '@/i18n/navigation';
 import { fetchTeam } from '@/lib/api/team';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -44,17 +45,26 @@ export default async function TeamPage() {
             <li key={member.id}>
               <Link
                 href={`/ekip/${member.slug}`}
-                className="group block border border-line bg-paper transition hover:border-brass"
+                className="group flex flex-col transition duration-500 ease-out hover:-translate-y-1"
                 data-testid={`team-card-${member.slug}`}
               >
                 {member.photoUrl !== null ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- remote demo URLs
-                  <img src={member.photoUrl} alt="" className="aspect-[4/5] w-full object-cover" />
+                  <div className="relative aspect-[4/3] overflow-hidden bg-void/5">
+                    <RemoteImage
+                      src={member.photoUrl}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-top transition duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+                  </div>
                 ) : (
-                  <div className="aspect-[4/5] w-full bg-void/5" />
+                  <div className="aspect-[4/3] w-full bg-void/5" />
                 )}
-                <div className="p-5">
-                  <h2 className="font-serif text-2xl group-hover:text-brass-dark">{member.name}</h2>
+                <div className="pt-5">
+                  <h2 className="font-serif text-xl leading-snug transition group-hover:text-brass-dark md:text-[1.35rem]">
+                    {member.name}
+                  </h2>
                   <p className="mt-1 text-sm text-ink-soft">{member.role}</p>
                 </div>
               </Link>

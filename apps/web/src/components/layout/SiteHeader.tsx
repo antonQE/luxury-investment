@@ -30,19 +30,22 @@ export async function SiteHeader() {
   const settings = await fetchSiteSettings().catch(() => ({
     publicPhone: null as string | null,
     publicEmail: null as string | null,
+    facebookUrl: null as string | null,
+    instagramUrl: null as string | null,
+    tiktokUrl: null as string | null,
   }));
   const phoneLabel = settings.publicPhone;
   const phoneHref = toTelHref(phoneLabel);
 
   return (
     <header
-      className="relative z-40 animate-fade-in border-b border-white/10 bg-void/95 text-stone backdrop-blur-md"
+      className="sticky top-0 z-50 animate-fade-in border-b border-white/10 bg-void/95 text-stone shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md"
       data-testid="site-header"
     >
-      <div className="mx-auto flex max-w-7xl flex-nowrap items-center gap-3 px-4 py-3 lg:gap-5 lg:px-6 lg:py-4">
+      <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-visible px-4 py-3.5 xl:gap-5 xl:px-6 xl:py-4">
         <Link
           href="/"
-          className="shrink-0 whitespace-nowrap font-serif text-base tracking-[0.04em] text-stone lg:text-lg"
+          className="relative z-10 shrink-0 whitespace-nowrap font-serif text-lg tracking-[0.04em] text-stone xl:text-xl"
           data-testid="site-logo"
         >
           Luxury Investment
@@ -50,16 +53,16 @@ export async function SiteHeader() {
 
         <DesktopNav />
 
-        <div className="ml-auto flex shrink-0 flex-nowrap items-center gap-3 lg:gap-4">
+        <div className="relative z-10 ml-auto flex shrink-0 items-center gap-3 xl:gap-4">
           {phoneHref !== null && phoneLabel !== null ? (
             <a
               href={phoneHref}
-              className="inline-flex size-9 items-center justify-center text-brass transition hover:text-brass-dark"
+              className="inline-flex size-10 items-center justify-center text-brass transition hover:text-brass-dark"
               aria-label={phoneLabel}
               title={phoneLabel}
               data-testid="header-phone"
             >
-              <PhoneIcon className="size-5" />
+              <PhoneIcon className="size-6" />
             </a>
           ) : null}
           <LanguageSwitcher />

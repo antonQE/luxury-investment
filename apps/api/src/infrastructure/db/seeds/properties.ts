@@ -1,7 +1,14 @@
+import { sql } from 'drizzle-orm';
+
 import { properties } from '../schema.ts';
 import type { SeedModule } from './index.ts';
 
-const DEMO_PHONE = '+359 000 000 000';
+/** Match public team member phones in `team.ts` so agent pages can list listings. */
+const PHONE = {
+  ivanova: '+359 000 000 001',
+  petrov: '+359 000 000 002',
+  other: '+359 000 000 090',
+} as const;
 
 const rows = [
   {
@@ -36,7 +43,7 @@ const rows = [
       'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Иванова',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.ivanova,
     publishedAt: new Date('2026-10-20T10:00:00Z'),
   },
   {
@@ -71,7 +78,7 @@ const rows = [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Петров',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.petrov,
     publishedAt: new Date('2026-10-18T10:00:00Z'),
   },
   {
@@ -103,7 +110,7 @@ const rows = [
       'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Георгиева',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.other,
     publishedAt: new Date('2026-10-22T08:00:00Z'),
   },
   {
@@ -136,7 +143,7 @@ const rows = [
       'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Тодоров',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.other,
     publishedAt: new Date('2026-10-15T10:00:00Z'),
   },
   {
@@ -168,7 +175,7 @@ const rows = [
       'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Agent Nikolova',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.other,
     publishedAt: new Date('2026-10-21T12:00:00Z'),
   },
   {
@@ -200,7 +207,7 @@ const rows = [
       'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Димитров',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.other,
     publishedAt: new Date('2026-10-12T10:00:00Z'),
   },
   {
@@ -232,7 +239,7 @@ const rows = [
       'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80',
     ],
     agentName: 'Demo Агент Иванова',
-    agentPhone: DEMO_PHONE,
+    agentPhone: PHONE.ivanova,
     publishedAt: new Date('2026-10-19T09:00:00Z'),
   },
   {
@@ -263,8 +270,8 @@ const rows = [
     imageUrls: [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80',
     ],
-    agentName: 'Demo Agent Nikolova',
-    agentPhone: DEMO_PHONE,
+    agentName: 'Demo Агент Петров',
+    agentPhone: PHONE.petrov,
     publishedAt: new Date('2026-10-10T10:00:00Z'),
   },
 ];
@@ -316,7 +323,7 @@ const draftRow: typeof properties.$inferInsert = {
     'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=80',
   ],
   agentName: 'Demo Агент Иванова',
-  agentPhone: DEMO_PHONE,
+  agentPhone: PHONE.ivanova,
   listingStatus: 'draft',
   publishedAt: null,
 };
@@ -327,6 +334,12 @@ export const propertiesSeed: SeedModule = {
     await db
       .insert(properties)
       .values([...rows.map(enrich), draftRow])
-      .onConflictDoNothing({ target: properties.slug });
+      .onConflictDoUpdate({
+        target: properties.slug,
+        set: {
+          agentName: sql`excluded.agent_name`,
+          agentPhone: sql`excluded.agent_phone`,
+        },
+      });
   },
 };

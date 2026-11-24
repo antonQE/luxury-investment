@@ -30,6 +30,7 @@ import { AdminSelect } from '@/components/ui/AdminSelect';
 import { Field } from '@/components/ui/Field';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
+import { TasksSectionNav } from '@/pages/Tasks/TasksSectionNav';
 import { ApiError } from '@/types/api';
 
 export default function MarketingStudio() {
@@ -166,6 +167,7 @@ export default function MarketingStudio() {
   return (
     <VStack align="stretch" gap={6} data-testid="marketing-studio-page">
       <PageHeader title={t('studio.title')} lead={t('studio.lead')} />
+      <TasksSectionNav />
 
       <Panel>
         <Field label={t('studio.property')}>

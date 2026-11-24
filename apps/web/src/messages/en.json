@@ -49,8 +49,23 @@
     "newestLead": "Newest listings",
     "viewAll": "All properties",
     "marketsTitle": "Markets",
+    "articlesTitle": "Articles",
+    "articlesLead": "A look at the market and the process",
+    "articlesViewAll": "All articles",
+    "teamTitle": "Team",
+    "teamLead": "The people behind the selection",
+    "teamViewAll": "Full team",
+    "contactStripTitle": "Contact",
+    "contactStripLead": "Call, write or follow us",
+    "socialFollow": "Follow us",
+    "socialFacebook": "Facebook",
+    "socialInstagram": "Instagram",
+    "socialTiktok": "TikTok",
     "partnersTitle": "Partners",
     "partnersLead": "People we work with",
+    "loadMore": "Load more",
+    "loadMorePending": "Loading…",
+    "loadMoreError": "Could not load more properties. Please try again.",
     "error": "The catalogue is temporarily unavailable. Please try again shortly."
   },
   "Markets": {
@@ -82,7 +97,11 @@
     "house": "House",
     "plot": "Plot",
     "office": "Office",
-    "hotel": "Hotel"
+    "hotel": "Hotel",
+    "business": "Business",
+    "villa": "Villa",
+    "garage": "Garage",
+    "shop": "Shop"
   },
   "Listings": {
     "title": "Properties",
@@ -111,6 +130,11 @@
     "galleryCounter": "{current} / {total}",
     "prevImage": "Previous image",
     "nextImage": "Next image",
+    "openFullscreen": "Open photo fullscreen",
+    "closeFullscreen": "Close",
+    "factBedrooms": "Bedrooms",
+    "factBathrooms": "Bathrooms",
+    "factStage": "Stage",
     "pricePerSqm": "{price} / m²",
     "share": "Share",
     "print": "Print",
@@ -194,7 +218,11 @@
     "back": "All team members",
     "email": "Email",
     "phone": "Phone",
-    "qualifications": "Qualifications"
+    "qualifications": "Qualifications",
+    "listingsTitle": "Properties",
+    "listingsLead": "Listings by this agent",
+    "listingsEmpty": "There are no published listings for this profile right now.",
+    "listingsError": "Listings are temporarily unavailable."
   },
   "Articles": {
     "title": "Articles",

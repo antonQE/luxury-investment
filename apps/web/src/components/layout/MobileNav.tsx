@@ -18,10 +18,10 @@ export function MobileNav() {
   }
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
-        className="border border-stone/30 px-3 py-1 text-xs tracking-[0.2em] uppercase text-stone"
+        className="cursor-pointer border border-stone/35 px-3.5 py-1.5 text-sm tracking-[0.18em] uppercase text-stone"
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         data-testid="mobile-nav-toggle"
@@ -47,7 +47,7 @@ export function MobileNav() {
                 <li key={item.key}>
                   <button
                     type="button"
-                    className="text-left text-sm tracking-wide text-stone"
+                    className="cursor-pointer text-left text-sm tracking-wide text-stone"
                     aria-expanded={expandedKey === item.key}
                     data-testid={`mobile-nav-${item.key}`}
                     onClick={() => {

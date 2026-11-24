@@ -232,6 +232,20 @@
       "when": 1793960685300,
       "tag": "0032_sloppy_weapon_omega",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1795074224378,
+      "tag": "0033_small_colleen_wing",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1795076110756,
+      "tag": "0034_foamy_caretaker",
+      "breakpoints": true
     }
   ]
 }

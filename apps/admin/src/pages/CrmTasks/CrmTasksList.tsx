@@ -14,6 +14,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { useAuth } from '@/contexts/AuthContext';
+import { TasksSectionNav } from '@/pages/Tasks/TasksSectionNav';
 import { ApiError } from '@/types/api';
 
 import { fromDatetimeLocalValue, toDatetimeLocalValue } from '../Viewings/calendar-range';
@@ -73,6 +74,7 @@ export default function CrmTasksList() {
   return (
     <VStack align="stretch" gap={6} data-testid="crm-tasks-admin-page">
       <PageHeader title={t('crmTasks.title')} lead={t('crmTasks.lead')} />
+      <TasksSectionNav />
 
       <Panel>
         <form

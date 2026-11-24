@@ -6,20 +6,20 @@
 export const PRIMARY_NAV = [
   { href: '/', key: 'home' },
   { href: '/obiavi', key: 'properties' },
+  { href: '/prodai-s-nas', key: 'sellWithUs' },
+  { href: '/advokatski-uslugi', key: 'legalServices' },
+  { href: '/dokumenti', key: 'documents' },
   {
     key: 'investments',
     children: [
       { href: '/investicii', key: 'investmentsOverview' },
       { href: '/investicii/biznesi', key: 'businesses' },
-      { href: '/advokatski-uslugi', key: 'legalServices' },
     ],
   },
-  { href: '/za-nas', key: 'about' },
-  { href: '/ekip', key: 'team' },
-  { href: '/stati', key: 'articles' },
-  { href: '/prodai-s-nas', key: 'sellWithUs' },
-  { href: '/dokumenti', key: 'documents' },
   { href: '/uslugi', key: 'services' },
+  { href: '/stati', key: 'articles' },
+  { href: '/ekip', key: 'team' },
+  { href: '/za-nas', key: 'about' },
   { href: '/contact', key: 'contact' },
 ] as const;
 

@@ -1,7 +1,8 @@
 import { and, eq } from 'drizzle-orm';
 
-import { contacts, deals, offers, properties } from '../schema.ts';
+import { contacts, deals, offers, properties, users } from '../schema.ts';
 import type { SeedModule } from './index.ts';
+import { DEMO_ADMIN_EMAIL } from './users.ts';
 
 export const dealsSeed: SeedModule = {
   name: 'deals',
@@ -17,11 +18,16 @@ export const dealsSeed: SeedModule = {
       .where(eq(contacts.email, 'owner.petrova@example.com'))
       .limit(1);
     const [property] = await db
-      .select({ id: properties.id })
+      .select({ id: properties.id, responsibleAgentUserId: properties.responsibleAgentUserId })
       .from(properties)
       .where(eq(properties.slug, 'demo-tristaen-malinova-dolina'))
       .limit(1);
-    if (buyer === undefined || property === undefined) return;
+    const [admin] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, DEMO_ADMIN_EMAIL))
+      .limit(1);
+    if (buyer === undefined || property === undefined || admin === undefined) return;
 
     const [offer] = await db
       .select({ id: offers.id })
@@ -39,6 +45,7 @@ export const dealsSeed: SeedModule = {
       propertyId: property.id,
       buyerContactId: buyer.id,
       sellerContactId: seller?.id ?? null,
+      agentId: property.responsibleAgentUserId ?? admin.id,
       offerId: offer?.id ?? null,
       stage: 'preliminary',
       agreedPrice: '285000.00',

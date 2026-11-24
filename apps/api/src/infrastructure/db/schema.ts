@@ -2,6 +2,8 @@ export {
   ownerReportSnapshots,
   propertyEventDailyRollups,
   propertyEvents,
+  siteEventDailyRollups,
+  siteEvents,
 } from '../../modules/analytics/repo/analytics.schema.ts';
 export {
   attributeDefinitions,

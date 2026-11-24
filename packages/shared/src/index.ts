@@ -1,18 +1,25 @@
 export type {
   GenerateOwnerReportInput,
   IngestPropertyEventInput,
+  IngestSiteEventInput,
   ListOwnerReportsQuery,
   OwnerReportKind,
   PropertyEventType,
+  SiteAnalyticsQuery,
+  SiteEventType,
 } from './analytics.ts';
 export {
   generateOwnerReportSchema,
   ingestPropertyEventSchema,
+  ingestSiteEventSchema,
   listOwnerReportsQuerySchema,
   OWNER_REPORT_KINDS,
   ownerReportKindSchema,
   PROPERTY_EVENT_TYPES,
   propertyEventTypeSchema,
+  SITE_EVENT_TYPES,
+  siteAnalyticsQuerySchema,
+  siteEventTypeSchema,
 } from './analytics.ts';
 export type { AttributeDataType, SeededAttributeKey } from './attributes.ts';
 export {
@@ -347,6 +354,9 @@ export {
   publicSiteSettingsSchema,
   SITE_SETTING_KEYS,
   siteSettingKeySchema,
+  SOCIAL_FACEBOOK_SETTING_KEY,
+  SOCIAL_INSTAGRAM_SETTING_KEY,
+  SOCIAL_TIKTOK_SETTING_KEY,
   toMailtoHref,
   toTelHref,
   updateSiteSettingsSchema,

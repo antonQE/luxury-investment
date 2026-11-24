@@ -34,15 +34,6 @@ export default async function InvestmentsPage() {
             {nav('businesses')}
           </Link>
         </li>
-        <li>
-          <Link
-            href="/advokatski-uslugi"
-            className="text-brass-dark transition hover:text-brass"
-            data-testid="investments-link-legal"
-          >
-            {nav('legalServices')}
-          </Link>
-        </li>
       </ul>
     </main>
   );

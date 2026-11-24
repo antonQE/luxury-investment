@@ -43,7 +43,7 @@
 		<wp:post_name><![CDATA[tristaen-malinova]]></wp:post_name>
 		<wp:status><![CDATA[publish]]></wp:status>
 		<wp:post_type><![CDATA[estate_property]]></wp:post_type>
-		<content:encoded><![CDATA[<p>Светъл апартамент.</p>]]></content:encoded>
+		<content:encoded><![CDATA[<p>Светъл апартамент.</p><p>Близо до парка.</p>]]></content:encoded>
 		<excerpt:encoded><![CDATA[Кратко]]></excerpt:encoded>
 		<category domain="property_action_category" nicename="prodazhbi"><![CDATA[Продажби]]></category>
 		<category domain="property_category" nicename="apartamenti"><![CDATA[Апартаменти]]></category>
@@ -66,7 +66,7 @@
 		<wp:post_name><![CDATA[statiya]]></wp:post_name>
 		<wp:status><![CDATA[publish]]></wp:status>
 		<wp:post_type><![CDATA[post]]></wp:post_type>
-		<content:encoded><![CDATA[<p>Текст на статия.</p>]]></content:encoded>
+		<content:encoded><![CDATA[<p>Текст на статия.</p><p>Втори абзац.</p>]]></content:encoded>
 		<excerpt:encoded><![CDATA[Excerpt]]></excerpt:encoded>
 	</item>
 </channel>

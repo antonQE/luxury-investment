@@ -23,6 +23,7 @@ export interface CatalogFilters {
   areaMin?: string;
   areaMax?: string;
   q?: string;
+  agentPhone?: string;
   offset?: string;
   limit?: string;
 }

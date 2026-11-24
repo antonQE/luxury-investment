@@ -52,6 +52,47 @@ export const propertyEventDailyRollups = pgTable(
   ],
 );
 
+/** Site-wide page views and clicks (not property-bound). */
+export const siteEvents = pgTable('site_events', {
+  id: uuid().defaultRandom().primaryKey(),
+  /** Locale-stripped path, e.g. `/obiavi` or `/ekip/demo-ivanova`. */
+  path: text().notNull(),
+  /** `page_view` | `click` */
+  eventType: text().notNull(),
+  /** Click label (link text / aria / data-analytics); empty for page_view. */
+  label: text().notNull().default(''),
+  /** Click href when available. */
+  href: text().notNull().default(''),
+  sessionKey: text().notNull().default(''),
+  deviceClass: text().notNull().default(''),
+  userAgent: text().notNull().default(''),
+  isBot: integer().notNull().default(0),
+  occurredAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const siteEventDailyRollups = pgTable(
+  'site_event_daily_rollups',
+  {
+    id: uuid().defaultRandom().primaryKey(),
+    path: text().notNull(),
+    eventType: text().notNull(),
+    label: text().notNull().default(''),
+    day: date().notNull(),
+    eventCount: integer().notNull().default(0),
+    uniqueSessions: integer().notNull().default(0),
+    updatedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('site_event_daily_rollups_path_type_label_day').on(
+      table.path,
+      table.eventType,
+      table.label,
+      table.day,
+    ),
+  ],
+);
+
 /** Append-only owner report snapshots (RPT-001). Payload never includes buyer PII. */
 export const ownerReportSnapshots = pgTable('owner_report_snapshots', {
   id: uuid().defaultRandom().primaryKey(),

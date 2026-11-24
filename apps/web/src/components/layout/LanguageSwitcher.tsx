@@ -10,13 +10,13 @@ export function LanguageSwitcher() {
 
   return (
     <div
-      className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase"
+      className="flex items-center gap-2 text-sm tracking-[0.18em] uppercase"
       data-testid="language-switcher"
     >
       <Link
         href={pathname}
         locale="bg"
-        className={locale === 'bg' ? 'text-brass' : 'text-stone/70 transition hover:text-stone'}
+        className={locale === 'bg' ? 'text-brass' : 'text-stone/75 transition hover:text-stone'}
         data-testid="lang-bg"
       >
         BG
@@ -27,7 +27,7 @@ export function LanguageSwitcher() {
       <Link
         href={pathname}
         locale="en"
-        className={locale === 'en' ? 'text-brass' : 'text-stone/70 transition hover:text-stone'}
+        className={locale === 'en' ? 'text-brass' : 'text-stone/75 transition hover:text-stone'}
         data-testid="lang-en"
       >
         EN

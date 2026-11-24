@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import { AppError } from '../../../errors/app-error.ts';
 import { withValidation } from '../../../infrastructure/server/middleware/validate.ts';
-import type { DealRepo, DealRow } from '../repo/deal-repo.ts';
+import type { DealRepo, DealWithAgent } from '../repo/deal-repo.ts';
 
 const idParams = z.object({ id: z.uuid() });
 
@@ -23,12 +23,14 @@ function canReadFinance(permissions: string[] | undefined): boolean {
   return permissions?.includes('finance:read') === true;
 }
 
-function serialize(row: DealRow, includeCommission: boolean) {
+function serialize(row: DealWithAgent, includeCommission: boolean) {
   return {
     id: row.id,
     propertyId: row.propertyId,
     buyerContactId: row.buyerContactId,
     sellerContactId: row.sellerContactId,
+    agentId: row.agentId,
+    agentName: row.agentName,
     offerId: row.offerId,
     stage: row.stage,
     agreedPrice: row.agreedPrice,

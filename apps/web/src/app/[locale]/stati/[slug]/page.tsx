@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { PlainTextBody } from '@/components/content/PlainTextBody';
 import { Link } from '@/i18n/navigation';
 import { ApiError } from '@/lib/api/client';
 import { fetchArticle } from '@/lib/api/content';
@@ -69,7 +70,7 @@ export default async function ArticlePage({ params }: PageProps) {
           {t('by')} {article.authorName}
         </p>
       ) : null}
-      <div className="mt-8 space-y-4 leading-relaxed whitespace-pre-line">{article.body}</div>
+      <PlainTextBody text={article.body} testId="article-body" />
     </main>
   );
 }

@@ -16,6 +16,7 @@ export interface AdminProperty {
   country: string;
   city: string;
   district: string | null;
+  locationId: string | null;
   price: string;
   currency: string;
   area: string;
@@ -48,6 +49,7 @@ export interface PropertyWriteBody {
   country: string;
   city: string;
   district?: string | null;
+  locationId?: string | null;
   price: string;
   currency: string;
   area: string;

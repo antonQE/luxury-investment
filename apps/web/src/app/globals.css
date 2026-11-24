@@ -8,6 +8,9 @@
   --color-ink-soft: #4a4f5c;
   --color-void: #12141a;
   --color-stone: #f2efe9;
+  /* A few shades deeper than stone — panels that sit on the page wash. */
+  --color-stone-deep: #e6e1d7;
+  --color-stone-deeper: #ddd7cb;
   --color-line: #d9d3c8;
   --color-brass: #a68445;
   --color-brass-dark: #8a6c38;

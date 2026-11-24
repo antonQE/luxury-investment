@@ -20,6 +20,7 @@ export const createDealSchema = z.object({
   propertyId: z.uuid(),
   buyerContactId: z.uuid(),
   sellerContactId: z.uuid().nullable().optional(),
+  agentId: z.uuid(),
   offerId: z.uuid().nullable().optional(),
   stage: dealStageSchema.optional().default('negotiation'),
   agreedPrice: money.nullable().optional(),
@@ -33,6 +34,7 @@ export type CreateDealInput = z.infer<typeof createDealSchema>;
 export const updateDealSchema = z.object({
   buyerContactId: z.uuid().optional(),
   sellerContactId: z.uuid().nullable().optional(),
+  agentId: z.uuid().optional(),
   offerId: z.uuid().nullable().optional(),
   stage: dealStageSchema.optional(),
   agreedPrice: money.nullable().optional(),
@@ -46,6 +48,7 @@ export type UpdateDealInput = z.infer<typeof updateDealSchema>;
 export const listDealsQuerySchema = z.object({
   stage: dealStageSchema.optional(),
   propertyId: z.uuid().optional(),
+  agentId: z.uuid().optional(),
 });
 
 export type ListDealsQuery = z.infer<typeof listDealsQuerySchema>;

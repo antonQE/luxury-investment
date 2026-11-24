@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-19`, `LI-097`
+Next IDs: `EPIC-19`, `LI-112`
 
 
 ## Releases
@@ -68,11 +68,26 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
+| [LI-111](tasks/LI-111-deal-agent-totals.md) | Deal totals by agent | EPIC-09 | P2 | S | LI-110 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-110](tasks/LI-110-deal-agent.md) | Deal agent assignment | EPIC-09 |
+| [LI-109](tasks/LI-109-admin-tasks-section-nav.md) | Admin: Tasks section (Marketing / Studio / CRM) | EPIC-09 |
+| [LI-108](tasks/LI-108-property-views-and-site-clicks.md) | Property views + site click tracking (admin) | EPIC-11 |
+| [LI-107](tasks/LI-107-property-editor-catalog-selects.md) | Property editor catalog selects + add location | EPIC-04 |
+| [LI-106](tasks/LI-106-admin-team-full-profile-edit.md) | Admin team full profile edit + photos | EPIC-08 |
+| [LI-105](tasks/LI-105-admin-handbook-under-documents.md) | Admin: handbook under Documents | EPIC-13 |
+| [LI-104](tasks/LI-104-property-agent-profile-link.md) | Clickable agent on property page | EPIC-07 |
+| [LI-103](tasks/LI-103-agent-page-listings.md) | Agent page listings | EPIC-08 |
+| [LI-102](tasks/LI-102-home-newest-load-more.md) | Home newest: compact 4-up + load more | EPIC-07 |
+| [LI-101](tasks/LI-101-home-contact-social-strip.md) | Home contact + social strip | EPIC-06 |
+| [LI-100](tasks/LI-100-property-gallery-facts-agent-photo.md) | Property gallery lightbox, facts under photos, agent photo | EPIC-07 |
+| [LI-099](tasks/LI-099-preserve-paragraphs-on-import.md) | Preserve paragraphs when stripping HTML on import | EPIC-17 |
+| [LI-098](tasks/LI-098-home-articles-team-sections.md) | Home page articles + team sections after listings | EPIC-06 |
+| [LI-097](tasks/LI-097-owner-nav-legal-services-top.md) | Move legal services into primary nav + reorder menu | EPIC-06 |
 | [LI-096](tasks/LI-096-admin-ui-readability-polish.md) | Admin UI readability polish | EPIC-02 |
 | [LI-095](tasks/LI-095-site-public-phone-setting.md) | Site public phone setting (admin) | EPIC-06 |
 | [LI-094](tasks/LI-094-content-publish-at-basic.md) | Content publish-at scheduling (basic) | EPIC-12 |

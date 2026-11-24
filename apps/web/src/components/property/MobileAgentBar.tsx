@@ -2,12 +2,16 @@
 
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
+
 export function MobileAgentBar({
   phoneDigits,
   agentName,
+  agentSlug,
 }: {
   phoneDigits: string;
   agentName: string;
+  agentSlug: string | null;
 }) {
   const t = useTranslations('Property');
 
@@ -16,7 +20,17 @@ export function MobileAgentBar({
       className="fixed inset-x-0 bottom-0 z-30 border-t border-brass/20 bg-void/95 px-4 py-3 text-stone backdrop-blur md:hidden"
       data-testid="mobile-agent-bar"
     >
-      <p className="truncate text-xs text-stone/70">{agentName}</p>
+      {agentSlug !== null ? (
+        <Link
+          href={`/ekip/${agentSlug}`}
+          className="block truncate text-xs text-stone/70 transition hover:text-brass"
+          data-testid="mobile-agent-profile-link"
+        >
+          {agentName}
+        </Link>
+      ) : (
+        <p className="truncate text-xs text-stone/70">{agentName}</p>
+      )}
       <div className="mt-2 flex gap-2">
         <a
           href={`tel:${phoneDigits}`}

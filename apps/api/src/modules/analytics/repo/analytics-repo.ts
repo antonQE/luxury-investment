@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, lte, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
 import {
@@ -9,6 +9,8 @@ import {
   propertyEventDailyRollups,
   propertyEvents,
   propertyPriceHistory,
+  siteEventDailyRollups,
+  siteEvents,
   viewings,
 } from '../../../infrastructure/db/schema.ts';
 
@@ -240,5 +242,219 @@ export class AnalyticsRepo {
     const [row] = await this.#db.insert(ownerReportSnapshots).values(values).returning();
     if (row === undefined) throw new Error('owner report insert failed');
     return row;
+  }
+
+  /** Lifetime page_view totals + distinct sessions (bots excluded). */
+  async getPropertyViewStatsForIds(
+    propertyIds: string[],
+  ): Promise<{ propertyId: string; viewsTotal: number; viewsUnique: number }[]> {
+    if (propertyIds.length === 0) return [];
+    const rows = await this.#db
+      .select({
+        propertyId: propertyEvents.propertyId,
+        viewsTotal: sql<number>`count(*)::int`,
+        viewsUnique: sql<number>`count(distinct ${propertyEvents.sessionKey})::int`,
+      })
+      .from(propertyEvents)
+      .where(
+        and(
+          inArray(propertyEvents.propertyId, propertyIds),
+          eq(propertyEvents.eventType, 'page_view'),
+          eq(propertyEvents.isBot, 0),
+          sql`${propertyEvents.sessionKey} <> ''`,
+        ),
+      )
+      .groupBy(propertyEvents.propertyId);
+    return rows.map((row) => ({
+      propertyId: row.propertyId,
+      viewsTotal: row.viewsTotal,
+      viewsUnique: row.viewsUnique,
+    }));
+  }
+
+  async ingestSiteEvent(input: {
+    path: string;
+    eventType: string;
+    label: string;
+    href: string;
+    sessionKey: string;
+    deviceClass: string;
+    userAgent: string;
+  }): Promise<{ id: string; counted: boolean }> {
+    const bot = isBotUserAgent(input.userAgent);
+    const [row] = await this.#db
+      .insert(siteEvents)
+      .values({
+        path: input.path.slice(0, 300),
+        eventType: input.eventType,
+        label: input.label.slice(0, 200),
+        href: input.href.slice(0, 500),
+        sessionKey: input.sessionKey,
+        deviceClass: input.deviceClass,
+        userAgent: input.userAgent.slice(0, 500),
+        isBot: bot ? 1 : 0,
+      })
+      .returning({ id: siteEvents.id });
+    if (row === undefined) throw new Error('site event insert failed');
+
+    if (!bot) {
+      await this.#bumpSiteDailyRollup({
+        path: input.path.slice(0, 300),
+        eventType: input.eventType,
+        label: input.label.slice(0, 200),
+        sessionKey: input.sessionKey,
+      });
+    }
+
+    return { id: row.id, counted: !bot };
+  }
+
+  async #bumpSiteDailyRollup(input: {
+    path: string;
+    eventType: string;
+    label: string;
+    sessionKey: string;
+  }): Promise<void> {
+    const day = new Date().toISOString().slice(0, 10);
+    const [existing] = await this.#db
+      .select()
+      .from(siteEventDailyRollups)
+      .where(
+        and(
+          eq(siteEventDailyRollups.path, input.path),
+          eq(siteEventDailyRollups.eventType, input.eventType),
+          eq(siteEventDailyRollups.label, input.label),
+          eq(siteEventDailyRollups.day, day),
+        ),
+      )
+      .limit(1);
+
+    const alreadySeen =
+      input.sessionKey !== '' &&
+      (await this.#siteSessionSeenToday({
+        path: input.path,
+        eventType: input.eventType,
+        label: input.label,
+        sessionKey: input.sessionKey,
+        day,
+      }));
+    const uniqueDelta = input.sessionKey !== '' && !alreadySeen ? 1 : 0;
+
+    if (existing === undefined) {
+      await this.#db.insert(siteEventDailyRollups).values({
+        path: input.path,
+        eventType: input.eventType,
+        label: input.label,
+        day,
+        eventCount: 1,
+        uniqueSessions: uniqueDelta,
+      });
+      return;
+    }
+
+    await this.#db
+      .update(siteEventDailyRollups)
+      .set({
+        eventCount: existing.eventCount + 1,
+        uniqueSessions: existing.uniqueSessions + uniqueDelta,
+        updatedAt: new Date(),
+      })
+      .where(eq(siteEventDailyRollups.id, existing.id));
+  }
+
+  async #siteSessionSeenToday(input: {
+    path: string;
+    eventType: string;
+    label: string;
+    sessionKey: string;
+    day: string;
+  }): Promise<boolean> {
+    const start = new Date(`${input.day}T00:00:00.000Z`);
+    const end = new Date(`${input.day}T23:59:59.999Z`);
+    const rows = await this.#db
+      .select({ id: siteEvents.id })
+      .from(siteEvents)
+      .where(
+        and(
+          eq(siteEvents.path, input.path),
+          eq(siteEvents.eventType, input.eventType),
+          eq(siteEvents.label, input.label),
+          eq(siteEvents.sessionKey, input.sessionKey),
+          eq(siteEvents.isBot, 0),
+          gte(siteEvents.occurredAt, start),
+          lte(siteEvents.occurredAt, end),
+        ),
+      )
+      .limit(2);
+    return rows.length > 1;
+  }
+
+  async siteSummary(days: number): Promise<{
+    pages: { path: string; events: number; uniqueSessions: number }[];
+    clicks: {
+      path: string;
+      label: string;
+      href: string;
+      events: number;
+      uniqueSessions: number;
+    }[];
+  }> {
+    const since = new Date();
+    since.setUTCDate(since.getUTCDate() - days);
+
+    const pageRows = await this.#db
+      .select({
+        path: siteEvents.path,
+        events: sql<number>`count(*)::int`,
+        uniqueSessions: sql<number>`count(distinct ${siteEvents.sessionKey})::int`,
+      })
+      .from(siteEvents)
+      .where(
+        and(
+          eq(siteEvents.eventType, 'page_view'),
+          eq(siteEvents.isBot, 0),
+          gte(siteEvents.occurredAt, since),
+          sql`${siteEvents.sessionKey} <> ''`,
+        ),
+      )
+      .groupBy(siteEvents.path)
+      .orderBy(desc(sql`count(*)`))
+      .limit(40);
+
+    const clickRows = await this.#db
+      .select({
+        path: siteEvents.path,
+        label: siteEvents.label,
+        href: siteEvents.href,
+        events: sql<number>`count(*)::int`,
+        uniqueSessions: sql<number>`count(distinct ${siteEvents.sessionKey})::int`,
+      })
+      .from(siteEvents)
+      .where(
+        and(
+          eq(siteEvents.eventType, 'click'),
+          eq(siteEvents.isBot, 0),
+          gte(siteEvents.occurredAt, since),
+          sql`${siteEvents.sessionKey} <> ''`,
+        ),
+      )
+      .groupBy(siteEvents.path, siteEvents.label, siteEvents.href)
+      .orderBy(desc(sql`count(*)`))
+      .limit(50);
+
+    return {
+      pages: pageRows.map((row) => ({
+        path: row.path,
+        events: row.events,
+        uniqueSessions: row.uniqueSessions,
+      })),
+      clicks: clickRows.map((row) => ({
+        path: row.path,
+        label: row.label,
+        href: row.href,
+        events: row.events,
+        uniqueSessions: row.uniqueSessions,
+      })),
+    };
   }
 }

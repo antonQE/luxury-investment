@@ -3,6 +3,9 @@ import { apiClient } from '@/api/clients';
 export interface SiteSettings {
   publicPhone: string | null;
   publicEmail: string | null;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  tiktokUrl: string | null;
 }
 
 export const siteSettingsKeys = {
@@ -17,6 +20,9 @@ export async function fetchSiteSettings(): Promise<SiteSettings> {
 export async function updateSiteSettings(body: {
   publicPhone?: string | null;
   publicEmail?: string | null;
+  facebookUrl?: string | null;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
 }): Promise<SiteSettings> {
   const { data } = await apiClient.patch<{ data: SiteSettings }>('/v1/admin/site-settings', body);
   return data.data;

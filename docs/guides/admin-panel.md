@@ -32,7 +32,7 @@ UI conventions (LI-096): theme tokens/recipes drive Input, Button (incl. `danger
 
 ### Sidebar order
 
-Dashboard → Properties → Inquiries → Contacts → Viewings → CRM tasks → Offers → Deals → Articles → Landings → Documents → Handbook → Marketing → Studio → Settings → Team → Offices → Partners → Locations → Property types
+Dashboard → Properties → Inquiries → Contacts → Viewings → Tasks (Marketing / Studio / CRM) → Offers → Deals → Articles → Landings → Documents → Analytics → Settings → Team → Offices → Partners → Locations → Property types
 
 ### Filters / search / sort — overview
 
@@ -64,7 +64,7 @@ Read-only API health: status, version, component map (`GET /health`). No CRUD.
 | Publish | When not new |
 | Archive | When not new |
 
-**Visible fields:** title / excerpt / description BG+EN; transaction type (`sale` \| `rent`); property type (`apartment` \| `house` \| `plot` \| `office` \| `hotel`); market (`sofia` \| `black_sea` \| `dubai_abroad`); city; district; price; area.
+**Visible fields:** title / excerpt / description BG+EN; transaction type (`sale` \| `rent`); **property type** from Property Types taxonomy; **market** from Markets taxonomy; **location** select from Locations (sets `locationId` + denormalized city/district/country) with inline **add location** (city/district); city; district; price; area.
 
 **Listing status:** `draft` \| `published` \| `archived`.
 
@@ -125,7 +125,11 @@ Loads properties + contacts for the create form.
 
 ---
 
-## CRM tasks (`/crm-tasks`) — R2
+## Tasks (`/tasks`) — R1 nav
+
+Sidebar **Tasks** groups Marketing, Studio and CRM tasks (in-page tabs). Canonical paths: `/tasks/marketing`, `/tasks/studio`, `/tasks/crm`. Old `/marketing`, `/studio`, `/crm-tasks` redirect.
+
+## CRM tasks (`/tasks/crm`) — R2
 
 | Action | Detail |
 |---|---|
@@ -157,11 +161,13 @@ Overdue badge on open past-due tasks. No edit/archive UI. API supports `?status=
 
 | Action | Detail |
 |---|---|
-| Create | Property*, buyer contact*, agreed price, notes; stage starts `negotiation`; currency EUR |
-| Update stage | Inline select |
+| Create | Property*, buyer contact*, agent*, agreed price, notes; stage starts `negotiation`; currency EUR |
+| Update stage / agent | Inline selects |
 | Commission | Shown only if session has `finance:read` |
 
 **Stages:** `negotiation`, `preliminary`, `financing`, `notary`, `closed`, `cancelled`.
+
+Agent defaults from the property’s responsible agent (or the logged-in user). Per-agent totals: LI-111.
 
 **Filters:** none.
 
@@ -179,36 +185,27 @@ Overdue badge on open past-due tasks. No edit/archive UI. API supports `?status=
 
 ---
 
-## Documents (`/documents`) — R2 (library) / R1 (handbook overlap)
+## Documents (`/documents`) — R2 (library) / R1 (handbook)
 
-Document library list (seeded categories). **No “create document”** in the UI.
+Document section with two screens (one sidebar item “Documents”; in-page tabs switch between them):
 
-| Action | Detail |
+| Path | Screen |
 |---|---|
-| List | Title, kind, access level, legal-sample flag |
-| Manage | Select row → versions + download totals; upload PDF version (label, auto-publish) |
-| Archive | Soft-archive document |
+| `/documents` | Document library (seeded categories). **No “create document”** in the UI. |
+| `/documents/handbook` | Seller handbook versions |
 
+Library actions: list (title, kind, access, legal-sample), manage versions + upload PDF, soft-archive.  
 **Kinds:** `seller_handbook`, `power_of_attorney`, `declaration`, `contract_template`, `guide_other`.  
-**Access:** `public` \| `internal`.
+**Access:** `public` \| `internal`. **Filters:** none.
 
-Link to the dedicated Handbook screen. **Filters:** none.
+Handbook: total download count; upload published PDF version; version list; publish a non-current version.  
+`/handbook` redirects to `/documents/handbook`.
 
-Admin download-stats API exists (`by period/source`) without a dedicated stats UI on this page.
-
----
-
-## Handbook (`/handbook`) — R1
-
-Seller handbook only:
-
-- Total download count.
-- Upload PDF version (published).
-- Version list; publish a non-current version.
+Admin download-stats API exists (`by period/source`) without a dedicated stats UI on the library page.
 
 ---
 
-## Studio (`/studio`) — R3
+## Studio (`/tasks/studio`) — R3
 
 Marketing materials from catalog data for a selected property. No AI; no auto-publish.
 
@@ -230,7 +227,7 @@ Agency shell contact: **public phone** (header icon + footer) and **corresponden
 
 Campaign landing builder: create/edit/publish/archive; ordered typed sections (hero, benefits, FAQ, CTA, related listings with saved filter, …). JSON payloads for section content. Demo seeds: `za-prodavachi`, `apartamenti-sofia` (`showInNav: false`). Public URL: `/kampanii/{slug}`. Publish accepts optional future `publishAt`.
 
-## Marketing (`/marketing`) — R2
+## Marketing (`/tasks/marketing`) — R2
 
 Everything is **scoped to one property** (required select). Until a property is chosen, the page asks to pick one.
 
@@ -251,12 +248,20 @@ Everything is **scoped to one property** (required select). Until a property is 
 
 **Filters:** property only.
 
+## Analytics (`/analytics`) — R1
+
+Internal first-party stats (not shown on the public site):
+
+- **Top pages** / **top clicks** for the last 30 days (path, label, href, events, unique sessions).
+- Property **total** and **unique** views appear on the Properties list and editor (lifetime, bots excluded).
+
 ---
 
 ## Team (`/team`) — R1
 
-Create: slug*, kind (`agent` \| `staff` \| `lawyer` \| `partner`), name/role BG+EN.  
-List + Archive. No edit form. **Filters:** none.
+Create and **edit** full public profiles: slug*, kind (`agent` \| `staff` \| `lawyer` \| `partner`), name/role/bio BG+EN, email, phone, markets, languages, qualifications, sort order, visibility.  
+Photo: paste URL and/or upload JPEG/PNG/WebP/GIF after the member is saved (stored under `/v1/public/team-media/...`).  
+List + Archive. **Filters:** none.
 
 ---
 

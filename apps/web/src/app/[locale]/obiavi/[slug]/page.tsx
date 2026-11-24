@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { PropertyViewBeacon } from '@/components/analytics/PropertyViewBeacon';
+import { PlainTextBody } from '@/components/content/PlainTextBody';
 import { AcquisitionCalculator } from '@/components/property/AcquisitionCalculator';
 import { DepositCalculator } from '@/components/property/DepositCalculator';
 import { InquiryForm } from '@/components/property/InquiryForm';
@@ -11,16 +13,17 @@ import { MortgageCalculator } from '@/components/property/MortgageCalculator';
 import { PrintButton } from '@/components/property/PrintButton';
 import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
+import { PropertyKeyFacts } from '@/components/property/PropertyKeyFacts';
 import { PropertyMapLink } from '@/components/property/PropertyMapLink';
 import { PropertyQr } from '@/components/property/PropertyQr';
 import { ShareActions } from '@/components/property/ShareActions';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { RemoteImage } from '@/components/ui/RemoteImage';
 import { Link } from '@/i18n/navigation';
 import { fetchProperty, fetchSimilarProperties } from '@/lib/api/catalog';
 import { ApiError } from '@/lib/api/client';
 import { serverEnv } from '@/lib/config/env';
-import { formatArea, formatPrice, formatPricePerSqm, locationLabel } from '@/lib/format';
-import { stageMessageKey } from '@/lib/labels';
+import { formatPrice, formatPricePerSqm, locationLabel } from '@/lib/format';
 import { propertyJsonLd } from '@/lib/seo/json-ld';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { absoluteUrl } from '@/lib/seo/paths';
@@ -71,8 +74,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const property = propertyResult.data;
 
   const phoneDigits = property.agentPhone.replace(/\D/g, '');
-  const stageKey =
-    property.constructionStage === null ? undefined : stageMessageKey(property.constructionStage);
   const pageUrl = absoluteUrl(serverEnv().SITE_URL, locale, `/obiavi/${slug}`);
   const jsonLd = propertyJsonLd(property, pageUrl);
   const pricePerSqm = formatPricePerSqm(locale, property);
@@ -83,13 +84,19 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
       data-testid="property-page"
     >
       <JsonLd data={jsonLd} />
+      <PropertyViewBeacon propertyId={property.id} />
       <Link href="/obiavi" className="text-sm text-brass-dark transition hover:text-brass">
         {t('back')}
       </Link>
-      <div className="mt-6 grid gap-10 lg:grid-cols-[1.4fr_0.8fr]">
+
+      <div className="mt-6">
+        <PropertyGallery images={property.imageUrls} title={property.title} />
+        <PropertyKeyFacts property={property} locale={locale} />
+      </div>
+
+      <div className="mt-10 grid gap-10 lg:grid-cols-[1.4fr_0.8fr]">
         <div>
-          <PropertyGallery images={property.imageUrls} title={property.title} />
-          <p className="mt-6 text-xs tracking-[0.2em] uppercase text-brass">
+          <p className="text-xs tracking-[0.2em] uppercase text-brass">
             {search(property.transactionType)} · {search(property.propertyType)}
           </p>
           <h1 className="mt-2 font-serif text-4xl">{property.title}</h1>
@@ -111,9 +118,11 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           <PropertyQr url={pageUrl} />
           <section className="mt-8">
             <h2 className="font-serif text-2xl">{t('description')}</h2>
-            <p className="mt-3 whitespace-pre-line leading-relaxed text-ink-soft">
-              {property.description}
-            </p>
+            <PlainTextBody
+              text={property.description}
+              className="mt-3 space-y-4 leading-relaxed text-ink-soft"
+              testId="property-description"
+            />
           </section>
         </div>
         <aside className="h-fit border border-line bg-paper p-6" data-testid="property-facts">
@@ -131,31 +140,56 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           {property.vatLabel !== null ? (
             <p className="mt-1 text-sm text-ink-soft">{t('vat', { label: property.vatLabel })}</p>
           ) : null}
-          <dl className="mt-6 space-y-3 text-sm">
-            <div className="flex justify-between gap-4 border-b border-line pb-2">
-              <dt className="text-ink-soft">{property.primaryAreaLabel}</dt>
-              <dd>{formatArea(locale, property.area)}</dd>
-            </div>
-            {property.bedrooms !== null ? (
-              <div className="flex justify-between gap-4 border-b border-line pb-2">
-                <dt className="text-ink-soft">{t('bedrooms', { count: property.bedrooms })}</dt>
-              </div>
-            ) : null}
-            {property.bathrooms !== null ? (
-              <div className="flex justify-between gap-4 border-b border-line pb-2">
-                <dt className="text-ink-soft">{t('bathrooms', { count: property.bathrooms })}</dt>
-              </div>
-            ) : null}
-            {stageKey !== undefined ? (
-              <div className="flex justify-between gap-4 border-b border-line pb-2">
-                <dt className="text-ink-soft">{t(stageKey)}</dt>
-              </div>
-            ) : null}
-          </dl>
           <div className="mt-8 border-t border-line pt-6">
             <p className="text-xs tracking-[0.2em] uppercase text-brass">{t('agent')}</p>
-            <p className="mt-2 font-serif text-xl">{property.agentName}</p>
-            <p className="mt-1 text-sm text-ink-soft">{property.agentPhone}</p>
+            <div className="mt-3 flex items-center gap-4">
+              {property.agentPhotoUrl !== null ? (
+                property.agentSlug !== null ? (
+                  <Link
+                    href={`/ekip/${property.agentSlug}`}
+                    className="relative h-16 w-16 shrink-0 overflow-hidden bg-void/5"
+                    data-testid="agent-photo"
+                  >
+                    <RemoteImage
+                      src={property.agentPhotoUrl}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </Link>
+                ) : (
+                  <div
+                    className="relative h-16 w-16 shrink-0 overflow-hidden bg-void/5"
+                    data-testid="agent-photo"
+                  >
+                    <RemoteImage
+                      src={property.agentPhotoUrl}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+                )
+              ) : null}
+              <div>
+                {property.agentSlug !== null ? (
+                  <Link
+                    href={`/ekip/${property.agentSlug}`}
+                    className="font-serif text-xl transition hover:text-brass-dark"
+                    data-testid="agent-profile-link"
+                  >
+                    {property.agentName}
+                  </Link>
+                ) : (
+                  <p className="font-serif text-xl" data-testid="agent-name">
+                    {property.agentName}
+                  </p>
+                )}
+                <p className="mt-1 text-sm text-ink-soft">{property.agentPhone}</p>
+              </div>
+            </div>
             <div className="mt-4 hidden flex-wrap gap-2 md:flex">
               <a
                 href={`tel:${phoneDigits}`}
@@ -216,7 +250,11 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           </div>
         )}
       </section>
-      <MobileAgentBar phoneDigits={phoneDigits} agentName={property.agentName} />
+      <MobileAgentBar
+        phoneDigits={phoneDigits}
+        agentName={property.agentName}
+        agentSlug={property.agentSlug}
+      />
     </main>
   );
 }

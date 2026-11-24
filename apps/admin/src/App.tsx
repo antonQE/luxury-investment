@@ -19,6 +19,7 @@ const LandingsAdmin = lazy(() => import('@/pages/Landings/LandingsAdmin'));
 const DocumentLibraryAdmin = lazy(() => import('@/pages/Documents/DocumentLibraryAdmin'));
 const HandbookAdmin = lazy(() => import('@/pages/Documents/HandbookAdmin'));
 const MarketingAdmin = lazy(() => import('@/pages/Marketing/MarketingAdmin'));
+const AnalyticsPage = lazy(() => import('@/pages/Analytics/AnalyticsPage'));
 const MarketingStudio = lazy(() => import('@/pages/Studio/MarketingStudio'));
 const SiteSettingsPage = lazy(() => import('@/pages/Settings/SiteSettings'));
 const InquiriesInbox = lazy(() => import('@/pages/Inquiries/InquiriesInbox'));
@@ -72,15 +73,30 @@ export default function App() {
             <Route path={ROUTES.INQUIRIES} element={<InquiriesInbox />} />
             <Route path={ROUTES.CONTACTS} element={<ContactsList />} />
             <Route path={ROUTES.VIEWINGS} element={<ViewingsCalendar />} />
+            <Route path={ROUTES.TASKS} element={<Navigate to={ROUTES.MARKETING} replace />} />
+            <Route path={ROUTES.MARKETING} element={<MarketingAdmin />} />
+            <Route path={ROUTES.STUDIO} element={<MarketingStudio />} />
             <Route path={ROUTES.CRM_TASKS} element={<CrmTasksList />} />
+            <Route
+              path={ROUTES.MARKETING_LEGACY}
+              element={<Navigate to={ROUTES.MARKETING} replace />}
+            />
+            <Route path={ROUTES.STUDIO_LEGACY} element={<Navigate to={ROUTES.STUDIO} replace />} />
+            <Route
+              path={ROUTES.CRM_TASKS_LEGACY}
+              element={<Navigate to={ROUTES.CRM_TASKS} replace />}
+            />
             <Route path={ROUTES.OFFERS} element={<OffersList />} />
             <Route path={ROUTES.DEALS} element={<DealsList />} />
             <Route path={ROUTES.ARTICLES} element={<ArticlesList />} />
             <Route path={ROUTES.LANDINGS} element={<LandingsAdmin />} />
             <Route path={ROUTES.DOCUMENTS} element={<DocumentLibraryAdmin />} />
             <Route path={ROUTES.HANDBOOK} element={<HandbookAdmin />} />
-            <Route path={ROUTES.MARKETING} element={<MarketingAdmin />} />
-            <Route path={ROUTES.STUDIO} element={<MarketingStudio />} />
+            <Route
+              path={ROUTES.HANDBOOK_LEGACY}
+              element={<Navigate to={ROUTES.HANDBOOK} replace />}
+            />
+            <Route path={ROUTES.ANALYTICS} element={<AnalyticsPage />} />
             <Route path={ROUTES.SETTINGS} element={<SiteSettingsPage />} />
           </Route>
         </Route>

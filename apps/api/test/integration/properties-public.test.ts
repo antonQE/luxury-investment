@@ -4,16 +4,19 @@ import request from 'supertest';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { createApp } from '../../src/app.ts';
-import { properties } from '../../src/infrastructure/db/schema.ts';
+import { properties, teamMembers } from '../../src/infrastructure/db/schema.ts';
 import { propertyPublicRouter } from '../../src/modules/properties/handlers/property-public-handlers.ts';
 import { PropertyRepo } from '../../src/modules/properties/repo/property-repo.ts';
+import { TeamPublicService } from '../../src/modules/team/app/team-public-service.ts';
 import { connectTestDatabase, resetDatabase } from '../helpers/database.ts';
 
 const connection = connectTestDatabase();
+const propertyRepo = new PropertyRepo(connection.db);
+const teamPublic = new TeamPublicService(connection.db);
 const app = createApp({
   env: { API_CORS_ORIGINS: [], API_ADMIN_CORS_ORIGINS: [] },
   logger: pino({ level: 'silent' }),
-  publicRouters: [propertyPublicRouter(new PropertyRepo(connection.db))],
+  publicRouters: [propertyPublicRouter(propertyRepo, undefined, undefined, teamPublic)],
 });
 
 const sample = {
@@ -129,6 +132,33 @@ describe('GET /v1/public/properties', () => {
     expect((missPrice.body as ListBody).total).toBe(0);
   });
 
+  it('filters by agent phone with digit-normalized suffix match', async () => {
+    await connection.db.insert(properties).values({
+      ...sample,
+      referenceNumber: 'DEMO-TEST-AGENT-B',
+      slug: 'demo-test-other-agent',
+      agentName: 'Other Agent',
+      agentPhone: '+359 111 222 333',
+      publishedAt: new Date('2026-10-03T10:00:00Z'),
+    });
+
+    const match = await request(app)
+      .get('/v1/public/properties?agentPhone=%2B359%20000%20000%20000')
+      .expect(200);
+    expect((match.body as ListBody).total).toBe(1);
+    expect((match.body as ListBody).data[0]?.slug).toBe('demo-test-apartment');
+
+    const altFormat = await request(app)
+      .get('/v1/public/properties?agentPhone=00359000000000')
+      .expect(200);
+    expect((altFormat.body as ListBody).total).toBe(1);
+
+    const miss = await request(app)
+      .get('/v1/public/properties?agentPhone=%2B359%20999%20999%20999')
+      .expect(200);
+    expect((miss.body as ListBody).total).toBe(0);
+  });
+
   it('hides draft listings from the public list and detail', async () => {
     await connection.db.insert(properties).values({
       ...sample,
@@ -156,10 +186,29 @@ describe('GET /v1/public/properties/:slug', () => {
     expect(item.title).toBe('Demo: Тестов апартамент');
     expect(item.locationPrecision).toBe('approximate');
     expect(item.mapQuery).toContain('София');
+    expect(item.agentPhotoUrl).toBeNull();
+    expect(item.agentSlug).toBeNull();
     expect(item).not.toHaveProperty('latitude');
 
     const missing = await request(app).get('/v1/public/properties/no-such-listing').expect(404);
     expect((missing.body as ErrorBody).error.code).toBe('NOT_FOUND');
+  });
+
+  it('resolves agentSlug and agentPhotoUrl when a team member matches by phone', async () => {
+    await connection.db.insert(teamMembers).values({
+      slug: 'demo-test-agent',
+      kind: 'agent',
+      phone: '+359 000 000 000',
+      photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2',
+      isPublic: true,
+    });
+
+    const found = await request(app)
+      .get('/v1/public/properties/demo-test-apartment?lang=en')
+      .expect(200);
+    const item = (found.body as ItemBody).data;
+    expect(item.agentSlug).toBe('demo-test-agent');
+    expect(item.agentPhotoUrl).toContain('unsplash');
   });
 });
 

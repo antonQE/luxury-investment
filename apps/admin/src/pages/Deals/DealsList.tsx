@@ -1,7 +1,7 @@
 import { Button, Heading, HStack, Input, Spinner, Table, Text, VStack } from '@chakra-ui/react';
 import { DEAL_STAGES, type DealStage } from '@luxury-investment/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type SubmitEvent, useState } from 'react';
+import { type SubmitEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { contactKeys, fetchAdminContacts } from '@/api/endpoints/contacts';
@@ -23,6 +23,7 @@ export default function DealsList() {
 
   const [propertyId, setPropertyId] = useState('');
   const [buyerContactId, setBuyerContactId] = useState('');
+  const [agentId, setAgentId] = useState(() => user?.id ?? '');
   const [agreedPrice, setAgreedPrice] = useState('');
   const [commissionAmount, setCommissionAmount] = useState('');
   const [notes, setNotes] = useState('');
@@ -37,6 +38,38 @@ export default function DealsList() {
     queryKey: contactKeys.list(),
     queryFn: () => fetchAdminContacts(false),
   });
+
+  const agentOptions = useMemo(() => {
+    const map = new Map<string, string>();
+    if (user !== null) map.set(user.id, user.displayName);
+    for (const property of propertiesQuery.data ?? []) {
+      if (property.responsibleAgentUserId !== null) {
+        map.set(
+          property.responsibleAgentUserId,
+          property.agentName.trim() !== ''
+            ? property.agentName
+            : property.responsibleAgentUserId.slice(0, 8),
+        );
+      }
+    }
+    for (const deal of listQuery.data ?? []) {
+      map.set(deal.agentId, deal.agentName);
+    }
+    return [...map.entries()].map(([value, label]) => ({ value, label }));
+  }, [user, propertiesQuery.data, listQuery.data]);
+
+  function onPropertyChange(nextPropertyId: string) {
+    setPropertyId(nextPropertyId);
+    const property = propertiesQuery.data?.find((row) => row.id === nextPropertyId);
+    if (
+      property?.responsibleAgentUserId !== null &&
+      property?.responsibleAgentUserId !== undefined
+    ) {
+      setAgentId(property.responsibleAgentUserId);
+      return;
+    }
+    if (user !== null) setAgentId(user.id);
+  }
 
   const createMutation = useMutation({
     mutationFn: createAdminDeal,
@@ -59,11 +92,25 @@ export default function DealsList() {
     },
   });
 
+  const agentMutation = useMutation({
+    mutationFn: ({ id, nextAgentId }: { id: string; nextAgentId: string }) =>
+      updateAdminDeal(id, { agentId: nextAgentId }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: dealKeys.list() });
+    },
+  });
+
   function onSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
+    const resolvedAgentId = agentId !== '' ? agentId : (user?.id ?? '');
+    if (resolvedAgentId === '') {
+      setFormError(t('deals.agentRequired'));
+      return;
+    }
     createMutation.mutate({
       propertyId,
       buyerContactId,
+      agentId: resolvedAgentId,
       stage: 'negotiation',
       agreedPrice: agreedPrice.trim() === '' ? null : agreedPrice.trim(),
       currency: 'EUR',
@@ -102,7 +149,7 @@ export default function DealsList() {
                 <AdminSelect
                   value={propertyId}
                   required
-                  onChange={setPropertyId}
+                  onChange={onPropertyChange}
                   data-testid="deal-property"
                   options={[
                     { value: '', label: t('deals.selectProperty') },
@@ -126,6 +173,15 @@ export default function DealsList() {
                       label: contact.displayName,
                     })),
                   ]}
+                />
+              </Field>
+              <Field label={t('deals.agent')} required>
+                <AdminSelect
+                  value={agentId}
+                  required
+                  onChange={setAgentId}
+                  data-testid="deal-agent"
+                  options={[{ value: '', label: t('deals.selectAgent') }, ...agentOptions]}
                 />
               </Field>
             </HStack>
@@ -193,6 +249,7 @@ export default function DealsList() {
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeader>{t('deals.property')}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('deals.agent')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('deals.buyer')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('deals.agreedPrice')}</Table.ColumnHeader>
                 {canFinance ? (
@@ -205,6 +262,20 @@ export default function DealsList() {
               {listQuery.data.map((row) => (
                 <Table.Row key={row.id}>
                   <Table.Cell>{propertyLabel(row.propertyId)}</Table.Cell>
+                  <Table.Cell>
+                    <AdminSelect
+                      size="sm"
+                      value={row.agentId}
+                      disabled={agentMutation.isPending}
+                      aria-label={t('deals.agent')}
+                      data-testid={`deal-agent-${row.id}`}
+                      options={agentOptions}
+                      onChange={(value) => {
+                        if (value === '' || value === row.agentId) return;
+                        agentMutation.mutate({ id: row.id, nextAgentId: value });
+                      }}
+                    />
+                  </Table.Cell>
                   <Table.Cell>{contactLabel(row.buyerContactId)}</Table.Cell>
                   <Table.Cell>
                     {row.agreedPrice !== null ? `${row.agreedPrice} ${row.currency}` : '—'}

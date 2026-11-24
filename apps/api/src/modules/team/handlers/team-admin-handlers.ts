@@ -1,14 +1,29 @@
-import { teamMemberKindSchema } from '@luxury-investment/shared';
+import { marketSchema, teamMemberKindSchema } from '@luxury-investment/shared';
 import { Router } from 'express';
+import multer from 'multer';
 import { z } from 'zod';
 
 import { AppError } from '../../../errors/app-error.ts';
 import { withValidation } from '../../../infrastructure/server/middleware/validate.ts';
-import type { TeamAdminService } from '../app/team-admin-service.ts';
+import type { TeamAdminService, TeamMemberDetail } from '../app/team-admin-service.ts';
 
 const idParams = z.object({ id: z.uuid() });
 
-const createMemberBody = z.object({
+const emptyToNull = (value: unknown) =>
+  value === '' || value === null || value === undefined ? null : value;
+
+/** Accept absolute http(s) URLs; empty → null. */
+const optionalPhotoUrl = z.preprocess(
+  emptyToNull,
+  z
+    .string()
+    .max(2000)
+    .refine((value) => /^https?:\/\//i.test(value), 'Must be an http(s) URL')
+    .nullable()
+    .optional(),
+);
+
+const memberBody = z.object({
   slug: z
     .string()
     .min(1)
@@ -20,10 +35,16 @@ const createMemberBody = z.object({
   roleEn: z.string().min(1),
   bioBg: z.string().optional(),
   bioEn: z.string().optional(),
-  email: z.email().nullable().optional(),
-  phone: z.string().nullable().optional(),
-  photoUrl: z.url().nullable().optional(),
-  sortOrder: z.number().int().optional(),
+  email: z.preprocess(emptyToNull, z.email().nullable().optional()),
+  phone: z.preprocess(emptyToNull, z.string().nullable().optional()),
+  photoUrl: optionalPhotoUrl,
+  markets: z.array(marketSchema).optional(),
+  languages: z.array(z.string().trim().min(1).max(16)).optional(),
+  qualifications: z.preprocess(emptyToNull, z.string().nullable().optional()),
+  sortOrder: z.preprocess(
+    (value) => (value === undefined || value === null || value === '' ? 0 : value),
+    z.coerce.number().int(),
+  ),
   isPublic: z.boolean().optional(),
 });
 
@@ -54,11 +75,38 @@ const createPartnerBody = z.object({
   sortOrder: z.number().int().optional(),
 });
 
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024, files: 1 },
+});
+
 function requireContent(
   permission: 'content:read' | 'content:write',
   permissions: string[] | undefined,
 ) {
   if (permissions?.includes(permission) !== true) throw new AppError('FORBIDDEN');
+}
+
+function serializeMember(row: TeamMemberDetail) {
+  return {
+    id: row.id,
+    slug: row.slug,
+    kind: row.kind,
+    nameBg: row.nameBg,
+    nameEn: row.nameEn,
+    roleBg: row.roleBg,
+    roleEn: row.roleEn,
+    bioBg: row.bioBg,
+    bioEn: row.bioEn,
+    email: row.email,
+    phone: row.phone,
+    photoUrl: row.photoUrl,
+    markets: row.markets,
+    languages: row.languages,
+    qualifications: row.qualifications,
+    sortOrder: row.sortOrder,
+    isPublic: row.isPublic,
+  };
 }
 
 export function teamAdminRouter(admin: TeamAdminService): Router {
@@ -75,20 +123,63 @@ export function teamAdminRouter(admin: TeamAdminService): Router {
         name: row.name,
         email: row.email,
         phone: row.phone,
+        photoUrl: row.photoUrl,
         isPublic: row.isPublic,
         sortOrder: row.sortOrder,
       })),
     });
   });
 
+  router.get(
+    '/team/:id',
+    withValidation({ params: idParams }, async ({ params }, req, res) => {
+      requireContent('content:read', req.auth?.permissions);
+      const row = await admin.getTeamMember(params.id);
+      res.json({ data: serializeMember(row) });
+    }),
+  );
+
   router.post(
     '/team',
-    withValidation({ body: createMemberBody }, async ({ body }, req, res) => {
+    withValidation({ body: memberBody }, async ({ body }, req, res) => {
       requireContent('content:write', req.auth?.permissions);
       const row = await admin.createTeamMember(body);
       res.status(201).json({ data: { id: row.id, slug: row.slug } });
     }),
   );
+
+  router.patch(
+    '/team/:id',
+    withValidation({ params: idParams, body: memberBody }, async ({ params, body }, req, res) => {
+      requireContent('content:write', req.auth?.permissions);
+      const row = await admin.updateTeamMember(params.id, body);
+      res.json({ data: serializeMember(row) });
+    }),
+  );
+
+  router.post('/team/:id/photo', (req, res, next) => {
+    upload.single('file')(req, res, (err: unknown) => {
+      if (err !== undefined) {
+        next(err);
+        return;
+      }
+      void (async () => {
+        try {
+          requireContent('content:write', req.auth?.permissions);
+          const params = idParams.parse(req.params);
+          const file = req.file;
+          if (file === undefined) throw new AppError('VALIDATION_FAILED', 'file required');
+          const row = await admin.uploadTeamPhoto(params.id, {
+            buffer: file.buffer,
+            mimetype: file.mimetype,
+          });
+          res.json({ data: serializeMember(row) });
+        } catch (error) {
+          next(error);
+        }
+      })();
+    });
+  });
 
   router.post(
     '/team/:id/archive',

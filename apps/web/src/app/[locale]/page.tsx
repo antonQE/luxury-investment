@@ -3,12 +3,18 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getLocale, getTranslations } from 'next-intl/server';
 
-import { PropertyGrid } from '@/components/property/PropertyGrid';
+import { emptySiteSettings, HomeContactStrip } from '@/components/home/HomeContactStrip';
+import {
+  HOME_NEWEST_PAGE_SIZE,
+  HomeNewestProperties,
+} from '@/components/home/HomeNewestProperties';
 import { SearchForm } from '@/components/search/SearchForm';
 import { RemoteImage } from '@/components/ui/RemoteImage';
 import { Link } from '@/i18n/navigation';
 import { fetchProperties } from '@/lib/api/catalog';
-import { fetchPartners } from '@/lib/api/team';
+import { fetchArticles } from '@/lib/api/content';
+import { fetchSiteSettings } from '@/lib/api/site-settings';
+import { fetchPartners, fetchTeam } from '@/lib/api/team';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,13 +31,16 @@ export async function generateMetadata(): Promise<Metadata> {
 const HERO_IMAGE =
   'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=75';
 
+const HOME_ARTICLES_LIMIT = 3;
+const HOME_TEAM_LIMIT = 3;
+
 export default async function HomePage() {
   const t = await getTranslations('Home');
   const markets = await getTranslations('Markets');
   const locale = await getLocale();
 
-  const [newestResult, partnersResult] = await Promise.all([
-    fetchProperties(locale, { limit: '6' }).then(
+  const [newestResult, partnersResult, articlesResult, teamResult, settings] = await Promise.all([
+    fetchProperties(locale, { limit: String(HOME_NEWEST_PAGE_SIZE) }).then(
       (data) => ({ ok: true as const, data }),
       () => ({ ok: false as const }),
     ),
@@ -39,11 +48,24 @@ export default async function HomePage() {
       (data) => data,
       (): PublicPartner[] => [],
     ),
+    fetchArticles(locale).then(
+      (data) => data.slice(0, HOME_ARTICLES_LIMIT),
+      () => [],
+    ),
+    fetchTeam(locale).then(
+      (data) => data.slice(0, HOME_TEAM_LIMIT),
+      () => [],
+    ),
+    fetchSiteSettings().catch(() => emptySiteSettings()),
   ]);
 
-  const newest = newestResult.ok ? newestResult.data : { data: [], total: 0, offset: 0, limit: 6 };
+  const newest = newestResult.ok
+    ? newestResult.data
+    : { data: [], total: 0, offset: 0, limit: HOME_NEWEST_PAGE_SIZE };
   const loadError = !newestResult.ok;
   const partners = partnersResult;
+  const articles = articlesResult;
+  const team = teamResult;
 
   return (
     <main>
@@ -111,28 +133,103 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-newest">
-        <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
-          <div>
-            <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('newestTitle')}</p>
-            <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('newestLead')}</h2>
-          </div>
-          <Link
-            href="/obiavi"
-            className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
-            data-testid="home-view-all"
-          >
-            {t('viewAll')}
-          </Link>
-        </div>
-        {loadError ? (
+      {loadError ? (
+        <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-newest">
           <p className="text-ink-soft" data-testid="home-error">
             {t('error')}
           </p>
-        ) : (
-          <PropertyGrid items={newest.data} />
-        )}
-      </section>
+        </section>
+      ) : (
+        <HomeNewestProperties initialItems={newest.data} total={newest.total} />
+      )}
+
+      {articles.length > 0 ? (
+        <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-articles">
+          <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
+            <div>
+              <p className="text-[11px] tracking-[0.22em] uppercase text-brass">
+                {t('articlesTitle')}
+              </p>
+              <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('articlesLead')}</h2>
+            </div>
+            <Link
+              href="/stati"
+              className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+              data-testid="home-articles-view-all"
+            >
+              {t('articlesViewAll')}
+            </Link>
+          </div>
+          <ul className="grid gap-10 md:grid-cols-3 md:gap-12">
+            {articles.map((article) => (
+              <li key={article.id} className="border-t border-line pt-6">
+                <Link
+                  href={`/stati/${article.slug}`}
+                  className="group block"
+                  data-testid={`home-article-${article.slug}`}
+                >
+                  <h3 className="font-serif text-2xl transition group-hover:text-brass-dark">
+                    {article.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{article.excerpt}</p>
+                  {article.publishedAt !== null ? (
+                    <p className="mt-4 text-[11px] tracking-[0.18em] uppercase text-brass">
+                      {new Date(article.publishedAt).toLocaleDateString(locale)}
+                    </p>
+                  ) : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {team.length > 0 ? (
+        <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-team">
+          <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
+            <div>
+              <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('teamTitle')}</p>
+              <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('teamLead')}</h2>
+            </div>
+            <Link
+              href="/ekip"
+              className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+              data-testid="home-team-view-all"
+            >
+              {t('teamViewAll')}
+            </Link>
+          </div>
+          <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {team.map((member) => (
+              <li key={member.id}>
+                <Link
+                  href={`/ekip/${member.slug}`}
+                  className="group block"
+                  data-testid={`home-team-${member.slug}`}
+                >
+                  {member.photoUrl !== null ? (
+                    <div className="relative aspect-[4/3] overflow-hidden bg-void/5">
+                      <RemoteImage
+                        src={member.photoUrl}
+                        alt=""
+                        fill
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-[4/3] w-full bg-void/5" />
+                  )}
+                  <h3 className="mt-5 font-serif text-xl transition group-hover:text-brass-dark md:text-[1.35rem]">
+                    {member.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-ink-soft">{member.role}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {partners.length > 0 ? (
         <section
@@ -168,6 +265,8 @@ export default async function HomePage() {
           </div>
         </section>
       ) : null}
+
+      <HomeContactStrip settings={settings} />
     </main>
   );
 }

@@ -54,13 +54,22 @@ afterAll(async () => {
 });
 
 describe('site settings', () => {
-  it('exposes seeded phone/email and lets admin update both', async () => {
+  it('exposes seeded contact settings and lets admin update them', async () => {
     const publicRes = await request(buildApp()).get('/v1/public/site-settings').expect(200);
     const seeded = publicRes.body as {
-      data: { publicPhone: string; publicEmail: string };
+      data: {
+        publicPhone: string;
+        publicEmail: string;
+        facebookUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+      };
     };
     expect(seeded.data.publicPhone).toBe('+359 2 000 00 00');
     expect(seeded.data.publicEmail).toBe('hello@example.com');
+    expect(seeded.data.facebookUrl).toContain('facebook.com');
+    expect(seeded.data.instagramUrl).toContain('instagram.com');
+    expect(seeded.data.tiktokUrl).toBeNull();
 
     const agent = request.agent(buildApp());
     await agent
@@ -70,12 +79,19 @@ describe('site settings', () => {
 
     await agent
       .patch('/v1/admin/site-settings')
-      .send({ publicPhone: '+359 88 111 22 33', publicEmail: 'office@example.com' })
+      .send({
+        publicPhone: '+359 88 111 22 33',
+        publicEmail: 'office@example.com',
+        tiktokUrl: 'https://www.tiktok.com/@luxuryinvestment',
+      })
       .expect(200);
 
     const updated = await request(buildApp()).get('/v1/public/site-settings').expect(200);
-    const body = updated.body as { data: { publicPhone: string; publicEmail: string } };
+    const body = updated.body as {
+      data: { publicPhone: string; publicEmail: string; tiktokUrl: string | null };
+    };
     expect(body.data.publicPhone).toBe('+359 88 111 22 33');
     expect(body.data.publicEmail).toBe('office@example.com');
+    expect(body.data.tiktokUrl).toBe('https://www.tiktok.com/@luxuryinvestment');
   });
 });

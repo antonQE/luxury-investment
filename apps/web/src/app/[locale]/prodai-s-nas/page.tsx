@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { ConsultationForm } from '@/components/content/ConsultationForm';
+import { PlainTextBody } from '@/components/content/PlainTextBody';
 import { fetchPage } from '@/lib/api/content';
 import { serverEnv } from '@/lib/config/env';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -48,7 +49,7 @@ export default async function SellWithUsPage() {
     <main className="mx-auto max-w-4xl px-6 py-16" data-testid="sell-with-us-page">
       <h1 className="font-serif text-4xl">{title}</h1>
       <p className="mt-4 max-w-2xl text-lg text-ink-soft">{t('lead')}</p>
-      <div className="mt-8 space-y-4 leading-relaxed whitespace-pre-line">{body}</div>
+      <PlainTextBody text={body} testId="sell-with-us-body" />
 
       <p className="mt-8">
         <a

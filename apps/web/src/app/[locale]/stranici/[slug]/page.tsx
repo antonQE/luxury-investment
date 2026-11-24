@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { PlainTextBody } from '@/components/content/PlainTextBody';
 import { ApiError } from '@/lib/api/client';
 import { fetchPage } from '@/lib/api/content';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -51,7 +52,7 @@ export default async function CmsPage({ params }: PageProps) {
         <img src={page.heroUrl} alt="" className="mb-10 aspect-[21/9] w-full object-cover" />
       ) : null}
       <h1 className="font-serif text-4xl">{page.title}</h1>
-      <div className="mt-8 space-y-4 leading-relaxed whitespace-pre-line">{page.body}</div>
+      <PlainTextBody text={page.body} testId="cms-page-body" />
     </main>
   );
 }
