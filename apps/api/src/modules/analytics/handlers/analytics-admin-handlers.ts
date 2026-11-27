@@ -2,6 +2,7 @@ import {
   generateOwnerReportSchema,
   listOwnerReportsQuerySchema,
   siteAnalyticsQuerySchema,
+  siteInsightOverviewQuerySchema,
 } from '@luxury-investment/shared';
 import { Router } from 'express';
 
@@ -15,6 +16,11 @@ function requireAnalytics(
   permissions: string[] | undefined,
 ) {
   if (permissions?.includes(permission) !== true) throw new AppError('FORBIDDEN');
+}
+
+function deltaPercent(current: number, previous: number): number | null {
+  if (previous === 0) return current === 0 ? 0 : null;
+  return ((current - previous) / previous) * 100;
 }
 
 export function analyticsAdminRouter(repo: AnalyticsRepo, reports: OwnerReportService): Router {
@@ -53,6 +59,33 @@ export function analyticsAdminRouter(repo: AnalyticsRepo, reports: OwnerReportSe
           periodFrom: row.periodFrom,
           periodTo: row.periodTo,
           createdAt: row.createdAt.toISOString(),
+        },
+      });
+    }),
+  );
+
+  router.get(
+    '/analytics/overview',
+    withValidation({ query: siteInsightOverviewQuerySchema }, async ({ query }, req, res) => {
+      requireAnalytics('properties:read', req.auth?.permissions);
+      const overview = await repo.siteInsightOverview(query.range);
+      res.json({
+        data: {
+          range: overview.range,
+          days: overview.days,
+          current: overview.current,
+          previous: overview.previous,
+          deltas: {
+            sessions: deltaPercent(overview.current.sessions, overview.previous.sessions),
+            pageviews: deltaPercent(overview.current.pageviews, overview.previous.pageviews),
+            users: deltaPercent(overview.current.users, overview.previous.users),
+            newUsers: deltaPercent(overview.current.newUsers, overview.previous.newUsers),
+            avgSessionDurationMs: deltaPercent(
+              overview.current.avgSessionDurationMs,
+              overview.previous.avgSessionDurationMs,
+            ),
+            bounceRate: deltaPercent(overview.current.bounceRate, overview.previous.bounceRate),
+          },
         },
       });
     }),

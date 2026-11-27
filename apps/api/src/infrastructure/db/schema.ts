@@ -1,9 +1,12 @@
 export {
+  analyticsSessions,
+  analyticsVisitors,
   ownerReportSnapshots,
   propertyEventDailyRollups,
   propertyEvents,
   siteEventDailyRollups,
   siteEvents,
+  siteInsightDaily,
 } from '../../modules/analytics/repo/analytics.schema.ts';
 export {
   attributeDefinitions,

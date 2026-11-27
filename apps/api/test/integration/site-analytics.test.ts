@@ -133,6 +133,81 @@ describe('site analytics + property views', () => {
     );
   });
 
+  it('tracks insight KPIs, session ping, bounce clear, and overview', async () => {
+    const app = buildApp();
+    const ua = 'Mozilla/5.0 test-browser';
+
+    await request(app)
+      .post('/v1/public/analytics/site-events')
+      .set('User-Agent', ua)
+      .send({
+        path: '/',
+        eventType: 'page_view',
+        sessionKey: 'insight-session-1',
+        visitorKey: 'insight-visitor-1',
+      })
+      .expect(201);
+
+    await request(app)
+      .post('/v1/public/analytics/site-session-ping')
+      .set('User-Agent', ua)
+      .send({
+        sessionKey: 'insight-session-1',
+        visitorKey: 'insight-visitor-1',
+        engagedMsDelta: 15_000,
+      })
+      .expect(201);
+
+    await request(app)
+      .post('/v1/public/analytics/site-events')
+      .set('User-Agent', ua)
+      .send({
+        path: '/obiavi',
+        eventType: 'page_view',
+        sessionKey: 'insight-session-1',
+        visitorKey: 'insight-visitor-1',
+      })
+      .expect(201);
+
+    await request(app)
+      .post('/v1/public/analytics/site-events')
+      .set('User-Agent', ua)
+      .send({
+        path: '/kontakti',
+        eventType: 'page_view',
+        sessionKey: 'insight-session-2',
+        visitorKey: 'insight-visitor-2',
+      })
+      .expect(201);
+
+    const agent = await loginAgent();
+    const overview = await agent.get('/v1/admin/analytics/overview?range=30d').expect(200);
+    const body = overview.body as {
+      data: {
+        range: string;
+        days: number;
+        current: {
+          sessions: number;
+          pageviews: number;
+          users: number;
+          newUsers: number;
+          avgSessionDurationMs: number;
+          bounceRate: number;
+        };
+      };
+    };
+
+    expect(body.data.range).toBe('30d');
+    expect(body.data.days).toBe(30);
+    expect(body.data.current.sessions).toBe(2);
+    expect(body.data.current.pageviews).toBe(3);
+    expect(body.data.current.users).toBe(2);
+    expect(body.data.current.newUsers).toBe(2);
+    expect(body.data.current.avgSessionDurationMs).toBeGreaterThan(0);
+    // One bounced (session-2) of two sessions.
+    expect(body.data.current.bounceRate).toBeCloseTo(0.5, 5);
+  });
+
   it('returns lifetime total and unique property views', async () => {
     const app = buildApp();
     const [property] = await connection.db

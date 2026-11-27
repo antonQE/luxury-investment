@@ -8,7 +8,8 @@ Hybrid strategy (EPIC-19): every critical happy path has an automated test; Vite
 |---|---|
 | API integration (`apps/api`) | HTTP happy paths for admin/public modules; CI coverage gate |
 | Playwright (`apps/e2e`) | Public smoke + admin CRM (contacts, viewings, deals) + Tasks/Analytics/Documents |
-| Component/unit | Analytics beacons (web); Deals agent + Team languages + Tasks nav (admin) |
+| Component/unit | Analytics beacons + session helpers (web); Deals agent + Team languages + Tasks nav (admin) |
+| Site Insights | Overview API from daily rollups; admin KPI strip e2e |
 
 Out of scope for this gate: visual regression, a11y suite, load/perf, 80% line coverage of every React page.
 

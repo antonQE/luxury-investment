@@ -29,6 +29,9 @@ test('tasks section tabs and legacy redirects', async ({ page }) => {
 test('analytics page loads', async ({ page }) => {
   await page.goto('/analytics');
   await expect(page.getByTestId(adminShellElements.analyticsPage)).toBeVisible();
+  await expect(page.getByTestId('analytics-kpi-grid')).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByTestId('analytics-kpi-sessions')).toBeVisible();
+  await expect(page.getByTestId('analytics-range')).toBeVisible();
   await expect(
     page.getByTestId('analytics-pages-table').or(page.getByText(/няма прегледи|No page views/i)),
   ).toBeVisible({ timeout: 20_000 });

@@ -13,3 +13,4 @@ Coverage of every requirement ID by epic and release: [traceability.md](traceabi
 |---|---|---|---|---|
 | 01 | [Luxury Investment functional specification v1.0](Luxury_Investment_Requirements_12_MD/00_README.md) (12 files, Bulgarian) | 2026-10-25 | [01-luxury-investment-spec.analysis.md](01-luxury-investment-spec.analysis.md) | Analysed; ADR-0001..0004 accepted |
 | 02 | [Current site as the starting point](02-current-site-as-starting-point.md) | 2026-10-25 | [02-current-site.analysis.md](02-current-site.analysis.md) | Analysed; Release 1 scope proposed |
+| 03 | [Site Insights KPIs](03-site-insights-kpis.md) | 2026-11-27 | [03-site-insights-kpis.analysis.md](03-site-insights-kpis.analysis.md) | Analysed; ADR-0015; EPIC-20 |

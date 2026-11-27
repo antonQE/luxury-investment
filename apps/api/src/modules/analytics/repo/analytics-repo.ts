@@ -1,7 +1,11 @@
+import type { SiteInsightRange } from '@luxury-investment/shared';
+import { siteInsightRangeDays } from '@luxury-investment/shared';
 import { and, asc, desc, eq, gte, inArray, lte, sql } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
 import {
+  analyticsSessions,
+  analyticsVisitors,
   inquiries,
   offers,
   ownerReportSnapshots,
@@ -11,17 +15,39 @@ import {
   propertyPriceHistory,
   siteEventDailyRollups,
   siteEvents,
+  siteInsightDaily,
   viewings,
 } from '../../../infrastructure/db/schema.ts';
 
 export type PropertyEventRow = typeof propertyEvents.$inferSelect;
 export type OwnerReportSnapshotRow = typeof ownerReportSnapshots.$inferSelect;
 
+export interface InsightTotals {
+  sessions: number;
+  pageviews: number;
+  users: number;
+  newUsers: number;
+  avgSessionDurationMs: number;
+  bounceRate: number;
+  engagedMsSum: number;
+  bouncedSessions: number;
+}
+
 const BOT_UA =
   /bot|crawl|spider|slurp|facebookexternalhit|preview|headless|phantom|wget|curl|python-requests/i;
 
 export function isBotUserAgent(userAgent: string): boolean {
   return BOT_UA.test(userAgent);
+}
+
+function utcDayString(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+function addUtcDays(day: string, delta: number): string {
+  const date = new Date(`${day}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDate() + delta);
+  return utcDayString(date);
 }
 
 export class AnalyticsRepo {
@@ -278,6 +304,7 @@ export class AnalyticsRepo {
     label: string;
     href: string;
     sessionKey: string;
+    visitorKey: string;
     deviceClass: string;
     userAgent: string;
   }): Promise<{ id: string; counted: boolean }> {
@@ -290,6 +317,7 @@ export class AnalyticsRepo {
         label: input.label.slice(0, 200),
         href: input.href.slice(0, 500),
         sessionKey: input.sessionKey,
+        visitorKey: input.visitorKey,
         deviceClass: input.deviceClass,
         userAgent: input.userAgent.slice(0, 500),
         isBot: bot ? 1 : 0,
@@ -304,9 +332,316 @@ export class AnalyticsRepo {
         label: input.label.slice(0, 200),
         sessionKey: input.sessionKey,
       });
+      await this.#recordInsightActivity({
+        sessionKey: input.sessionKey,
+        visitorKey: input.visitorKey,
+        isPageView: input.eventType === 'page_view',
+      });
     }
 
     return { id: row.id, counted: !bot };
+  }
+
+  async ingestSessionPing(input: {
+    sessionKey: string;
+    visitorKey: string;
+    engagedMsDelta: number;
+    userAgent: string;
+  }): Promise<{ ok: true; counted: boolean }> {
+    const bot = isBotUserAgent(input.userAgent);
+    if (bot) return { ok: true, counted: false };
+
+    const delta = Math.min(Math.max(input.engagedMsDelta, 0), 120_000);
+    const now = new Date();
+    const visitor = await this.#touchVisitor(input.visitorKey, now);
+
+    const [existing] = await this.#db
+      .select()
+      .from(analyticsSessions)
+      .where(eq(analyticsSessions.sessionKey, input.sessionKey))
+      .limit(1);
+
+    if (existing === undefined) {
+      await this.#db.insert(analyticsSessions).values({
+        sessionKey: input.sessionKey,
+        visitorKey: input.visitorKey,
+        startedAt: now,
+        lastSeenAt: now,
+        pageviews: 0,
+        engagedMs: delta,
+        bounced: true,
+      });
+      await this.#bumpInsightDaily({
+        day: utcDayString(now),
+        sessions: 1,
+        pageviews: 0,
+        users: visitor.newlyActiveToday ? 1 : 0,
+        newUsers: visitor.isNew ? 1 : 0,
+        engagedMsSum: delta,
+        bouncedSessions: 1,
+      });
+      return { ok: true, counted: true };
+    }
+
+    await this.#db
+      .update(analyticsSessions)
+      .set({
+        lastSeenAt: now,
+        engagedMs: existing.engagedMs + delta,
+        visitorKey: input.visitorKey !== '' ? input.visitorKey : existing.visitorKey,
+      })
+      .where(eq(analyticsSessions.sessionKey, input.sessionKey));
+
+    await this.#bumpInsightDaily({
+      day: utcDayString(now),
+      sessions: 0,
+      pageviews: 0,
+      users: visitor.newlyActiveToday ? 1 : 0,
+      newUsers: 0,
+      engagedMsSum: delta,
+      bouncedSessions: 0,
+    });
+
+    return { ok: true, counted: true };
+  }
+
+  async siteInsightOverview(range: SiteInsightRange): Promise<{
+    range: SiteInsightRange;
+    days: number;
+    current: InsightTotals;
+    previous: InsightTotals;
+  }> {
+    const days = siteInsightRangeDays(range);
+    const today = utcDayString(new Date());
+    const currentTo = today;
+    const currentFrom = addUtcDays(today, -(days - 1));
+    const previousTo = addUtcDays(currentFrom, -1);
+    const previousFrom = addUtcDays(previousTo, -(days - 1));
+
+    const [current, previous] = await Promise.all([
+      this.#totalsForRange(currentFrom, currentTo),
+      this.#totalsForRange(previousFrom, previousTo),
+    ]);
+
+    return { range, days, current, previous };
+  }
+
+  async #totalsForRange(fromDay: string, toDay: string): Promise<InsightTotals> {
+    const [rollup] = await this.#db
+      .select({
+        sessions: sql<number>`coalesce(sum(${siteInsightDaily.sessions}), 0)::int`,
+        pageviews: sql<number>`coalesce(sum(${siteInsightDaily.pageviews}), 0)::int`,
+        newUsers: sql<number>`coalesce(sum(${siteInsightDaily.newUsers}), 0)::int`,
+        engagedMsSum: sql<number>`coalesce(sum(${siteInsightDaily.engagedMsSum}), 0)::int`,
+        bouncedSessions: sql<number>`coalesce(sum(${siteInsightDaily.bouncedSessions}), 0)::int`,
+      })
+      .from(siteInsightDaily)
+      .where(and(gte(siteInsightDaily.day, fromDay), lte(siteInsightDaily.day, toDay)));
+
+    const fromTs = new Date(`${fromDay}T00:00:00.000Z`);
+    const toTs = new Date(`${toDay}T23:59:59.999Z`);
+    const [usersRow] = await this.#db
+      .select({
+        users: sql<number>`count(distinct ${analyticsSessions.visitorKey})::int`,
+      })
+      .from(analyticsSessions)
+      .where(
+        and(
+          gte(analyticsSessions.startedAt, fromTs),
+          lte(analyticsSessions.startedAt, toTs),
+          sql`${analyticsSessions.visitorKey} <> ''`,
+        ),
+      );
+
+    const sessions = rollup?.sessions ?? 0;
+    const pageviews = rollup?.pageviews ?? 0;
+    const newUsers = rollup?.newUsers ?? 0;
+    const engagedMsSum = rollup?.engagedMsSum ?? 0;
+    const bouncedSessions = rollup?.bouncedSessions ?? 0;
+    const users = usersRow?.users ?? 0;
+    const avgSessionDurationMs = sessions > 0 ? Math.round(engagedMsSum / sessions) : 0;
+    const bounceRate = sessions > 0 ? bouncedSessions / sessions : 0;
+
+    return {
+      sessions,
+      pageviews,
+      users,
+      newUsers,
+      avgSessionDurationMs,
+      bounceRate,
+      engagedMsSum,
+      bouncedSessions,
+    };
+  }
+
+  async #recordInsightActivity(input: {
+    sessionKey: string;
+    visitorKey: string;
+    isPageView: boolean;
+  }): Promise<void> {
+    const now = new Date();
+    const day = utcDayString(now);
+    const visitor = await this.#touchVisitor(input.visitorKey, now);
+
+    if (input.sessionKey === '') {
+      if (visitor.isNew || visitor.newlyActiveToday) {
+        await this.#bumpInsightDaily({
+          day,
+          sessions: 0,
+          pageviews: 0,
+          users: visitor.newlyActiveToday ? 1 : 0,
+          newUsers: visitor.isNew ? 1 : 0,
+          engagedMsSum: 0,
+          bouncedSessions: 0,
+        });
+      }
+      return;
+    }
+
+    const [existing] = await this.#db
+      .select()
+      .from(analyticsSessions)
+      .where(eq(analyticsSessions.sessionKey, input.sessionKey))
+      .limit(1);
+
+    if (existing === undefined) {
+      const pageviews = input.isPageView ? 1 : 0;
+      await this.#db.insert(analyticsSessions).values({
+        sessionKey: input.sessionKey,
+        visitorKey: input.visitorKey,
+        startedAt: now,
+        lastSeenAt: now,
+        pageviews,
+        engagedMs: 0,
+        bounced: true,
+      });
+      await this.#bumpInsightDaily({
+        day,
+        sessions: 1,
+        pageviews,
+        users: visitor.newlyActiveToday ? 1 : 0,
+        newUsers: visitor.isNew ? 1 : 0,
+        engagedMsSum: 0,
+        bouncedSessions: 1,
+      });
+      return;
+    }
+
+    let bounceCleared = false;
+    if (input.isPageView) {
+      const nextPageviews = existing.pageviews + 1;
+      bounceCleared = existing.bounced && nextPageviews > 1;
+      await this.#db
+        .update(analyticsSessions)
+        .set({
+          lastSeenAt: now,
+          pageviews: nextPageviews,
+          bounced: nextPageviews <= 1,
+          visitorKey: input.visitorKey !== '' ? input.visitorKey : existing.visitorKey,
+        })
+        .where(eq(analyticsSessions.sessionKey, input.sessionKey));
+    } else {
+      await this.#db
+        .update(analyticsSessions)
+        .set({
+          lastSeenAt: now,
+          visitorKey: input.visitorKey !== '' ? input.visitorKey : existing.visitorKey,
+        })
+        .where(eq(analyticsSessions.sessionKey, input.sessionKey));
+    }
+
+    await this.#bumpInsightDaily({
+      day,
+      sessions: 0,
+      pageviews: input.isPageView ? 1 : 0,
+      users: visitor.newlyActiveToday ? 1 : 0,
+      newUsers: visitor.isNew ? 1 : 0,
+      engagedMsSum: 0,
+      bouncedSessions: bounceCleared ? -1 : 0,
+    });
+  }
+
+  async #touchVisitor(
+    visitorKey: string,
+    now: Date,
+  ): Promise<{ isNew: boolean; newlyActiveToday: boolean }> {
+    if (visitorKey === '') return { isNew: false, newlyActiveToday: false };
+
+    const [existing] = await this.#db
+      .select()
+      .from(analyticsVisitors)
+      .where(eq(analyticsVisitors.visitorKey, visitorKey))
+      .limit(1);
+
+    if (existing === undefined) {
+      await this.#db.insert(analyticsVisitors).values({
+        visitorKey,
+        firstSeenAt: now,
+        lastSeenAt: now,
+      });
+      return { isNew: true, newlyActiveToday: true };
+    }
+
+    const dayStart = new Date(`${utcDayString(now)}T00:00:00.000Z`);
+    const newlyActiveToday = existing.lastSeenAt < dayStart;
+    await this.#db
+      .update(analyticsVisitors)
+      .set({ lastSeenAt: now })
+      .where(eq(analyticsVisitors.visitorKey, visitorKey));
+    return { isNew: false, newlyActiveToday };
+  }
+
+  async #bumpInsightDaily(delta: {
+    day: string;
+    sessions: number;
+    pageviews: number;
+    users: number;
+    newUsers: number;
+    engagedMsSum: number;
+    bouncedSessions: number;
+  }): Promise<void> {
+    if (
+      delta.sessions === 0 &&
+      delta.pageviews === 0 &&
+      delta.users === 0 &&
+      delta.newUsers === 0 &&
+      delta.engagedMsSum === 0 &&
+      delta.bouncedSessions === 0
+    ) {
+      return;
+    }
+
+    const [existing] = await this.#db
+      .select()
+      .from(siteInsightDaily)
+      .where(eq(siteInsightDaily.day, delta.day))
+      .limit(1);
+
+    if (existing === undefined) {
+      await this.#db.insert(siteInsightDaily).values({
+        day: delta.day,
+        sessions: Math.max(0, delta.sessions),
+        pageviews: Math.max(0, delta.pageviews),
+        users: Math.max(0, delta.users),
+        newUsers: Math.max(0, delta.newUsers),
+        engagedMsSum: Math.max(0, delta.engagedMsSum),
+        bouncedSessions: Math.max(0, delta.bouncedSessions),
+      });
+      return;
+    }
+
+    await this.#db
+      .update(siteInsightDaily)
+      .set({
+        sessions: Math.max(0, existing.sessions + delta.sessions),
+        pageviews: Math.max(0, existing.pageviews + delta.pageviews),
+        users: Math.max(0, existing.users + delta.users),
+        newUsers: Math.max(0, existing.newUsers + delta.newUsers),
+        engagedMsSum: Math.max(0, existing.engagedMsSum + delta.engagedMsSum),
+        bouncedSessions: Math.max(0, existing.bouncedSessions + delta.bouncedSessions),
+        updatedAt: new Date(),
+      })
+      .where(eq(siteInsightDaily.id, existing.id));
   }
 
   async #bumpSiteDailyRollup(input: {

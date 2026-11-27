@@ -24,6 +24,7 @@ Until an ADR says otherwise, the baseline in `.cursor/skills/luxury-investment-w
 | [0012](0012-api-security-hardening.md) | API security hardening (sessions, login limit, admin Origin) | Accepted (delegated) | 2026-10-26 |
 | [0013](0013-pdf-and-image-rendering.md) | PDF and social image rendering (Playwright HTML → PDF/PNG) | Accepted (delegated) | 2026-11-03 |
 | [0014](0014-site-settings-key-value.md) | Site settings as key-value store | Accepted (delegated) | 2026-11-06 |
+| [0015](0015-first-party-site-insights.md) | First-party site Insights (visitor vs session) | Accepted (delegated) | 2026-11-27 |
 
 ## Pending decisions
 

@@ -37,16 +37,52 @@ export const ingestSiteEventSchema = z.object({
   eventType: siteEventTypeSchema,
   label: z.string().trim().max(200).optional().default(''),
   href: z.string().trim().max(500).optional().default(''),
+  /** Short-lived session id. */
   sessionKey: z.string().trim().min(8).max(128).optional(),
+  /** Persistent visitor id. */
+  visitorKey: z.string().trim().min(8).max(128).optional(),
   deviceClass: z.string().trim().max(40).optional().default(''),
   website: z.string().optional(),
 });
 export type IngestSiteEventInput = z.infer<typeof ingestSiteEventSchema>;
 
+export const ingestSiteSessionPingSchema = z.object({
+  sessionKey: z.string().trim().min(8).max(128),
+  visitorKey: z.string().trim().min(8).max(128).optional(),
+  /** Engaged milliseconds since last ping (capped server-side). */
+  engagedMsDelta: z.coerce.number().int().min(0).max(120_000),
+  website: z.string().optional(),
+});
+export type IngestSiteSessionPingInput = z.infer<typeof ingestSiteSessionPingSchema>;
+
+export const SITE_INSIGHT_RANGES = ['1d', '7d', '30d', '90d', '180d'] as const;
+export type SiteInsightRange = (typeof SITE_INSIGHT_RANGES)[number];
+export const siteInsightRangeSchema = z.enum(SITE_INSIGHT_RANGES);
+
+export const siteInsightOverviewQuerySchema = z.object({
+  range: siteInsightRangeSchema.optional().default('30d'),
+});
+export type SiteInsightOverviewQuery = z.infer<typeof siteInsightOverviewQuerySchema>;
+
 export const siteAnalyticsQuerySchema = z.object({
-  days: z.coerce.number().int().min(1).max(90).optional().default(30),
+  days: z.coerce.number().int().min(1).max(180).optional().default(30),
 });
 export type SiteAnalyticsQuery = z.infer<typeof siteAnalyticsQuerySchema>;
+
+export function siteInsightRangeDays(range: SiteInsightRange): number {
+  switch (range) {
+    case '1d':
+      return 1;
+    case '7d':
+      return 7;
+    case '30d':
+      return 30;
+    case '90d':
+      return 90;
+    case '180d':
+      return 180;
+  }
+}
 
 export const OWNER_REPORT_KINDS = ['short', 'detailed'] as const;
 export type OwnerReportKind = (typeof OWNER_REPORT_KINDS)[number];

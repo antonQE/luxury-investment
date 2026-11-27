@@ -1,4 +1,9 @@
-import { deviceClass, getAnalyticsSessionKey } from './session';
+import {
+  deviceClass,
+  getAnalyticsSessionKey,
+  getAnalyticsVisitorKey,
+  touchAnalyticsSessionActivity,
+} from './session';
 
 function apiBase(): string {
   return process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
@@ -51,7 +56,20 @@ export function trackSiteEvent(input: {
     label: input.label ?? '',
     href: input.href ?? '',
     sessionKey: getAnalyticsSessionKey(),
+    visitorKey: getAnalyticsVisitorKey(),
     deviceClass: deviceClass(),
+    website: '',
+  });
+}
+
+export function trackSiteSessionPing(engagedMsDelta: number): void {
+  const delta = Math.max(0, Math.min(Math.round(engagedMsDelta), 120_000));
+  if (delta <= 0) return;
+  touchAnalyticsSessionActivity();
+  postBeacon('/v1/public/analytics/site-session-ping', {
+    sessionKey: getAnalyticsSessionKey(),
+    visitorKey: getAnalyticsVisitorKey(),
+    engagedMsDelta: delta,
     website: '',
   });
 }

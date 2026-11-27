@@ -519,7 +519,15 @@
   },
   "analytics": {
     "title": "Analytics",
-    "lead": "Public-site pages and clicks for the last {{days}} days. Not shown to visitors.",
+    "lead": "First-party site Insights for the selected period. Not shown to visitors.",
+    "range": "Period",
+    "range_1d": "Last day",
+    "range_7d": "Last 7 days",
+    "range_30d": "Last 30 days",
+    "range_90d": "Last 90 days",
+    "range_180d": "Last 6 months",
+    "vsPrevious": "vs. previous {{days}} days",
+    "overviewTitle": "Overview",
     "pagesTitle": "Top pages",
     "clicksTitle": "Top clicks",
     "path": "Path",
@@ -529,7 +537,21 @@
     "unique": "Unique",
     "emptyPages": "No page views yet.",
     "emptyClicks": "No clicks recorded yet.",
-    "loadError": "Could not load analytics."
+    "loadError": "Could not load analytics.",
+    "kpi": {
+      "sessions": "Sessions",
+      "sessionsTooltip": "Number of visits. A new session starts after 30 minutes without activity.",
+      "pageviews": "Pageviews",
+      "pageviewsTooltip": "Total pages viewed in the period (non-bot).",
+      "avgDuration": "Avg. session duration",
+      "avgDurationTooltip": "Average engaged time per session while the tab is visible.",
+      "users": "Total users",
+      "usersTooltip": "Distinct visitors (persistent browser id) with at least one session in the period.",
+      "newUsers": "New users",
+      "newUsersTooltip": "Visitors seen for the first time during this period.",
+      "bounceRate": "Bounce rate",
+      "bounceRateTooltip": "Share of sessions that viewed only one page."
+    }
   },
   "dashboard": {
     "title": "Dashboard",

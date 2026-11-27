@@ -248,11 +248,12 @@ Everything is **scoped to one property** (required select). Until a property is 
 
 **Filters:** property only.
 
-## Analytics (`/analytics`) — R1
+## Analytics (`/analytics`) — R1 / Insights
 
 Internal first-party stats (not shown on the public site):
 
-- **Top pages** / **top clicks** for the last 30 days (path, label, href, events, unique sessions).
+- **Overview KPIs** (sessions, pageviews, avg. session duration, total users, new users, bounce rate) with period presets (1 / 7 / 30 / 90 / 180 days), previous-period %, and info tooltips.
+- **Top pages** / **top clicks** for the same selected period (path, label, href, events, unique sessions).
 - Property **total** and **unique** views appear on the Properties list and editor (lifetime, bots excluded).
 
 ---

@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-20`, `LI-118`
+Next IDs: `EPIC-21`, `LI-123`
 
 
 ## Releases
@@ -44,6 +44,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | [EPIC-17](epics/EPIC-17-migration-launch.md) | Migration and launch | P1 | Done |
 | [EPIC-18](epics/EPIC-18-later-extensions.md) | Later extensions | P2 / P3 | Backlog |
 | [EPIC-19](epics/EPIC-19-platform-qa.md) | Platform QA (happy paths + API coverage) | P1 | Done |
+| [EPIC-20](epics/EPIC-20-site-insights.md) | Site Insights KPI overview | P1 | Done |
 
 ## In Progress
 
@@ -70,11 +71,17 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 | ID | Title | Epic | Priority | Size | Depends on |
 |---|---|---|---|---|---|
 | [LI-111](tasks/LI-111-deal-agent-totals.md) | Deal totals by agent | EPIC-09 | P2 | S | LI-110 |
+| [LI-123](tasks/LI-123-analytics-raw-retention.md) | Prune raw analytics events | EPIC-20 | P3 | S | LI-122 |
 
 ## Done
 
 | ID | Title | Epic |
 |---|---|---|
+| [LI-122](tasks/LI-122-insights-qa-docs.md) | Insights QA + docs | EPIC-20 |
+| [LI-121](tasks/LI-121-insights-admin-ui.md) | Admin Insights overview UI | EPIC-20 |
+| [LI-120](tasks/LI-120-insights-web-client.md) | Web visitor/session + heartbeat | EPIC-20 |
+| [LI-119](tasks/LI-119-insights-ingest.md) | Insights ingest + daily KPI | EPIC-20 |
+| [LI-118](tasks/LI-118-insights-schema.md) | Insights schema + migration | EPIC-20 |
 | [LI-117](tasks/LI-117-qa-green-guide.md) | Full suite green + QA guide | EPIC-19 |
 | [LI-116](tasks/LI-116-unit-high-risk-ui.md) | Unit/component high-risk UI | EPIC-19 |
 | [LI-115](tasks/LI-115-e2e-tasks-analytics-docs.md) | E2E Tasks / Analytics / Documents | EPIC-19 |
