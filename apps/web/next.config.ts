@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ['@luxury-investment/shared'],
   poweredByHeader: false,
   agentRules: false,
+  experimental: {
+    agentUpgrade: 'security',
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
