@@ -12,9 +12,9 @@ Project workflow (tracker, ADRs, commits): `.cursor/skills/luxury-investment-wor
 
 | Need | Reference |
 |---|---|
-| Static text page | `apps/web/src/app/[locale]/za-nas/page.tsx` |
-| Listing with filters from the URL | `apps/web/src/app/[locale]/obiavi/page.tsx` |
-| Detail page by slug | `apps/web/src/app/[locale]/obiavi/[slug]/page.tsx`, `ekip/` |
+| Static text page | `apps/web/src/app/[locale]/about/page.tsx` |
+| Listing with filters from the URL | `apps/web/src/app/[locale]/properties/page.tsx` |
+| Detail page by id | `apps/web/src/app/[locale]/properties/[id]/page.tsx`, `team/` (public detail URLs are `/{section}/{id}/`, LI-126) |
 | Server data helper | `apps/web/src/lib/api/team.ts` |
 
 ## Checklist

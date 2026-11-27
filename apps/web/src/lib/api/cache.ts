@@ -3,7 +3,7 @@ export const PUBLIC_REVALIDATE_SECONDS = 60;
 
 export const CACHE_TAGS = {
   properties: 'properties',
-  property: (slug: string) => `property:${slug}`,
+  property: (id: string) => `property:${id}`,
   team: 'team',
   content: 'content',
   siteSettings: 'site-settings',

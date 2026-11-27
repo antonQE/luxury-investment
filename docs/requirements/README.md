@@ -15,3 +15,4 @@ Coverage of every requirement ID by epic and release: [traceability.md](traceabi
 | 02 | [Current site as the starting point](02-current-site-as-starting-point.md) | 2026-10-25 | [02-current-site.analysis.md](02-current-site.analysis.md) | Analysed; Release 1 scope proposed |
 | 03 | [Site Insights KPIs](03-site-insights-kpis.md) | 2026-11-27 | [03-site-insights-kpis.analysis.md](03-site-insights-kpis.analysis.md) | Analysed; ADR-0015; EPIC-20 |
 | 04 | [Admin properties list: show broker](04-admin-properties-list-broker.md) | 2026-11-27 | [LI-124](../tracker/tasks/LI-124-admin-properties-list-broker.md) | Change request |
+| 05 | [English public URLs + IDs](05-english-section-urls.md) | 2026-11-27 | [LI-125](../tracker/tasks/LI-125-english-section-urls.md), [LI-126](../tracker/tasks/LI-126-public-detail-urls-by-id.md) | Change request |

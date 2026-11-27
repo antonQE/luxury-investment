@@ -4,8 +4,8 @@ import type {
   PublicArticleListItem,
   PublicPage,
 } from '@luxury-investment/shared';
-import { pageKindSchema } from '@luxury-investment/shared';
-import { and, asc, desc, eq, inArray, isNotNull, isNull, lte } from 'drizzle-orm';
+import { isRecordId, pageKindSchema } from '@luxury-investment/shared';
+import { and, asc, desc, eq, inArray, isNotNull, isNull, lte, type SQL } from 'drizzle-orm';
 
 import { AppError } from '../../../errors/app-error.ts';
 import type { Database } from '../../../infrastructure/db/client.ts';
@@ -86,10 +86,30 @@ export class ContentPublicService {
   }
 
   async getArticle(locale: Locale, slug: string): Promise<PublicArticle> {
+    return this.#loadArticle(locale, eq(articles.slug, slug));
+  }
+
+  /** Public detail by record id (`/articles/{id}/`). Malformed ids are "not found". */
+  async getArticleById(locale: Locale, id: string): Promise<PublicArticle> {
+    if (!isRecordId(id)) throw new AppError('NOT_FOUND');
+    return this.#loadArticle(locale, eq(articles.id, id));
+  }
+
+  async getPage(locale: Locale, slug: string): Promise<PublicPage> {
+    return this.#loadPage(locale, eq(pages.slug, slug));
+  }
+
+  /** Public detail by record id (`/pages/{id}/`). Malformed ids are "not found". */
+  async getPageById(locale: Locale, id: string): Promise<PublicPage> {
+    if (!isRecordId(id)) throw new AppError('NOT_FOUND');
+    return this.#loadPage(locale, eq(pages.id, id));
+  }
+
+  async #loadArticle(locale: Locale, match: SQL | undefined): Promise<PublicArticle> {
     const [row] = await this.#db
       .select()
       .from(articles)
-      .where(and(eq(articles.slug, slug), publiclyVisibleNow(articles)))
+      .where(and(match, publiclyVisibleNow(articles)))
       .limit(1);
     if (row === undefined) throw new AppError('NOT_FOUND');
     const labels = await loadFields(
@@ -112,11 +132,11 @@ export class ContentPublicService {
     };
   }
 
-  async getPage(locale: Locale, slug: string): Promise<PublicPage> {
+  async #loadPage(locale: Locale, match: SQL | undefined): Promise<PublicPage> {
     const [row] = await this.#db
       .select()
       .from(pages)
-      .where(and(eq(pages.slug, slug), publiclyVisibleNow(pages)))
+      .where(and(match, publiclyVisibleNow(pages)))
       .limit(1);
     if (row === undefined) throw new AppError('NOT_FOUND');
     const labels = await loadFields(this.#db, 'page', [row.id], ['title', 'body'], locale);

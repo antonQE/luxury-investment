@@ -114,7 +114,7 @@ export default async function HomePage() {
           {MARKETS.map((market, index) => (
             <Link
               key={market}
-              href={`/obiavi?market=${market}`}
+              href={`/properties?market=${market}`}
               className="group block border-t border-line pt-6 transition hover:border-brass"
               style={{ animationDelay: `${String(100 + index * 60)}ms` }}
               data-testid={`market-${market}`}
@@ -153,7 +153,7 @@ export default async function HomePage() {
               <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('articlesLead')}</h2>
             </div>
             <Link
-              href="/stati"
+              href="/articles"
               className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
               data-testid="home-articles-view-all"
             >
@@ -164,7 +164,7 @@ export default async function HomePage() {
             {articles.map((article) => (
               <li key={article.id} className="border-t border-line pt-6">
                 <Link
-                  href={`/stati/${article.slug}`}
+                  href={`/articles/${article.id}`}
                   className="group block"
                   data-testid={`home-article-${article.slug}`}
                 >
@@ -192,7 +192,7 @@ export default async function HomePage() {
               <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('teamLead')}</h2>
             </div>
             <Link
-              href="/ekip"
+              href="/team"
               className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
               data-testid="home-team-view-all"
             >
@@ -203,7 +203,7 @@ export default async function HomePage() {
             {team.map((member) => (
               <li key={member.id}>
                 <Link
-                  href={`/ekip/${member.slug}`}
+                  href={`/team/${member.id}`}
                   className="group block"
                   data-testid={`home-team-${member.slug}`}
                 >

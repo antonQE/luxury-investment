@@ -22,9 +22,9 @@ export async function fetchTeam(locale: Locale): Promise<PublicTeamMember[]> {
   return body.data;
 }
 
-export async function fetchTeamMember(locale: Locale, slug: string): Promise<PublicTeamMember> {
+export async function fetchTeamMember(locale: Locale, id: string): Promise<PublicTeamMember> {
   const body = await apiGet<{ data: PublicTeamMember }>(
-    `/v1/public/team/${encodeURIComponent(slug)}${queryString(locale)}`,
+    `/v1/public/team/by-id/${encodeURIComponent(id)}${queryString(locale)}`,
     { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: [CACHE_TAGS.team] },
   );
   return body.data;

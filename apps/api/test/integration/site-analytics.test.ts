@@ -76,7 +76,7 @@ describe('site analytics + property views', () => {
       .post('/v1/public/analytics/site-events')
       .set('User-Agent', 'Mozilla/5.0 test-browser')
       .send({
-        path: '/obiavi',
+        path: '/properties',
         eventType: 'page_view',
         sessionKey: 'site-session-aaaa',
       })
@@ -86,10 +86,10 @@ describe('site analytics + property views', () => {
       .post('/v1/public/analytics/site-events')
       .set('User-Agent', 'Mozilla/5.0 test-browser')
       .send({
-        path: '/obiavi',
+        path: '/properties',
         eventType: 'click',
         label: 'Виж обяви',
-        href: '/obiavi',
+        href: '/properties',
         sessionKey: 'site-session-aaaa',
       })
       .expect(201);
@@ -98,7 +98,7 @@ describe('site analytics + property views', () => {
       .post('/v1/public/analytics/site-events')
       .set('User-Agent', 'Googlebot/2.1')
       .send({
-        path: '/obiavi',
+        path: '/properties',
         eventType: 'page_view',
         sessionKey: 'bot-site-zzzz',
       })
@@ -118,15 +118,15 @@ describe('site analytics + property views', () => {
     };
     expect(summaryBody.data.pages).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ path: '/obiavi', events: 1, uniqueSessions: 1 }),
+        expect.objectContaining({ path: '/properties', events: 1, uniqueSessions: 1 }),
       ]),
     );
     expect(summaryBody.data.clicks).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          path: '/obiavi',
+          path: '/properties',
           label: 'Виж обяви',
-          href: '/obiavi',
+          href: '/properties',
           events: 1,
         }),
       ]),
@@ -162,7 +162,7 @@ describe('site analytics + property views', () => {
       .post('/v1/public/analytics/site-events')
       .set('User-Agent', ua)
       .send({
-        path: '/obiavi',
+        path: '/properties',
         eventType: 'page_view',
         sessionKey: 'insight-session-1',
         visitorKey: 'insight-visitor-1',

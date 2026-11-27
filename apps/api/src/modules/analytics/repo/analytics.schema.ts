@@ -59,7 +59,7 @@ export const siteEvents = pgTable(
   'site_events',
   {
     id: uuid().defaultRandom().primaryKey(),
-    /** Locale-stripped path, e.g. `/obiavi` or `/ekip/demo-ivanova`. */
+    /** Locale-stripped path, e.g. `/properties` or `/team/demo-ivanova`. */
     path: text().notNull(),
     /** `page_view` | `click` */
     eventType: text().notNull(),

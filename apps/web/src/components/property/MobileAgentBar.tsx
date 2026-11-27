@@ -7,11 +7,11 @@ import { Link } from '@/i18n/navigation';
 export function MobileAgentBar({
   phoneDigits,
   agentName,
-  agentSlug,
+  agentId,
 }: {
   phoneDigits: string;
   agentName: string;
-  agentSlug: string | null;
+  agentId: string | null;
 }) {
   const t = useTranslations('Property');
 
@@ -20,9 +20,9 @@ export function MobileAgentBar({
       className="fixed inset-x-0 bottom-0 z-30 border-t border-brass/20 bg-void/95 px-4 py-3 text-stone backdrop-blur md:hidden"
       data-testid="mobile-agent-bar"
     >
-      {agentSlug !== null ? (
+      {agentId !== null ? (
         <Link
-          href={`/ekip/${agentSlug}`}
+          href={`/team/${agentId}`}
           className="block truncate text-xs text-stone/70 transition hover:text-brass"
           data-testid="mobile-agent-profile-link"
         >

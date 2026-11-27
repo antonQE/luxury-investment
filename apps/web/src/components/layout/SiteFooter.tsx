@@ -2,6 +2,7 @@ import { toMailtoHref, toTelHref } from '@luxury-investment/shared';
 import { getTranslations } from 'next-intl/server';
 
 import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
+import { LegalLink } from '@/components/legal/LegalLink';
 import { Link } from '@/i18n/navigation';
 import { fetchSiteSettings } from '@/lib/api/site-settings';
 
@@ -81,13 +82,13 @@ export async function SiteFooter() {
               </Link>,
             ];
           })}
-          <Link
-            href="/stranici/privacy"
+          <LegalLink
+            page="privacy"
             className="mt-2 text-xs tracking-[0.15em] uppercase text-stone/50 transition hover:text-brass"
             data-testid="footer-privacy"
           >
             {t('privacy')}
-          </Link>
+          </LegalLink>
           <CookieSettingsButton />
         </nav>
       </div>

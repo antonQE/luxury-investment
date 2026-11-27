@@ -25,13 +25,13 @@ describe('buildBrochureHtml', () => {
         locale: 'bg',
       },
       toggles: DEFAULT_BROCHURE_TOGGLES,
-      listingUrl: 'http://localhost:3000/obiavi/demo-tristaen-malinova-dolina/',
+      listingUrl: 'http://localhost:3000/properties/demo-tristaen-malinova-dolina/',
       qrDataUrl: 'data:image/png;base64,abc',
     });
 
     expect(html).toContain('DEMO-1001');
     expect(html).toContain('285000.00 EUR');
-    expect(html).toContain('http://localhost:3000/obiavi/demo-tristaen-malinova-dolina/');
+    expect(html).toContain('http://localhost:3000/properties/demo-tristaen-malinova-dolina/');
     expect(html).not.toContain('invented');
   });
 
@@ -56,7 +56,7 @@ describe('buildBrochureHtml', () => {
         locale: 'en',
       },
       toggles: { ...DEFAULT_BROCHURE_TOGGLES, price: false },
-      listingUrl: 'http://localhost:3000/obiavi/demo/',
+      listingUrl: 'http://localhost:3000/properties/demo/',
       qrDataUrl: null,
     });
     expect(html).not.toContain('100 EUR');

@@ -6,7 +6,7 @@ export class SellWithUsPage {
   constructor(private readonly page: Page) {}
 
   async goto() {
-    await this.page.goto('/prodai-s-nas');
+    await this.page.goto('/sell-with-us');
   }
 
   async submitConsultation(input: { name: string; email: string; phone: string; message: string }) {

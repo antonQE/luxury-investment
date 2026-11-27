@@ -67,6 +67,7 @@ describe('buildMortgageEstimate', () => {
         }),
       ],
       consultant: {
+        id: '00000000-0000-4000-8000-000000000004',
         name: 'Demo Credit Consultant',
         email: 'credit@example.com',
         phone: '+359 000 000 004',

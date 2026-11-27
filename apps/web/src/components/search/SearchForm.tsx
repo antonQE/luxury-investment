@@ -56,7 +56,7 @@ export function SearchForm({
       if (typeof value === 'string' && value.trim() !== '') query.set(key, value.trim());
     }
     const suffix = query.toString();
-    router.push(suffix === '' ? '/obiavi' : `/obiavi?${suffix}`);
+    router.push(suffix === '' ? '/properties' : `/properties?${suffix}`);
   }
 
   const labelClass = isHero

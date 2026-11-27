@@ -1,6 +1,10 @@
 import type { Locale, PublicLanding } from '@luxury-investment/shared';
-import { landingRobotsSchema, landingSectionTypeSchema } from '@luxury-investment/shared';
-import { and, asc, eq, isNotNull, isNull, lte } from 'drizzle-orm';
+import {
+  isRecordId,
+  landingRobotsSchema,
+  landingSectionTypeSchema,
+} from '@luxury-investment/shared';
+import { and, asc, eq, isNotNull, isNull, lte, type SQL } from 'drizzle-orm';
 
 import { AppError } from '../../../errors/app-error.ts';
 import type { Database } from '../../../infrastructure/db/client.ts';
@@ -18,13 +22,23 @@ export class LandingPublicService {
   }
 
   async getBySlug(locale: Locale, slug: string): Promise<PublicLanding> {
+    return this.#load(locale, eq(landingPages.slug, slug));
+  }
+
+  /** Public detail by record id (`/campaigns/{id}/`). Malformed ids are "not found". */
+  async getById(locale: Locale, id: string): Promise<PublicLanding> {
+    if (!isRecordId(id)) throw new AppError('NOT_FOUND', 'Landing page not found.');
+    return this.#load(locale, eq(landingPages.id, id));
+  }
+
+  async #load(locale: Locale, match: SQL | undefined): Promise<PublicLanding> {
     const now = new Date();
     const [row] = await this.#db
       .select()
       .from(landingPages)
       .where(
         and(
-          eq(landingPages.slug, slug),
+          match,
           eq(landingPages.status, 'published'),
           isNull(landingPages.archivedAt),
           isNotNull(landingPages.publishedAt),

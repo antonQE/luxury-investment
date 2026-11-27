@@ -37,7 +37,7 @@ export function PropertyCard({
       data-testid={`property-card-${property.slug}`}
     >
       <Link
-        href={`/obiavi/${property.slug}`}
+        href={`/properties/${property.id}`}
         className={`relative block overflow-hidden bg-line ${compact ? 'aspect-[3/2]' : 'aspect-[4/3]'}`}
       >
         {image === null ? (
@@ -93,7 +93,7 @@ export function PropertyCard({
         <h3
           className={`font-serif leading-snug text-ink ${compact ? 'text-base' : 'text-xl md:text-[1.35rem]'}`}
         >
-          <Link href={`/obiavi/${property.slug}`} className="transition hover:text-brass-dark">
+          <Link href={`/properties/${property.id}`} className="transition hover:text-brass-dark">
             {property.title}
           </Link>
         </h3>

@@ -53,6 +53,8 @@ Response conventions (from Newscore_Backend): lists return `{ data, total, offse
 
 Filters are part of the URL (shareable, back/forward work). `web` passes them to `/v1/public/properties`; the API translates them to SQL on indexed columns and JSONB attributes (filter definitions come from the admin-managed attribute configuration). Sorting defaults to newest published first.
 
+Public detail pages are addressed by record id (`/properties/{id}/`, `/articles/{id}/`, `/team/{id}/`, `/pages/{id}/`, `/campaigns/{id}/`). The API serves them at `GET /v1/public/{properties|articles|pages|team|landings}/by-id/:id` (plus `properties/by-id/:id/similar`); a malformed or unknown id is 404. The older slug endpoints remain for internal callers (calculators, inquiry binding, legal page lookup).
+
 ### Inquiry and viewing request
 
 1. A public form posts to `web`, which forwards to `/v1/public/inquiries` with the property ID, source and UTM data.

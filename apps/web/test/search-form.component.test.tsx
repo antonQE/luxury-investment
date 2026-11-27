@@ -27,7 +27,7 @@ describe('SearchForm', () => {
     fireEvent.change(screen.getByTestId('filter-city'), { target: { value: 'Sofia' } });
     fireEvent.submit(screen.getByTestId('search-form'));
 
-    expect(push).toHaveBeenCalledWith('/obiavi?transactionType=sale&city=Sofia');
+    expect(push).toHaveBeenCalledWith('/properties?transactionType=sale&city=Sofia');
   });
 
   it('hero variant omits extended fields and can navigate without filters', () => {
@@ -38,6 +38,6 @@ describe('SearchForm', () => {
     expect(screen.queryByTestId('filter-city')).not.toBeInTheDocument();
 
     fireEvent.submit(screen.getByTestId('home-search'));
-    expect(push).toHaveBeenCalledWith('/obiavi');
+    expect(push).toHaveBeenCalledWith('/properties');
   });
 });

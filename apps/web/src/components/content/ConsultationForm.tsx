@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { type SyntheticEvent, useState } from 'react';
 
-import { Link } from '@/i18n/navigation';
+import { LegalLink } from '@/components/legal/LegalLink';
 import { postInquiry } from '@/lib/api/post-inquiry';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -101,12 +101,9 @@ export function ConsultationForm() {
         <input name="consent" type="checkbox" required className="mt-1" />
         <span>
           {t('consent')}{' '}
-          <Link
-            href="/stranici/privacy"
-            className="underline underline-offset-2 hover:text-brass-dark"
-          >
+          <LegalLink page="privacy" className="underline underline-offset-2 hover:text-brass-dark">
             {t('privacyLink')}
-          </Link>
+          </LegalLink>
         </span>
       </label>
       <input

@@ -17,4 +17,4 @@ Pages call `buildPageMetadata({ locale, path, title, description, imageUrl? })`.
 
 - `app/sitemap.ts` — static pages + published properties for BG and EN.
 - `app/robots.txt` via `app/robots.ts` — allows `/`, points at the sitemap.
-- `lib/seo/redirects.ts` + `proxy.ts` — exact-path 301 table (sample `/oferti` → `/obiavi`); full legacy map is EPIC-17.
+- `lib/seo/redirects.ts` + `proxy.ts` — exact-path 301 table (sample `/oferti` → `/properties`); full legacy map is EPIC-17.

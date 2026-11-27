@@ -144,6 +144,7 @@ export class MortgageEstimateService {
       .limit(1);
 
     return {
+      id: member.id,
       name: nameRow?.value ?? fallbackName?.value ?? member.slug,
       email: member.email,
       phone: member.phone,

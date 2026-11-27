@@ -4,8 +4,8 @@ import type {
   PublicPartner,
   PublicTeamMember,
 } from '@luxury-investment/shared';
-import { teamMemberKindSchema } from '@luxury-investment/shared';
-import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
+import { isRecordId, teamMemberKindSchema } from '@luxury-investment/shared';
+import { and, asc, eq, inArray, isNull, type SQL } from 'drizzle-orm';
 
 import { AppError } from '../../../errors/app-error.ts';
 import type { Database } from '../../../infrastructure/db/client.ts';
@@ -80,16 +80,20 @@ export class TeamPublicService {
   }
 
   async getMember(locale: Locale, slug: string): Promise<PublicTeamMember> {
+    return this.#getPublicMember(locale, eq(teamMembers.slug, slug));
+  }
+
+  /** Public detail by record id (`/team/{id}/`). Malformed ids are "not found". */
+  async getMemberById(locale: Locale, id: string): Promise<PublicTeamMember> {
+    if (!isRecordId(id)) throw new AppError('NOT_FOUND');
+    return this.#getPublicMember(locale, eq(teamMembers.id, id));
+  }
+
+  async #getPublicMember(locale: Locale, match: SQL | undefined): Promise<PublicTeamMember> {
     const [row] = await this.#db
       .select()
       .from(teamMembers)
-      .where(
-        and(
-          eq(teamMembers.slug, slug),
-          eq(teamMembers.isPublic, true),
-          isNull(teamMembers.archivedAt),
-        ),
-      )
+      .where(and(match, eq(teamMembers.isPublic, true), isNull(teamMembers.archivedAt)))
       .limit(1);
     if (row === undefined) throw new AppError('NOT_FOUND');
     const labels = await loadFields(
@@ -122,11 +126,12 @@ export class TeamPublicService {
    */
   async findPublicByPhone(
     phone: string,
-  ): Promise<{ slug: string; photoUrl: string | null } | null> {
+  ): Promise<{ id: string; slug: string; photoUrl: string | null } | null> {
     const needle = phone.replace(/\D/g, '');
     if (needle.length < 6) return null;
     const rows = await this.#db
       .select({
+        id: teamMembers.id,
         slug: teamMembers.slug,
         phone: teamMembers.phone,
         photoUrl: teamMembers.photoUrl,
@@ -141,7 +146,7 @@ export class TeamPublicService {
       const b = candidate.length >= 9 ? candidate.slice(-9) : candidate;
       if (a === b) {
         const photoUrl = row.photoUrl === null || row.photoUrl === '' ? null : row.photoUrl;
-        return { slug: row.slug, photoUrl };
+        return { id: row.id, slug: row.slug, photoUrl };
       }
     }
     return null;

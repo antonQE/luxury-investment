@@ -14,7 +14,7 @@ const OG_LOCALE: Record<Locale, string> = {
 
 export interface PageSeoInput {
   locale: Locale;
-  /** Path without locale prefix, e.g. `/obiavi/demo- loft`. */
+  /** Path without locale prefix, e.g. `/properties/demo- loft`. */
   path: string;
   title: string;
   description: string;

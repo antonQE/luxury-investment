@@ -6,7 +6,7 @@ export class ListingsPage {
   constructor(private readonly page: Page) {}
 
   async goto(query = '') {
-    await this.page.goto(query === '' ? '/obiavi' : `/obiavi?${query}`);
+    await this.page.goto(query === '' ? '/properties' : `/properties?${query}`);
   }
 
   async filterByCity(city: string) {

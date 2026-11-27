@@ -23,7 +23,7 @@ Importer scripts: LI-051 (`npm run db:import-wxr`).
 | Theme demo / French stubs | ~49 pages | **do not import** — 301 to closest page or 410 |
 | Taxonomies | cities, neighbourhoods, badges, features | locations + taxonomies with dedup |
 
-URL scheme stays BG unprefixed + `/en/` (LI-007). Property/agent paths under `/obiavi/` and `/ekip/` should mostly keep working; root-level article/page slugs need redirect table entries.
+URL scheme stays BG unprefixed + `/en/` (LI-007). Section paths are English since LI-125 (`/properties/`, `/team/`, ...); old transliteration section URLs (`/obiavi/`, `/ekip/`, ...) are NOT redirected; root-level article/page slugs need redirect table entries.
 
 ## Test migration steps
 
@@ -49,7 +49,7 @@ URL scheme stays BG unprefixed + `/en/` (LI-007). Property/agent paths under `/o
 2. Final export + final import into production.
 3. Deploy apps with production env; `db:seed` **must not** run in production.
 4. Point DNS / reverse proxy to the new stack.
-5. Confirm `robots.txt`, `sitemap.xml`, homepage, sample property, `/prodai-s-nas`, admin login.
+5. Confirm `robots.txt`, `sitemap.xml`, homepage, sample property, `/sell-with-us`, admin login.
 
 ## Rollback
 

@@ -243,6 +243,7 @@ export {
   priceEquivalentSchema,
   upsertExchangeRateSchema,
 } from './exchange-rates.ts';
+export { isRecordId } from './ids.ts';
 export type {
   CreateInquiryInput,
   InquiryFunnelStage,

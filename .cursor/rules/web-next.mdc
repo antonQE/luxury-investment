@@ -21,6 +21,6 @@ alwaysApply: false
 // Good: server page with metadata and translations
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('About');
-  return buildPageMetadata({ locale: await getLocale(), path: '/za-nas', title: t('title'), description: t('lead') });
+  return buildPageMetadata({ locale: await getLocale(), path: '/about', title: t('title'), description: t('lead') });
 }
 ```

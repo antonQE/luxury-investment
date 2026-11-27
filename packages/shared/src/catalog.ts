@@ -155,6 +155,8 @@ export interface PublicProperty {
   agentPhotoUrl: string | null;
   /** Public team profile slug when the listing agent matches a team member by phone. */
   agentSlug: string | null;
+  /** Public team member id (detail URL `/team/{id}/`) when the listing agent matches a member. */
+  agentId: string | null;
   publishedAt: string;
 }
 

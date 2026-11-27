@@ -9,6 +9,7 @@ import type { TeamPublicService } from '../app/team-public-service.ts';
 
 const localeQuery = z.object({ lang: localeSchema.optional() });
 const slugParams = z.object({ slug: z.string().min(1) });
+const idParams = z.object({ id: z.string().min(1) });
 const photoParams = z.object({
   memberId: z.uuid(),
   fileName: z.string().min(1).max(120),
@@ -36,6 +37,17 @@ export function teamPublicRouter(
       const data = await team.listMembers(query.lang ?? DEFAULT_LOCALE);
       res.json({ data });
     }),
+  );
+
+  router.get(
+    '/team/by-id/:id',
+    withValidation(
+      { params: idParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const data = await team.getMemberById(query.lang ?? DEFAULT_LOCALE, params.id);
+        res.json({ data });
+      },
+    ),
   );
 
   router.get(

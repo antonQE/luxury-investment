@@ -34,14 +34,14 @@ describe('buildChannelCopySnippets', () => {
   };
 
   it('builds BG/EN short and long texts for every channel from catalog fields', () => {
-    const snippets = buildChannelCopySnippets(property, 'https://example.com/obiavi/demo/');
+    const snippets = buildChannelCopySnippets(property, 'https://example.com/properties/demo/');
     expect(snippets).toHaveLength(CHANNEL_COPY_CHANNELS.length * 2 * 2);
     const fbShortBg = snippets.find(
       (row) => row.channel === 'facebook' && row.locale === 'bg' && row.length === 'short',
     );
     expect(fbShortBg?.text).toContain('Апартамент в центъра');
     expect(fbShortBg?.text).toContain('250000 EUR');
-    expect(fbShortBg?.text).toContain('https://example.com/obiavi/demo/');
+    expect(fbShortBg?.text).toContain('https://example.com/properties/demo/');
     const emailLongEn = snippets.find(
       (row) => row.channel === 'email' && row.locale === 'en' && row.length === 'long',
     );

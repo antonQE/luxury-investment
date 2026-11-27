@@ -8,6 +8,7 @@ import type { LandingPublicService } from '../app/landing-public-service.ts';
 
 const localeQuery = z.object({ lang: localeSchema.optional() });
 const slugParams = z.object({ slug: z.string().min(1) });
+const idParams = z.object({ id: z.string().min(1) });
 
 export function contentPublicRouter(
   content: ContentPublicService,
@@ -21,6 +22,28 @@ export function contentPublicRouter(
       const data = await content.listArticles(query.lang ?? DEFAULT_LOCALE);
       res.json({ data });
     }),
+  );
+
+  router.get(
+    '/articles/by-id/:id',
+    withValidation(
+      { params: idParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const data = await content.getArticleById(query.lang ?? DEFAULT_LOCALE, params.id);
+        res.json({ data });
+      },
+    ),
+  );
+
+  router.get(
+    '/pages/by-id/:id',
+    withValidation(
+      { params: idParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const data = await content.getPageById(query.lang ?? DEFAULT_LOCALE, params.id);
+        res.json({ data });
+      },
+    ),
   );
 
   router.get(
@@ -46,6 +69,17 @@ export function contentPublicRouter(
   );
 
   if (landings !== undefined) {
+    router.get(
+      '/landings/by-id/:id',
+      withValidation(
+        { params: idParams, query: localeQuery },
+        async ({ params, query }, _req, res) => {
+          const data = await landings.getById(query.lang ?? DEFAULT_LOCALE, params.id);
+          res.json({ data });
+        },
+      ),
+    );
+
     router.get(
       '/landings/:slug',
       withValidation(

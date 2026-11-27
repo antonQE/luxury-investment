@@ -120,7 +120,7 @@ describe('studio brochure PDF API', () => {
     const body = create.body as {
       data: { id: string; listingUrl: string; byteSize: number; downloadPath: string };
     };
-    expect(body.data.listingUrl).toBe(`http://localhost:3000/obiavi/${property.slug}/`);
+    expect(body.data.listingUrl).toBe(`http://localhost:3000/properties/${property.id}/`);
     expect(body.data.byteSize).toBeGreaterThan(500);
     expect(body.data.downloadPath).toContain(body.data.id);
 
@@ -139,7 +139,7 @@ describe('studio brochure PDF API', () => {
       .from(brochureExports)
       .where(eq(brochureExports.propertyId, property.id));
     expect(rows).toHaveLength(1);
-    expect(rows[0]?.listingUrl).toContain(property.slug);
+    expect(rows[0]?.listingUrl).toContain(property.id);
 
     const exportsList = await agent
       .get(`/v1/admin/studio/brochures/exports?propertyId=${property.id}`)
@@ -171,7 +171,7 @@ describe('studio brochure PDF API', () => {
       };
     };
     expect(body.data.requiresHumanConfirmation).toBe(true);
-    expect(body.data.listingUrl).toContain(property.slug);
+    expect(body.data.listingUrl).toContain(property.id);
     expect(body.data.snippets.length).toBeGreaterThanOrEqual(20);
     expect(
       body.data.snippets.some(

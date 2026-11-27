@@ -144,10 +144,10 @@ export function MortgageCalculator({ slug, price, currency }: MortgageCalculator
                 {estimate.consultant.phone}
               </a>
             ) : null}
-            {estimate.consultant.slug !== null ? (
+            {estimate.consultant.id !== '' ? (
               <Link
                 className="underline underline-offset-2"
-                href={`/ekip/${estimate.consultant.slug}`}
+                href={`/team/${estimate.consultant.id}`}
               >
                 {t('ctaProfile')}
               </Link>

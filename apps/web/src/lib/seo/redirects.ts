@@ -5,50 +5,46 @@
  */
 const REDIRECTS: Readonly<Record<string, string>> = {
   // Properties list aliases
-  '/oferti': '/obiavi/',
-  '/oferti/': '/obiavi/',
-  '/en/oferti': '/en/obiavi/',
-  '/en/oferti/': '/en/obiavi/',
+  '/oferti': '/properties/',
+  '/oferti/': '/properties/',
+  '/en/oferti': '/en/properties/',
+  '/en/oferti/': '/en/properties/',
 
   // Agents → team
-  '/agent': '/ekip/',
-  '/agent/': '/ekip/',
-  '/en/agent': '/en/ekip/',
-  '/en/agent/': '/en/ekip/',
+  '/agent': '/team/',
+  '/agent/': '/team/',
+  '/en/agent': '/en/team/',
+  '/en/agent/': '/en/team/',
 
   // News → articles
-  '/novini': '/stati/',
-  '/novini/': '/stati/',
-  '/en/novini': '/en/stati/',
-  '/en/novini/': '/en/stati/',
+  '/novini': '/articles/',
+  '/novini/': '/articles/',
+  '/en/novini': '/en/articles/',
+  '/en/novini/': '/en/articles/',
 
   // Cyrillic services path (inventory) → latin slug
-  '/услуги': '/uslugi/',
-  '/услуги/': '/uslugi/',
-  '/en/услуги': '/en/uslugi/',
-  '/en/услуги/': '/en/uslugi/',
+  '/услуги': '/services/',
+  '/услуги/': '/services/',
+  '/en/услуги': '/en/services/',
+  '/en/услуги/': '/en/services/',
 
   // Taxonomy archive aliases → filtered listings (basic: list page)
-  '/kategorii': '/obiavi/',
-  '/kategorii/': '/obiavi/',
-  '/en/kategorii': '/en/obiavi/',
-  '/en/kategorii/': '/en/obiavi/',
-  '/action': '/obiavi/',
-  '/action/': '/obiavi/',
-  '/en/action': '/en/obiavi/',
-  '/en/action/': '/en/obiavi/',
-  '/grad': '/obiavi/',
-  '/grad/': '/obiavi/',
-  '/en/grad': '/en/obiavi/',
-  '/en/grad/': '/en/obiavi/',
-  '/kvartal': '/obiavi/',
-  '/kvartal/': '/obiavi/',
-  '/en/kvartal': '/en/obiavi/',
-  '/en/kvartal/': '/en/obiavi/',
-
-  // Sample legacy property permalink → current catalog slug (demo seed).
-  '/obiavi/star-demo-tristaen/': '/obiavi/demo-tristaen-malinova-dolina/',
-  '/en/obiavi/star-demo-tristaen/': '/en/obiavi/demo-tristaen-malinova-dolina/',
+  '/kategorii': '/properties/',
+  '/kategorii/': '/properties/',
+  '/en/kategorii': '/en/properties/',
+  '/en/kategorii/': '/en/properties/',
+  '/action': '/properties/',
+  '/action/': '/properties/',
+  '/en/action': '/en/properties/',
+  '/en/action/': '/en/properties/',
+  '/grad': '/properties/',
+  '/grad/': '/properties/',
+  '/en/grad': '/en/properties/',
+  '/en/grad/': '/en/properties/',
+  '/kvartal': '/properties/',
+  '/kvartal/': '/properties/',
+  '/en/kvartal': '/en/properties/',
+  '/en/kvartal/': '/en/properties/',
 };
 
 /** Returns the destination pathname for a 301, or `null` if no redirect. */

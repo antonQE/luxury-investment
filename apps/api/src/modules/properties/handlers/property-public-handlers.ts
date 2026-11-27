@@ -32,6 +32,7 @@ const localeQuery = z.object({
   ),
 });
 const slugParams = z.object({ slug: z.string().min(1) });
+const idParams = z.object({ id: z.string().min(1) });
 
 function localeFrom(lang: Locale | undefined): Locale {
   return lang ?? DEFAULT_LOCALE;
@@ -103,6 +104,54 @@ export function propertyPublicRouter(
     ),
   );
 
+  async function loadDetail(row: PropertyRow, query: z.infer<typeof localeQuery>) {
+    const quotes = await loadQuotes(exchangeRates);
+    const agentMatch = team === undefined ? null : await team.findPublicByPhone(row.agentPhone);
+    return serializeProperty(row, localeFrom(query.lang), {
+      imageUrls: await imageUrlsFor(media, row),
+      priceEquivalent: equivalentFor(row, query.displayCurrency, quotes),
+      agentPhotoUrl: agentMatch?.photoUrl ?? null,
+      agentSlug: agentMatch?.slug ?? null,
+      agentId: agentMatch?.id ?? null,
+    });
+  }
+
+  async function loadSimilar(row: PropertyRow, query: z.infer<typeof localeQuery>) {
+    const similar = await repo.findSimilar(row);
+    const locale = localeFrom(query.lang);
+    const quotes = await loadQuotes(exchangeRates);
+    return similar.map((item) =>
+      serializePropertyListItem(item, locale, {
+        priceEquivalent: equivalentFor(item, query.displayCurrency, quotes),
+      }),
+    );
+  }
+
+  // Detail by record id (public URL `/properties/{id}/`). Registered before the slug routes.
+  router.get(
+    '/properties/by-id/:id',
+    withValidation(
+      { params: idParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const row = await repo.getById(params.id);
+        if (row === undefined) throw new AppError('NOT_FOUND');
+        res.json({ data: await loadDetail(row, query) });
+      },
+    ),
+  );
+
+  router.get(
+    '/properties/by-id/:id/similar',
+    withValidation(
+      { params: idParams, query: localeQuery },
+      async ({ params, query }, _req, res) => {
+        const row = await repo.getById(params.id);
+        if (row === undefined) throw new AppError('NOT_FOUND');
+        res.json({ data: await loadSimilar(row, query) });
+      },
+    ),
+  );
+
   router.get(
     '/properties/:slug',
     withValidation(
@@ -110,16 +159,7 @@ export function propertyPublicRouter(
       async ({ params, query }, _req, res) => {
         const row = await repo.getBySlug(params.slug);
         if (row === undefined) throw new AppError('NOT_FOUND');
-        const quotes = await loadQuotes(exchangeRates);
-        const agentMatch = team === undefined ? null : await team.findPublicByPhone(row.agentPhone);
-        res.json({
-          data: serializeProperty(row, localeFrom(query.lang), {
-            imageUrls: await imageUrlsFor(media, row),
-            priceEquivalent: equivalentFor(row, query.displayCurrency, quotes),
-            agentPhotoUrl: agentMatch?.photoUrl ?? null,
-            agentSlug: agentMatch?.slug ?? null,
-          }),
-        });
+        res.json({ data: await loadDetail(row, query) });
       },
     ),
   );
@@ -131,16 +171,7 @@ export function propertyPublicRouter(
       async ({ params, query }, _req, res) => {
         const row = await repo.getBySlug(params.slug);
         if (row === undefined) throw new AppError('NOT_FOUND');
-        const similar = await repo.findSimilar(row);
-        const locale = localeFrom(query.lang);
-        const quotes = await loadQuotes(exchangeRates);
-        res.json({
-          data: similar.map((item) =>
-            serializePropertyListItem(item, locale, {
-              priceEquivalent: equivalentFor(item, query.displayCurrency, quotes),
-            }),
-          ),
-        });
+        res.json({ data: await loadSimilar(row, query) });
       },
     ),
   );

@@ -1,4 +1,4 @@
-import type { PropertyListQuery } from '@luxury-investment/shared';
+import { isRecordId, type PropertyListQuery } from '@luxury-investment/shared';
 import { and, count, desc, eq, gte, ilike, lte, ne, or, type SQL, sql } from 'drizzle-orm';
 
 import type { Database } from '../../../infrastructure/db/client.ts';
@@ -69,6 +69,16 @@ export class PropertyRepo {
       .select()
       .from(properties)
       .where(and(eq(properties.slug, slug), eq(properties.listingStatus, PUBLISHED)))
+      .limit(1);
+    return row;
+  }
+
+  async getById(id: string): Promise<PropertyRow | undefined> {
+    if (!isRecordId(id)) return undefined;
+    const [row] = await this.#db
+      .select()
+      .from(properties)
+      .where(and(eq(properties.id, id), eq(properties.listingStatus, PUBLISHED)))
       .limit(1);
     return row;
   }

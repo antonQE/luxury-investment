@@ -73,7 +73,7 @@ export class BrochureService {
     if (property === undefined) throw new AppError('NOT_FOUND', 'Property not found.');
 
     const toggles = mergeToggles(template.defaultToggles, input.toggles, DEFAULT_BROCHURE_TOGGLES);
-    const listingUrl = `${this.#publicSiteUrl}/obiavi/${property.slug}/`;
+    const listingUrl = `${this.#publicSiteUrl}/properties/${property.id}/`;
     const qrDataUrl = toggles.qr
       ? await QRCode.toDataURL(listingUrl, { margin: 1, width: 192 })
       : null;
@@ -130,7 +130,7 @@ export class BrochureService {
     const toggles = mergeToggles(template.defaultToggles, input.toggles, DEFAULT_SOCIAL_TOGGLES);
     const badgePreset = (input.badgePreset ?? template.badgePreset) as SocialBadgePreset;
     const size = SOCIAL_FORMAT_SIZE[template.format];
-    const listingUrl = `${this.#publicSiteUrl}/obiavi/${property.slug}/`;
+    const listingUrl = `${this.#publicSiteUrl}/properties/${property.id}/`;
 
     const html = buildSocialHtml({
       property: {
@@ -181,7 +181,7 @@ export class BrochureService {
   async getChannelCopy(propertyId: string) {
     const property = await this.#repo.getPropertyForBrochure(propertyId);
     if (property === undefined) throw new AppError('NOT_FOUND', 'Property not found.');
-    const listingUrl = `${this.#publicSiteUrl}/obiavi/${property.slug}/`;
+    const listingUrl = `${this.#publicSiteUrl}/properties/${property.id}/`;
     return {
       propertyId: property.id,
       listingUrl,

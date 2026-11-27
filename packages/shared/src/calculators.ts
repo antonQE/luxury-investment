@@ -170,6 +170,8 @@ export const mortgageEstimateQuerySchema = z.object({
 export type MortgageEstimateQuery = z.infer<typeof mortgageEstimateQuerySchema>;
 
 export const mortgageConsultantSchema = z.object({
+  /** Team member id; public profile is `/team/{id}/`. */
+  id: z.string(),
   name: z.string(),
   email: z.string().nullable(),
   phone: z.string().nullable(),

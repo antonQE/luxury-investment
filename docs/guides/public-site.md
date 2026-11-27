@@ -17,39 +17,41 @@ Local: http://localhost:3000
 | Progress | Top bar on client navigations |
 | SEO | Canonical, hreflang (`bg`, `en`, `x-default`), Open Graph / Twitter; property pages also emit JSON-LD |
 | Sitemap / robots | `/sitemap.xml`, `/robots.txt` |
-| Legacy redirects | e.g. `/oferti` → `/obiavi/`, `/agent` → `/ekip/`, `/novini` → `/stati/` |
+| Legacy redirects | e.g. `/oferti` → `/properties/`, `/agent` → `/team/`, `/novini` → `/articles/` |
 
 ### Primary navigation
 
 | Label key | Path (BG) | EN |
 |---|---|---|
 | Home | `/` | `/en/` |
-| Properties | `/obiavi/` | `/en/obiavi/` |
-| Investments | `/investicii/` (+ dropdown: overview, businesses) | `/en/investicii/`… |
-| Legal services | `/advokatski-uslugi/` | `/en/advokatski-uslugi/` |
-| About | `/za-nas/` | `/en/za-nas/` |
-| Team | `/ekip/` | `/en/ekip/` |
-| Articles | `/stati/` | `/en/stati/` |
-| Sell with us | `/prodai-s-nas/` | `/en/prodai-s-nas/` |
-| Documents | `/dokumenti/` | `/en/dokumenti/` |
-| Services | `/uslugi/` | `/en/uslugi/` |
+| Properties | `/properties/` | `/en/properties/` |
+| Investments | `/investments/` (+ dropdown: overview, businesses) | `/en/investments/`… |
+| Legal services | `/legal-services/` | `/en/legal-services/` |
+| About | `/about/` | `/en/about/` |
+| Team | `/team/` | `/en/team/` |
+| Articles | `/articles/` | `/en/articles/` |
+| Sell with us | `/sell-with-us/` | `/en/sell-with-us/` |
+| Documents | `/documents/` | `/en/documents/` |
+| Services | `/services/` | `/en/services/` |
 | Contact | `/contact/` | `/en/contact/` |
 
-CMS pages: `/stranici/{slug}/` (e.g. privacy, terms).
+Section paths use English segments for both locales (LI-125); old transliteration paths (`/obiavi/`, `/ekip/`, ...) are not redirected. Detail pages use the record id, not a slug (LI-126): `/properties/{id}/`, `/articles/{id}/`, `/team/{id}/`, `/pages/{id}/`, `/campaigns/{id}/` (id = UUID from the public API). Old slug detail URLs are not redirected; an unknown id shows the normal 404.
+
+CMS pages: `/pages/{id}/` (privacy and terms too; the footer, consent banner and form consent links, and the sitemap resolve their ids from the API).
 
 ---
 
 ## Home (`/`)
 
 - Full-bleed hero with brand, headline, lead and **hero search** (subset of listing filters).
-- Market shortcuts → `/obiavi/?market=sofia|black_sea|dubai_abroad`.
+- Market shortcuts → `/properties/?market=sofia|black_sea|dubai_abroad`.
 - Newest listings (up to 6) + link to all properties.
 - Partners strip when the API returns partners (logos → external sites).
 - Errors: catalogue load failure message; partners section omitted when empty.
 
 ---
 
-## Listings search (`/obiavi/`)
+## Listings search (`/properties/`)
 
 Results come from the public properties API. Filters live in the **URL** (shareable, back/forward). There is **no sort UI**.
 
@@ -76,12 +78,12 @@ Not exposed in the UI (API only): `priceCurrency`, `displayCurrency`.
 - Shows result count.
 - Property cards: cover, badges, deal/type, title, location, price, area, bedrooms.
 - Prev/next pagination when `total > limit`.
-- **Empty:** message, clear-filters link to `/obiavi/`, plus a **search-request inquiry form** (type `inquiry`, slug `search-request`) that appends the active filter summary into the message.
+- **Empty:** message, clear-filters link to `/properties/`, plus a **search-request inquiry form** (type `inquiry`, slug `search-request`) that appends the active filter summary into the message.
 - **Error:** load-failure message.
 
 ---
 
-## Property page (`/obiavi/{slug}/`)
+## Property page (`/properties/{id}/`)
 
 | Section | Features |
 |---|---|
@@ -96,7 +98,7 @@ Not exposed in the UI (API only): `priceCurrency`, `displayCurrency`.
 | Calculators (sale only) | Acquisition costs; deposit / initial funds; mortgage estimate (+ optional credit-consultant CTA) |
 | Similar | Grid of related listings or empty message |
 | Mobile bar | Fixed Call / Viber / WhatsApp |
-| Missing slug | Locale 404 |
+| Missing or unknown id | Locale 404 |
 
 Calculator UI states: loading, disabled, insufficient data, result + disclaimer.
 
@@ -106,19 +108,19 @@ Calculator UI states: loading, disabled, insufficient data, result + disclaimer.
 
 | Path | What it does |
 |---|---|
-| `/za-nas/` | About — i18n copy |
-| `/uslugi/` | Services — five cards (finance, legal, analysis, invest, manage) |
-| `/investicii/` | Investments overview + links |
-| `/investicii/biznesi/` | Businesses — title/lead |
-| `/advokatski-uslugi/` | Legal services — title/lead |
-| `/prodai-s-nas/` | Sell with us: CMS body (fallback i18n), seller-handbook download, 4 process steps, **consultation form** (`consultation`, slug `prodai-s-nas`) |
-| `/kampanii/{slug}/` | Campaign landing (sections: hero, benefits, FAQ, CTA, curated listings…). Not in main nav unless `showInNav`. Demo: `za-prodavachi`, `apartamenti-sofia` |
-| `/stati/` | Article index (title, excerpt, date); empty/error |
-| `/stati/{slug}/` | Article detail (cover, author, body); 404 → not-found |
-| `/stranici/{slug}/` | CMS page (optional hero, title, body) |
-| `/dokumenti/` | Document library grouped by kind; legal-sample disclaimer; download via API (`source=document-library`) |
-| `/ekip/` | Team grid → member pages |
-| `/ekip/{slug}/` | Photo, role, bio, qualifications, email, phone |
+| `/about/` | About — i18n copy |
+| `/services/` | Services — five cards (finance, legal, analysis, invest, manage) |
+| `/investments/` | Investments overview + links |
+| `/investments/businesses/` | Businesses — title/lead |
+| `/legal-services/` | Legal services — title/lead |
+| `/sell-with-us/` | Sell with us: CMS body (fallback i18n), seller-handbook download, 4 process steps, **consultation form** (`consultation`, slug `prodai-s-nas`) |
+| `/campaigns/{id}/` | Campaign landing (sections: hero, benefits, FAQ, CTA, curated listings…). Not in main nav unless `showInNav`. Demo: `za-prodavachi`, `apartamenti-sofia` |
+| `/articles/` | Article index (title, excerpt, date); empty/error |
+| `/articles/{id}/` | Article detail (cover, author, body); 404 → not-found |
+| `/pages/{id}/` | CMS page (optional hero, title, body) |
+| `/documents/` | Document library grouped by kind; legal-sample disclaimer; download via API (`source=document-library`) |
+| `/team/` | Team grid → member pages |
+| `/team/{id}/` | Photo, role, bio, qualifications, email, phone |
 | `/contact/` | Offices list (name, address, hours, phone, email, map); empty offices message |
 
 Partners appear on the home page only (no `/partners` route). Offices appear on contact only (no `/offices` route).
@@ -133,7 +135,7 @@ Document kinds (display order): `seller_handbook`, `power_of_attorney`, `declara
 |---|---|---|---|
 | Property inquiry / viewing | Property page | `inquiry` \| `viewing` | Bound to property slug |
 | Consultation | Sell with us | `consultation` | Slug `prodai-s-nas` |
-| Landing CTA | `/kampanii/{slug}/` | `consultation` | `source=landing` + UTM campaign/content from landing |
+| Landing CTA | `/campaigns/{id}/` | `consultation` | `source=landing` + UTM campaign/content from landing |
 | Search request | Listings empty state | `inquiry` | Slug `search-request`; filters in message |
 
 Shared: name, email, phone, message, consent checkbox, honeypot `website`. Success replaces the form; errors show inline.
@@ -164,4 +166,4 @@ Shared: name, email, phone, message, consent checkbox, honeypot `website`. Succe
 |---|---|
 | R1 | Shell, SEO, listings + filters, property page (gallery, inquiry, map, share), team/offices/partners, articles/pages, sell-with-us + handbook download, cookie consent, redirects/sitemap |
 | R2 | Document library page; acquisition / deposit / mortgage calculators on sale listings; FX display equivalents in API payloads |
-| R3 | Campaign landings (`/kampanii/{slug}`), marketing studio exports (admin); curated SEO landings with filtered listings; scheduled `publishAt` |
+| R3 | Campaign landings (`/campaigns/{id}`), marketing studio exports (admin); curated SEO landings with filtered listings; scheduled `publishAt` |

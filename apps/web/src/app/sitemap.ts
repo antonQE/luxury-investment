@@ -2,23 +2,23 @@ import { type Locale, LOCALES, type PublicPropertyListItem } from '@luxury-inves
 import type { MetadataRoute } from 'next';
 
 import { fetchProperties } from '@/lib/api/catalog';
+import { fetchLegalPageIds } from '@/lib/api/content';
 import { serverEnv } from '@/lib/config/env';
 import { absoluteUrl } from '@/lib/seo/paths';
 
 const STATIC_PATHS = [
   '/',
-  '/obiavi/',
-  '/za-nas/',
-  '/ekip/',
-  '/stati/',
-  '/prodai-s-nas/',
-  '/uslugi/',
+  '/properties/',
+  '/about/',
+  '/team/',
+  '/articles/',
+  '/sell-with-us/',
+  '/services/',
   '/contact/',
-  '/investicii/',
-  '/investicii/biznesi/',
-  '/advokatski-uslugi/',
-  '/stranici/privacy/',
-  '/stranici/terms/',
+  '/investments/',
+  '/investments/businesses/',
+  '/legal-services/',
+  '/documents/',
 ] as const;
 
 async function allPublishedProperties(locale: Locale): Promise<PublicPropertyListItem[]> {
@@ -45,8 +45,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const path of STATIC_PATHS) {
       entries.push({
         url: absoluteUrl(siteUrl, locale, path),
-        changeFrequency: path === '/' || path === '/obiavi/' ? 'daily' : 'weekly',
+        changeFrequency: path === '/' || path === '/properties/' ? 'daily' : 'weekly',
         priority: path === '/' ? 1 : 0.7,
+      });
+    }
+  }
+
+  for (const locale of LOCALES) {
+    const { privacy, terms } = await fetchLegalPageIds(locale);
+    for (const id of [privacy, terms]) {
+      if (id === null) continue;
+      entries.push({
+        url: absoluteUrl(siteUrl, locale, `/pages/${id}/`),
+        changeFrequency: 'monthly',
+        priority: 0.3,
       });
     }
   }
@@ -56,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const property of properties) {
       for (const locale of LOCALES) {
         entries.push({
-          url: absoluteUrl(siteUrl, locale, `/obiavi/${property.slug}/`),
+          url: absoluteUrl(siteUrl, locale, `/properties/${property.id}/`),
           lastModified: new Date(property.publishedAt),
           changeFrequency: 'weekly',
           priority: 0.8,

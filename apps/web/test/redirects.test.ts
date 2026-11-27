@@ -9,19 +9,19 @@ function run(path: string) {
 }
 
 describe('lookupRedirect', () => {
-  it('maps oferti aliases to obiavi', () => {
-    expect(lookupRedirect('/oferti/')).toBe('/obiavi/');
-    expect(lookupRedirect('/en/oferti/')).toBe('/en/obiavi/');
+  it('maps oferti aliases to properties', () => {
+    expect(lookupRedirect('/oferti/')).toBe('/properties/');
+    expect(lookupRedirect('/en/oferti/')).toBe('/en/properties/');
   });
 
   it('maps agent and novini section aliases', () => {
-    expect(lookupRedirect('/agent/')).toBe('/ekip/');
-    expect(lookupRedirect('/novini/')).toBe('/stati/');
-    expect(lookupRedirect('/en/novini/')).toBe('/en/stati/');
+    expect(lookupRedirect('/agent/')).toBe('/team/');
+    expect(lookupRedirect('/novini/')).toBe('/articles/');
+    expect(lookupRedirect('/en/novini/')).toBe('/en/articles/');
   });
 
   it('returns null for unknown paths', () => {
-    expect(lookupRedirect('/obiavi/')).toBeNull();
+    expect(lookupRedirect('/properties/')).toBeNull();
   });
 });
 
@@ -29,11 +29,11 @@ describe('proxy redirects', () => {
   it('answers sample legacy paths with HTTP 301', () => {
     const response = run('/oferti/');
     expect(response.status).toBe(301);
-    expect(new URL(response.headers.get('location') ?? '').pathname).toBe('/obiavi/');
+    expect(new URL(response.headers.get('location') ?? '').pathname).toBe('/properties/');
   });
 
   it('falls through when there is no redirect', () => {
-    const response = run('/obiavi/');
+    const response = run('/properties/');
     expect(response.status).not.toBe(301);
   });
 });

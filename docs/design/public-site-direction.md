@@ -41,7 +41,7 @@ Sizes: hero ~clamp(2.5rem, 5vw, 3.75rem); section titles ~1.75–2.25rem; body 1
 
 ## Key screens (live prototype)
 
-The running site at `/`, `/obiavi/`, `/obiavi/<slug>/` is the prototype for this direction after the token pass in this task.
+The running site at `/`, `/properties/`, `/properties/<slug>/` is the prototype for this direction after the token pass in this task.
 
 | Screen | What to judge |
 |---|---|

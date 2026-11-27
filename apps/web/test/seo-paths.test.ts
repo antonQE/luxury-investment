@@ -5,25 +5,25 @@ import { absoluteUrl, hreflangLanguages, localePath, normalizePath } from '../sr
 describe('seo paths', () => {
   it('normalizes paths with trailing slash', () => {
     expect(normalizePath('/')).toBe('/');
-    expect(normalizePath('/obiavi/')).toBe('/obiavi/');
-    expect(normalizePath('obiavi/foo')).toBe('/obiavi/foo/');
+    expect(normalizePath('/properties/')).toBe('/properties/');
+    expect(normalizePath('properties/foo')).toBe('/properties/foo/');
   });
 
   it('prefixes English only', () => {
     expect(localePath('bg', '/')).toBe('/');
-    expect(localePath('bg', '/obiavi')).toBe('/obiavi/');
+    expect(localePath('bg', '/properties')).toBe('/properties/');
     expect(localePath('en', '/')).toBe('/en/');
-    expect(localePath('en', '/obiavi/demo')).toBe('/en/obiavi/demo/');
+    expect(localePath('en', '/properties/demo')).toBe('/en/properties/demo/');
   });
 
   it('builds absolute URLs and hreflang map', () => {
     const site = 'https://luxuryinvestment.bg';
-    expect(absoluteUrl(site, 'bg', '/za-nas')).toBe('https://luxuryinvestment.bg/za-nas/');
-    expect(absoluteUrl(site, 'en', '/za-nas')).toBe('https://luxuryinvestment.bg/en/za-nas/');
-    expect(hreflangLanguages(site, '/obiavi')).toEqual({
-      bg: 'https://luxuryinvestment.bg/obiavi/',
-      en: 'https://luxuryinvestment.bg/en/obiavi/',
-      'x-default': 'https://luxuryinvestment.bg/obiavi/',
+    expect(absoluteUrl(site, 'bg', '/about')).toBe('https://luxuryinvestment.bg/about/');
+    expect(absoluteUrl(site, 'en', '/about')).toBe('https://luxuryinvestment.bg/en/about/');
+    expect(hreflangLanguages(site, '/properties')).toEqual({
+      bg: 'https://luxuryinvestment.bg/properties/',
+      en: 'https://luxuryinvestment.bg/en/properties/',
+      'x-default': 'https://luxuryinvestment.bg/properties/',
     });
   });
 });

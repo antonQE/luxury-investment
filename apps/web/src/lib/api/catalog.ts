@@ -54,12 +54,12 @@ export async function fetchProperties(
   );
 }
 
-export async function fetchProperty(locale: Locale, slug: string): Promise<PublicProperty> {
+export async function fetchProperty(locale: Locale, id: string): Promise<PublicProperty> {
   const body = await apiGet<{ data: PublicProperty }>(
-    `/v1/public/properties/${encodeURIComponent(slug)}${queryString({ lang: locale })}`,
+    `/v1/public/properties/by-id/${encodeURIComponent(id)}${queryString({ lang: locale })}`,
     {
       revalidate: PUBLIC_REVALIDATE_SECONDS,
-      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(slug)],
+      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(id)],
     },
   );
   return body.data;
@@ -67,13 +67,13 @@ export async function fetchProperty(locale: Locale, slug: string): Promise<Publi
 
 export async function fetchSimilarProperties(
   locale: Locale,
-  slug: string,
+  id: string,
 ): Promise<PublicPropertyListItem[]> {
   const body = await apiGet<{ data: PublicPropertyListItem[] }>(
-    `/v1/public/properties/${encodeURIComponent(slug)}/similar${queryString({ lang: locale })}`,
+    `/v1/public/properties/by-id/${encodeURIComponent(id)}/similar${queryString({ lang: locale })}`,
     {
       revalidate: PUBLIC_REVALIDATE_SECONDS,
-      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(slug)],
+      tags: [CACHE_TAGS.properties, CACHE_TAGS.property(id)],
     },
   );
   return body.data;

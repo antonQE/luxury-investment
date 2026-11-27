@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/i18n/navigation', () => ({
-  usePathname: () => '/obiavi',
+  usePathname: () => '/properties',
 }));
 
 import { NavigationProgress } from '@/components/ui/NavigationProgress';
@@ -16,7 +16,7 @@ describe('NavigationProgress', () => {
     render(
       <div>
         <NavigationProgress />
-        <a href="/obiavi?city=Sofia">Listings</a>
+        <a href="/properties?city=Sofia">Listings</a>
       </div>,
     );
 

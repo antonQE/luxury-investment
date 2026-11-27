@@ -83,7 +83,7 @@ export function HomeNewestProperties({
           <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('newestLead')}</h2>
         </div>
         <Link
-          href="/obiavi"
+          href="/properties"
           className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
           data-testid="home-view-all"
         >

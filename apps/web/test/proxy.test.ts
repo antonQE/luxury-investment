@@ -13,7 +13,7 @@ function isRedirect(response: Response) {
 
 describe('locale routing (proxy.ts)', () => {
   it('serves Bulgarian on unprefixed paths without redirecting', () => {
-    for (const path of ['/', '/obiavi/some-property/']) {
+    for (const path of ['/', '/properties/some-property/']) {
       const response = run(path);
       expect(isRedirect(response), path).toBe(false);
       expect(response.headers.get('x-middleware-rewrite'), path).toContain('/bg');
@@ -21,7 +21,7 @@ describe('locale routing (proxy.ts)', () => {
   });
 
   it('serves English under /en/ including nested paths', () => {
-    for (const path of ['/en/', '/en/obiavi/some-property/']) {
+    for (const path of ['/en/', '/en/properties/some-property/']) {
       const response = run(path);
       expect(isRedirect(response), path).toBe(false);
     }
@@ -33,10 +33,10 @@ describe('locale routing (proxy.ts)', () => {
   });
 
   it('redirects the superfluous /bg/ prefix to the unprefixed URL', () => {
-    const response = run('/bg/za-nas/');
+    const response = run('/bg/about/');
     expect(isRedirect(response)).toBe(true);
     // The trailing slash comes from `trailingSlash` in next.config.ts (applied by the next-intl
     // plugin at build time), so it is checked against the running app rather than here.
-    expect(new URL(response.headers.get('location') ?? '').pathname).toMatch(/^\/za-nas\/?$/);
+    expect(new URL(response.headers.get('location') ?? '').pathname).toMatch(/^\/about\/?$/);
   });
 });

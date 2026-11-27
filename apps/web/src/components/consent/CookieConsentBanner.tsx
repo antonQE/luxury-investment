@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
-import { Link } from '@/i18n/navigation';
+import { LegalLink } from '@/components/legal/LegalLink';
 import {
   CONSENT_OPEN_EVENT,
   readConsent,
@@ -45,12 +45,12 @@ export function CookieConsentBanner() {
           <p className="font-serif text-xl">{t('title')}</p>
           <p className="mt-2 text-sm text-ink-soft">
             {t('body')}{' '}
-            <Link
-              href="/stranici/privacy"
+            <LegalLink
+              page="privacy"
               className="underline underline-offset-2 hover:text-brass-dark"
             >
               {t('privacyLink')}
-            </Link>
+            </LegalLink>
           </p>
         </div>
         <div className="flex flex-wrap gap-3">

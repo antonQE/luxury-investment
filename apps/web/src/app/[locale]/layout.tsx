@@ -11,8 +11,10 @@ import { Analytics } from '@/components/consent/Analytics';
 import { CookieConsentBanner } from '@/components/consent/CookieConsentBanner';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { LegalPageIdsProvider } from '@/components/legal/LegalLink';
 import { NavigationProgress } from '@/components/ui/NavigationProgress';
 import { routing } from '@/i18n/routing';
+import { fetchLegalPageIds } from '@/lib/api/content';
 import { serverEnv } from '@/lib/config/env';
 
 const display = Source_Serif_4({
@@ -46,22 +48,25 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LocaleLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
+  const legalPageIds = await fetchLegalPageIds(locale);
 
   return (
     <html lang={locale} className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col bg-void font-sans antialiased">
         <NextIntlClientProvider>
-          <NavigationProgress />
-          <SiteHeader />
-          {/*
+          <LegalPageIdsProvider ids={legalPageIds}>
+            <NavigationProgress />
+            <SiteHeader />
+            {/*
             Content is only as tall as the page — do not flex-grow.
             Growing left a large cream band under the dark header on short pages.
           */}
-          <div className="page-enter page-surface">{children}</div>
-          <SiteFooter />
-          <CookieConsentBanner />
-          <SiteAnalytics />
-          <Analytics measurementId={serverEnv().NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
+            <div className="page-enter page-surface">{children}</div>
+            <SiteFooter />
+            <CookieConsentBanner />
+            <SiteAnalytics />
+            <Analytics measurementId={serverEnv().NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
+          </LegalPageIdsProvider>
         </NextIntlClientProvider>
       </body>
     </html>

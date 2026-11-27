@@ -5,8 +5,8 @@ import { propertyElements } from './property.elements.ts';
 export class PropertyPage {
   constructor(private readonly page: Page) {}
 
-  async goto(slug: string) {
-    await this.page.goto(`/obiavi/${slug}`);
+  async goto(id: string) {
+    await this.page.goto(`/properties/${id}`);
   }
 
   async expectShell() {
