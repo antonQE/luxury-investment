@@ -538,6 +538,7 @@
     "emptyPages": "No page views yet.",
     "emptyClicks": "No clicks recorded yet.",
     "loadError": "Could not load analytics.",
+    "kpiInfo": "What this metric means",
     "kpi": {
       "sessions": "Sessions",
       "sessionsTooltip": "Number of visits. A new session starts after 30 minutes without activity.",

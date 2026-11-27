@@ -1,4 +1,15 @@
-import { Box, HStack, SimpleGrid, Spinner, Table, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  IconButton,
+  Portal,
+  SimpleGrid,
+  Spinner,
+  Table,
+  Text,
+  Tooltip,
+  VStack,
+} from '@chakra-ui/react';
 import { SITE_INSIGHT_RANGES, type SiteInsightRange } from '@luxury-investment/shared';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -30,6 +41,65 @@ function formatDelta(value: number | null): string {
   const rounded = Math.round(value);
   const sign = rounded > 0 ? '+' : '';
   return `${sign}${String(rounded)}%`;
+}
+
+function MetricInfoTip({ text, testId }: { text: string; testId: string }) {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Tooltip.Root
+      open={open}
+      openDelay={150}
+      closeDelay={100}
+      positioning={{ placement: 'top' }}
+      onOpenChange={(details) => {
+        setOpen(details.open);
+      }}
+    >
+      <Tooltip.Trigger asChild>
+        <IconButton
+          type="button"
+          aria-label={t('analytics.kpiInfo')}
+          size="2xs"
+          variant="ghost"
+          color="text.muted"
+          minW="1.5rem"
+          h="1.5rem"
+          fontSize="sm"
+          cursor="help"
+          data-testid={testId}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            setOpen((current) => !current);
+          }}
+        >
+          ⓘ
+        </IconButton>
+      </Tooltip.Trigger>
+      <Portal>
+        <Tooltip.Positioner>
+          <Tooltip.Content
+            maxW="16rem"
+            px={3}
+            py={2}
+            fontSize="sm"
+            lineHeight="1.4"
+            bg="background.panel"
+            color="text.primary"
+            borderWidth="1px"
+            borderColor="border.default"
+            borderRadius="l2"
+            boxShadow="md"
+            zIndex="tooltip"
+          >
+            {text}
+          </Tooltip.Content>
+        </Tooltip.Positioner>
+      </Portal>
+    </Tooltip.Root>
+  );
 }
 
 function KpiCard({
@@ -69,17 +139,7 @@ function KpiCard({
         <Text fontSize="sm" color="text.muted" fontWeight="600">
           {label}
         </Text>
-        <Text
-          as="span"
-          fontSize="xs"
-          color="text.muted"
-          title={tooltip}
-          aria-label={tooltip}
-          cursor="help"
-          data-testid={`${testId}-tip`}
-        >
-          ⓘ
-        </Text>
+        <MetricInfoTip text={tooltip} testId={`${testId}-tip`} />
       </HStack>
       <Text fontSize="2xl" fontWeight="700" letterSpacing="-0.02em" mb={1}>
         {value}
