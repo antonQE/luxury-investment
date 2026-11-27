@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [{ "command": ".cursor/hooks/after-file-edit.sh", "timeout": 30 }],
+    "stop": [{ "command": ".cursor/hooks/stop-quality-gate.sh", "timeout": 240, "loop_limit": 2 }],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/guard-git.sh",
+        "matcher": "\\bgit\\b.*\\b(commit|push)\\b",
+        "timeout": 15,
+        "failClosed": true
+      }
+    ]
+  }
+}

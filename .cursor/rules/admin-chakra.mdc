@@ -1,0 +1,25 @@
+---
+description: Conventions for the admin panel (apps/admin, Chakra UI v3 + TanStack Query)
+globs: apps/admin/**/*
+alwaysApply: false
+---
+
+# Admin panel (apps/admin)
+
+- Paths in `src/constants/routes.ts`, routes in `src/App.tsx` (lazy page), sidebar in `src/components/layout/AppShell.tsx`.
+- API calls only through `src/api/endpoints/<resource>.ts` (typed functions + `xxxKeys` factory) on `apiClient`; never call axios directly from a page.
+- Server state with `useQuery` / `useMutation`; invalidate the resource keys on success.
+- Use `PageHeader`, `Panel`, `Field`, `AdminSelect`, `StatusBadge` from `src/components/ui/`.
+- Theme tokens only (`text.muted`, `status.ok`, `status.down`, `border.default`, `background.panel`); no raw hex.
+- Tooltips/popovers: Chakra `Tooltip.Root` + `Portal`, not the HTML `title` attribute.
+- Every data screen: loading, error and empty states.
+- Text through i18next; same keys in `src/i18n/locales/bg.json` and `en.json`.
+- Kebab-case, feature-scoped `data-testid` on inputs, buttons, tables and rows (`deal-stage-${id}`).
+- No `setState` in effects to mirror props; derive values instead.
+
+```tsx
+// Good: query + states
+const query = useQuery({ queryKey: dealKeys.list(), queryFn: fetchAdminDeals });
+if (query.isPending) return <Spinner />;
+if (query.isError) return <Text color="status.down">{t('deals.loadError')}</Text>;
+```

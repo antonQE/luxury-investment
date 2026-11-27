@@ -1,0 +1,15 @@
+---
+description: Testing conventions for Vitest and Playwright across the monorepo
+globs: "**/*.{test,spec}.{ts,tsx},apps/e2e/**/*,apps/api/test/**/*"
+alwaysApply: false
+---
+
+# Tests
+
+- Pick the cheapest layer that proves the behaviour: unit for pure logic, component test for UI behaviour, API integration for endpoints, one Playwright happy path for critical flows.
+- API integration tests: supertest against `createApp`, `resetDatabase` + seeds in `beforeEach`, real Postgres (`npm run db:up`).
+- Component tests: `// @vitest-environment jsdom`, mock endpoint modules and `react-i18next`, wrap in `ChakraProvider` (admin) and `QueryClientProvider`.
+- Playwright: specs in `apps/e2e/src/public` or `apps/e2e/src/admin`; testid maps in `src/pages/*.elements.ts`; admin uses the stored session from `auth.setup.ts`.
+- No sleeps; wait on visible state or `page.waitForResponse`. Unique data per run with `String(Date.now())`.
+- Tests are typechecked: type mocks explicitly (`AuthUser | null`), wrap numbers in `String()` inside template literals.
+- Coverage gate only for `apps/api`; never lower thresholds or delete a failing test to get green.

@@ -19,6 +19,9 @@ docs/**/*.xml
 next-env.d.ts
 *.tsbuildinfo
 
+# Cursor hook runtime state
+.cursor/hooks/.state/
+
 # Playwright
 apps/e2e/playwright-report/
 apps/e2e/test-results/

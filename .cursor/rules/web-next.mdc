@@ -1,0 +1,26 @@
+---
+description: Conventions for the public Next.js site (apps/web)
+globs: apps/web/**/*
+alwaysApply: false
+---
+
+# Public site (apps/web)
+
+- App Router under `src/app/[locale]/`; server components by default, `'use client'` only for interactive leaves.
+- Locales: Bulgarian without prefix, English under `/en/`; URLs keep the trailing slash. Use `Link` from `@/i18n/navigation`, not `next/link`, for internal links.
+- Data via `src/lib/api/*` (`apiGet`, server-only, ISR). Pages must survive `ApiError` 503 (API down) with a fallback.
+- Env only through `src/lib/config/env.ts`; client code reads `NEXT_PUBLIC_*` only.
+- Every page: `generateMetadata` via `buildPageMetadata`; new static paths go into `src/app/sitemap.ts`.
+- Text via next-intl; add keys to both `src/messages/bg.json` and `src/messages/en.json`.
+- Colors from Tailwind tokens in `src/app/globals.css` (`ink`, `stone`, `brass`, `paper`, `line`); no raw hex in components.
+- First-party analytics (`src/lib/analytics`) are not consent-gated; GA4 (`src/components/consent`) is. Keep them separate.
+- No impure calls (`Date.now()`, storage, random) during render.
+- Interactive elements get kebab-case `data-testid`.
+
+```tsx
+// Good: server page with metadata and translations
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('About');
+  return buildPageMetadata({ locale: await getLocale(), path: '/za-nas', title: t('title'), description: t('lead') });
+}
+```

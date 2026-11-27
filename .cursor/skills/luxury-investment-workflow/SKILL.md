@@ -42,6 +42,8 @@ apps/                          created by the scaffolding epic (after the stack 
 2. Register it in the index in `docs/requirements/README.md`.
 3. Do not start designing yet.
 
+Small change requests from non-developers (one feature or fix described in plain words) follow the `change-request` skill (`.cursor/skills/change-request/SKILL.md`): verbatim file + task files with acceptance criteria instead of a separate analysis document, then handoff after the requester confirms.
+
 The current specification is `docs/requirements/Luxury_Investment_Requirements_12_MD/` (start with `00_README.md`). Its requirement IDs (`SRCH-001`, `FLOW-005`, `B-03`, …) are referenced from epics and tasks as their source. Use the terms in `docs/glossary.md`.
 
 ### Phase 2: Analysis
@@ -111,8 +113,30 @@ Until the migration (EPIC-17), the app runs on seed data:
 ## Git conventions
 
 - Branch per task: `feat/LI-007-property-list-page` (`fix/`, `chore/`, `docs/` as appropriate).
-- Conventional Commits with the task ID as scope or footer: `feat(web): add property list page (LI-007)`.
+- Conventional Commits with the task ID in the header or footer: `feat(web): add property list page (LI-007)`.
 - Never commit secrets or `.env` files. Commit only when the user asks.
+
+### Commit message cheatsheet
+
+Enforced by `commitlint.config.js` (config-conventional + scope list). A rejected message aborts the commit after lint-staged already ran.
+
+| Part | Allowed |
+|---|---|
+| type | `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test` (never `feature`) |
+| scope | `web`, `admin`, `api`, `shared`, `infra`, `docs`, `e2e` (one scope; for a cross-app change use the main app; no invented scopes like `analytics`) |
+| lengths | header and every body line at most 100 characters |
+
+```text
+feat(admin): add site Insights KPI cards (LI-121)
+
+Range presets with previous-period deltas and metric tooltips.
+Overview served from daily rollups.
+```
+
+Before committing:
+
+- `git diff` vs `git diff --cached`: lint-staged checks the **staged** version, so a fix that is only in the working tree still fails.
+- Pre-commit runs ESLint + Prettier on staged files; pre-push runs `npm run typecheck` and `npm test`; CI also runs `npm audit --audit-level=high`, format check, coverage gate, build and e2e.
 
 ## Definition of Done
 
