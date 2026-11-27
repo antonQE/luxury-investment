@@ -38,7 +38,7 @@ const optionalHttpUrl = emptyToNull.pipe(
         value === null ||
         value.startsWith('https://') ||
         value.startsWith('http://'),
-      { message: 'URL must start with http:// or https://' },
+      { error: 'URL must start with http:// or https://' },
     ),
 );
 

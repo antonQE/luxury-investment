@@ -86,7 +86,7 @@ export const contactDuplicatesQuerySchema = z
     (query) =>
       (query.email !== undefined && query.email !== '') ||
       (query.phone !== undefined && query.phone !== ''),
-    { message: 'email or phone required' },
+    { error: 'email or phone required' },
   );
 
 export type ContactDuplicatesQuery = z.infer<typeof contactDuplicatesQuerySchema>;
