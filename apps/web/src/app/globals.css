@@ -107,6 +107,40 @@ h3,
   outline-offset: 3px;
 }
 
+/*
+ * Form fields: no rectangular focus outline. The field's own border (the underline on
+ * underline-style fields) turns brass and gains a 1px brass line beneath it instead.
+ * Checkboxes, radios and buttons keep the global outline above.
+ */
+input:not(
+    [type='checkbox'],
+    [type='radio'],
+    [type='button'],
+    [type='submit'],
+    [type='reset'],
+    [type='file'],
+    [type='range'],
+    [type='hidden']
+  ):focus,
+input:not(
+    [type='checkbox'],
+    [type='radio'],
+    [type='button'],
+    [type='submit'],
+    [type='reset'],
+    [type='file'],
+    [type='range'],
+    [type='hidden']
+  ):focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-brass);
+  box-shadow: 0 1px 0 0 var(--color-brass);
+}
+
 a {
   transition:
     color 0.2s ease,

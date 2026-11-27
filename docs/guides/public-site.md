@@ -140,6 +140,8 @@ Document kinds (display order): `seller_handbook`, `power_of_attorney`, `declara
 
 Shared: name, email, phone, message, consent checkbox, honeypot `website`. Success replaces the form; errors show inline.
 
+Field focus (search filters and all forms): no rectangular outline; the field's border/underline turns brass with a 1px brass line beneath. Links, buttons, checkboxes and radios keep the global brass focus outline.
+
 ---
 
 ## Cookie consent & analytics
