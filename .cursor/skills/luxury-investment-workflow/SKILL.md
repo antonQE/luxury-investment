@@ -124,7 +124,8 @@ Enforced by `commitlint.config.js` (config-conventional + scope list). A rejecte
 |---|---|
 | type | `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test` (never `feature`) |
 | scope | `web`, `admin`, `api`, `shared`, `infra`, `docs`, `e2e` (one scope; for a cross-app change use the main app; no invented scopes like `analytics`) |
-| lengths | header and every body line at most 100 characters |
+| subject | lower case start, imperative ("add", "fix"), **no full stop at the end** |
+| lengths | header and every body line at most 100 characters; blank line between header and body |
 
 ```text
 feat(admin): add site Insights KPI cards (LI-121)
