@@ -6,11 +6,15 @@ Local: http://localhost:3000
 
 ---
 
+## Visual language (LI-128 draft, pending PO approval)
+
+Palette tokens are unchanged (Gallery Stone). Added: slow one-time hero photo settle, scroll reveals with stagger (`Reveal`), brass hairlines that draw in, dark `PageHero` opener on every content page, elevated listing cards, dark gallery stage on the property page. All motion is switched off with `prefers-reduced-motion`.
+
 ## Global chrome
 
 | Feature | Behaviour |
 |---|---|
-| Header | Logo → home; primary nav; phone; BG/EN language switcher; mobile hamburger |
+| Header | Logo mark (PNG wordmark) → home; primary nav; phone; BG/EN language switcher; mobile hamburger. Transparent over the home photo; soft blur + brass hairline once the page scrolls (LI-128 draft). On home the small logo fades in after the hero logo scrolls away |
 | Footer | Brand, Sofia office copy, phone/email, nav (no Home), Privacy, Cookie settings, copyright |
 | Language | Same path under the other locale |
 | Cookie banner | Until choice (or reopened from footer): Necessary only / Accept all; link to privacy. GA4 loads only after analytics consent when configured |

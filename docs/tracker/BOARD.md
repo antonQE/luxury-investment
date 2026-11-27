@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-21`, `LI-128`
+Next IDs: `EPIC-21`, `LI-129`
 
 
 ## Releases
@@ -55,6 +55,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-128](tasks/LI-128-public-site-cinematic-polish.md) | Public site cinematic boutique polish (draft) | EPIC-06 | L |
 | [LI-127](tasks/LI-127-web-input-focus-underline.md) | Public input focus — underline only | EPIC-06 | S |
 | [LI-126](tasks/LI-126-public-detail-urls-by-id.md) | Public detail URLs by English section + id | EPIC-06 | L |
 | [LI-125](tasks/LI-125-english-section-urls.md) | English URLs for public site sections | EPIC-06 | M |

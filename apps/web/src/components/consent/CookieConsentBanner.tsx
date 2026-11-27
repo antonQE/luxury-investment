@@ -35,13 +35,13 @@ export function CookieConsentBanner() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-paper/92 px-6 py-6 backdrop-blur-md"
+      className="fixed inset-x-4 bottom-4 z-50 border border-line border-t-2 border-t-brass bg-paper px-6 py-6 shadow-[0_30px_50px_-30px_rgba(20,22,28,0.45)] md:right-auto md:bottom-6 md:left-6 md:max-w-md"
       role="dialog"
       aria-label={t('title')}
       data-testid="cookie-consent-banner"
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-2xl">
+      <div className="flex flex-col gap-5">
+        <div>
           <p className="font-serif text-xl">{t('title')}</p>
           <p className="mt-2 text-sm text-ink-soft">
             {t('body')}{' '}

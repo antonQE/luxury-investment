@@ -1,7 +1,7 @@
 export function PageLoader({ label = 'Loading' }: { label?: string }) {
   return (
     <div
-      className="flex min-h-[50vh] flex-col items-center justify-center gap-5 px-6"
+      className="loader-delayed flex min-h-[50vh] flex-col items-center justify-center gap-5 px-6"
       data-testid="page-loader"
       role="status"
       aria-live="polite"

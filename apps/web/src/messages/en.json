@@ -121,6 +121,7 @@
     "bathrooms": "{count, plural, one {# bathroom} other {# bathrooms}}",
     "description": "Description",
     "details": "Details",
+    "price": "Price",
     "agent": "Responsible agent",
     "call": "Call",
     "viber": "Viber",

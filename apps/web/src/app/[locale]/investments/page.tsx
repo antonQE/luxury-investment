@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { PageHero } from '@/components/ui/PageHero';
+import { Reveal } from '@/components/ui/Reveal';
 import { Link } from '@/i18n/navigation';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 
@@ -18,23 +20,31 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function InvestmentsPage() {
   const t = await getTranslations('Investments');
   const nav = await getTranslations('Nav');
+  const meta = await getTranslations('Meta');
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16 animate-fade-up" data-testid="investments-page">
-      <h1 className="font-serif text-4xl">{t('title')}</h1>
-      <p className="mt-4 text-lg text-ink-soft">{t('lead')}</p>
-      <p className="mt-6 leading-relaxed">{t('body')}</p>
-      <ul className="mt-10 flex flex-col gap-3 text-sm">
-        <li>
+    <main data-testid="investments-page">
+      <PageHero eyebrow={meta('siteName')} title={t('title')} lead={t('lead')} />
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <Reveal className="max-w-3xl">
+          <p className="text-lg leading-relaxed text-ink-soft">{t('body')}</p>
+        </Reveal>
+        <Reveal delay={120} className="mt-14 max-w-3xl border-t border-line">
           <Link
             href="/investments/businesses"
-            className="text-brass-dark transition hover:text-brass"
+            className="ruled-row group flex items-center justify-between border-b border-line py-7 font-serif text-2xl transition-colors duration-500 hover:text-brass-dark md:text-3xl"
             data-testid="investments-link-businesses"
           >
             {nav('businesses')}
+            <span
+              className="text-base text-brass transition-transform duration-500 group-hover:translate-x-2"
+              aria-hidden
+            >
+              →
+            </span>
           </Link>
-        </li>
-      </ul>
+        </Reveal>
+      </div>
     </main>
   );
 }

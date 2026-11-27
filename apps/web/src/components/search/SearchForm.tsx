@@ -61,7 +61,7 @@ export function SearchForm({
 
   const labelClass = isHero
     ? 'grid gap-1.5 text-[11px] tracking-[0.18em] uppercase text-stone/55'
-    : 'grid gap-1.5 text-[11px] tracking-[0.18em] uppercase text-ink-soft';
+    : 'grid gap-1.5 text-[11px] tracking-[0.2em] uppercase text-ink-soft';
   const fieldClass = isHero
     ? 'border-0 border-b border-stone/25 bg-transparent px-0 py-2.5 text-sm text-stone outline-none transition focus:border-brass'
     : 'border-0 border-b border-line bg-transparent px-0 py-2.5 text-sm text-ink outline-none transition focus:border-brass';
@@ -71,8 +71,8 @@ export function SearchForm({
       onSubmit={onSubmit}
       className={
         isHero
-          ? 'grid gap-5 md:grid-cols-4 md:items-end'
-          : 'grid gap-5 border border-line/80 bg-paper/80 p-5 backdrop-blur-sm md:grid-cols-4'
+          ? 'grid gap-6 md:grid-cols-4 md:items-end'
+          : 'grid gap-x-8 gap-y-6 border border-line border-t-2 border-t-brass bg-paper p-6 shadow-[0_34px_56px_-36px_rgba(20,22,28,0.45)] md:grid-cols-4 md:p-8'
       }
       data-testid={testId}
     >
@@ -127,7 +127,7 @@ export function SearchForm({
       {isHero ? (
         <button
           type="submit"
-          className="self-end bg-brass px-6 py-3 text-sm tracking-[0.18em] uppercase text-void transition hover:bg-brass-dark"
+          className="self-end bg-brass px-6 py-3.5 text-sm tracking-[0.2em] uppercase text-void transition duration-300 hover:bg-stone"
           data-testid="search-submit"
         >
           {t('submit')}
@@ -226,7 +226,7 @@ export function SearchForm({
           </label>
           <button
             type="submit"
-            className="self-end bg-ink px-6 py-3 text-sm tracking-[0.18em] uppercase text-stone transition hover:bg-brass-dark"
+            className="self-end bg-ink px-6 py-3.5 text-sm tracking-[0.2em] uppercase text-stone transition duration-300 hover:bg-brass-dark"
             data-testid="search-submit"
           >
             {t('submit')}

@@ -46,7 +46,7 @@ export default async function CampaignLandingPage({ params }: PageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-16" data-testid="landing-page">
+    <main className="mx-auto max-w-4xl px-6 py-20 md:py-28" data-testid="landing-page">
       <LandingSections
         locale={locale}
         landingSlug={landing.slug}

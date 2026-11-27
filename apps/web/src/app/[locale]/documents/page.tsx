@@ -1,5 +1,8 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHero } from '@/components/ui/PageHero';
+import { Reveal } from '@/components/ui/Reveal';
 import { ApiError } from '@/lib/api/client';
 import { documentDownloadUrl, fetchPublicDocuments } from '@/lib/api/documents';
 
@@ -14,6 +17,7 @@ const CATEGORY_ORDER = [
 export default async function DocumentsPage() {
   const locale = await getLocale();
   const t = await getTranslations('Documents');
+  const meta = await getTranslations('Meta');
 
   let items: Awaited<ReturnType<typeof fetchPublicDocuments>> = [];
   let loadError = false;
@@ -30,56 +34,62 @@ export default async function DocumentsPage() {
   })).filter((group) => group.items.length > 0);
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16" data-testid="documents-page">
-      <h1 className="font-serif text-4xl text-ink">{t('title')}</h1>
-      <p className="mt-3 text-ink-soft">{t('lead')}</p>
-
-      {loadError ? (
-        <p className="mt-8 text-ink-soft" data-testid="documents-error">
-          {t('error')}
-        </p>
-      ) : grouped.length === 0 ? (
-        <p className="mt-8 text-ink-soft" data-testid="documents-empty">
-          {t('empty')}
-        </p>
-      ) : (
-        <div className="mt-10 space-y-12">
-          {grouped.map((group) => (
-            <section key={group.kind} data-testid={`documents-group-${group.kind}`}>
-              <h2 className="font-serif text-2xl text-ink">{t(`categories.${group.kind}`)}</h2>
-              <ul className="mt-4 space-y-6">
-                {group.items.map((item) => (
-                  <li
-                    key={item.id}
-                    className="border-b border-line pb-6"
-                    data-testid={`document-item-${item.slug}`}
-                  >
-                    <h3 className="text-lg text-ink">{item.title}</h3>
-                    {item.description !== '' ? (
-                      <p className="mt-2 text-sm text-ink-soft">{item.description}</p>
-                    ) : null}
-                    {item.legalSample ? (
-                      <p
-                        className="mt-2 text-xs text-ink-soft"
-                        data-testid={`document-legal-${item.slug}`}
-                      >
-                        {t('legalDisclaimer')}
-                      </p>
-                    ) : null}
-                    <a
-                      className="mt-3 inline-block text-sm underline underline-offset-2"
-                      href={documentDownloadUrl(item.slug)}
-                      data-testid={`document-download-${item.slug}`}
+    <main data-testid="documents-page">
+      <PageHero eyebrow={meta('siteName')} title={t('title')} lead={t('lead')} />
+      <div className="mx-auto max-w-4xl px-6 py-20 md:py-28">
+        {loadError ? (
+          <p className="text-ink-soft" data-testid="documents-error">
+            {t('error')}
+          </p>
+        ) : grouped.length === 0 ? (
+          <EmptyState title={t('empty')} testId="documents-empty" />
+        ) : (
+          <div className="space-y-20">
+            {grouped.map((group) => (
+              <section key={group.kind} data-testid={`documents-group-${group.kind}`}>
+                <Reveal>
+                  <h2 className="flex items-center gap-3 font-serif text-2xl text-ink md:text-3xl">
+                    <span className="h-px w-8 bg-brass" aria-hidden />
+                    {t(`categories.${group.kind}`)}
+                  </h2>
+                </Reveal>
+                <ul className="mt-8 border-t border-line">
+                  {group.items.map((item, index) => (
+                    <Reveal
+                      as="li"
+                      key={item.id}
+                      delay={(index % 4) * 70}
+                      data-testid={`document-item-${item.slug}`}
                     >
-                      {t('download')}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-      )}
+                      <div className="ruled-row border-b border-line py-8">
+                        <h3 className="font-serif text-xl text-ink">{item.title}</h3>
+                        {item.description !== '' ? (
+                          <p className="mt-2 text-sm text-ink-soft">{item.description}</p>
+                        ) : null}
+                        {item.legalSample ? (
+                          <p
+                            className="mt-2 text-xs text-ink-soft"
+                            data-testid={`document-legal-${item.slug}`}
+                          >
+                            {t('legalDisclaimer')}
+                          </p>
+                        ) : null}
+                        <a
+                          className="mt-4 inline-block text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+                          href={documentDownloadUrl(item.slug)}
+                          data-testid={`document-download-${item.slug}`}
+                        >
+                          {t('download')} ↓
+                        </a>
+                      </div>
+                    </Reveal>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        )}
+      </div>
     </main>
   );
 }

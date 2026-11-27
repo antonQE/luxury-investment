@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { PageHero } from '@/components/ui/PageHero';
 import { Link } from '@/i18n/navigation';
 
 export default async function NotFoundPage() {
@@ -7,12 +8,16 @@ export default async function NotFoundPage() {
   const nav = await getTranslations('Nav');
 
   return (
-    <main className="mx-auto max-w-xl px-6 py-24 text-center" data-testid="not-found">
-      <h1 className="font-serif text-4xl">{t('notFoundTitle')}</h1>
-      <p className="mt-4 text-ink-soft">{t('notFoundBody')}</p>
-      <Link href="/" className="mt-8 inline-block text-gold-dark">
-        {nav('home')}
-      </Link>
+    <main data-testid="not-found">
+      <PageHero title={t('notFoundTitle')} lead={t('notFoundBody')}>
+        <Link
+          href="/"
+          className="inline-block text-xs tracking-[0.2em] uppercase text-brass transition hover:text-stone"
+        >
+          {nav('home')} →
+        </Link>
+      </PageHero>
+      <div className="h-24 md:h-40" aria-hidden />
     </main>
   );
 }

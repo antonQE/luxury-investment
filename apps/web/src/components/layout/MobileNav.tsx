@@ -37,7 +37,7 @@ export function MobileNav() {
       {open ? (
         <nav
           id="mobile-nav-panel"
-          className="absolute inset-x-0 top-full z-20 border-t border-brass/20 bg-void px-6 py-4"
+          className="animate-fade-in absolute inset-x-0 top-full z-20 border-t border-brass/20 bg-void/95 px-6 py-5 backdrop-blur-xl"
           aria-label={t('mainNav')}
           data-testid="mobile-nav"
         >

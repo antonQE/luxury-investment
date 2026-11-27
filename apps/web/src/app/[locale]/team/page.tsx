@@ -2,7 +2,10 @@ import type { PublicTeamMember } from '@luxury-investment/shared';
 import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
+import { PageHero } from '@/components/ui/PageHero';
 import { RemoteImage } from '@/components/ui/RemoteImage';
+import { Reveal } from '@/components/ui/Reveal';
 import { Link } from '@/i18n/navigation';
 import { fetchTeam } from '@/lib/api/team';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -20,6 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function TeamPage() {
   const t = await getTranslations('Team');
+  const meta = await getTranslations('Meta');
   const locale = await getLocale();
 
   let members: PublicTeamMember[] = [];
@@ -31,47 +35,54 @@ export default async function TeamPage() {
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-16" data-testid="team-page">
-      <h1 className="font-serif text-4xl">{t('title')}</h1>
-      <p className="mt-4 max-w-2xl text-lg text-ink-soft">{t('lead')}</p>
-
-      {loadError ? (
-        <p className="mt-10 text-ink-soft" data-testid="team-error">
-          {t('error')}
-        </p>
-      ) : (
-        <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {members.map((member) => (
-            <li key={member.id}>
-              <Link
-                href={`/team/${member.id}`}
-                className="group flex flex-col transition duration-500 ease-out hover:-translate-y-1"
-                data-testid={`team-card-${member.slug}`}
-              >
-                {member.photoUrl !== null ? (
-                  <div className="relative aspect-[4/3] overflow-hidden bg-void/5">
-                    <RemoteImage
-                      src={member.photoUrl}
-                      alt=""
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover object-top transition duration-700 ease-out group-hover:scale-[1.04]"
+    <main data-testid="team-page">
+      <PageHero eyebrow={meta('siteName')} title={t('title')} lead={t('lead')} />
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        {loadError ? (
+          <p className="text-ink-soft" data-testid="team-error">
+            {t('error')}
+          </p>
+        ) : (
+          <ul className="grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:gap-x-14 lg:gap-y-20 xl:grid-cols-2">
+            {members.map((member, index) => (
+              <Reveal as="li" key={member.id} delay={(index % 2) * 120}>
+                <Link
+                  href={`/team/${member.id}`}
+                  className="group flex flex-col"
+                  data-testid={`team-card-${member.slug}`}
+                >
+                  {member.photoUrl !== null ? (
+                    <div className="relative aspect-[3/4] overflow-hidden bg-void/5 shadow-[0_28px_48px_-36px_rgba(20,22,28,0.45)]">
+                      <RemoteImage
+                        src={member.photoUrl}
+                        alt=""
+                        fill
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-cover object-top transition duration-[1600ms] ease-out group-hover:scale-[1.025]"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/25 via-transparent to-transparent opacity-80 transition duration-700 group-hover:opacity-100" />
+                    </div>
+                  ) : (
+                    <div className="aspect-[3/4] w-full overflow-hidden">
+                      <MediaPlaceholder />
+                    </div>
+                  )}
+                  <div className="pt-7">
+                    <span
+                      className="mb-4 block h-px w-8 bg-brass transition-[width] duration-500 group-hover:w-12"
+                      aria-hidden
                     />
+                    <h2 className="font-serif text-2xl leading-snug md:text-[1.85rem]">
+                      {member.name}
+                    </h2>
+                    <p className="mt-2 text-sm tracking-wide text-ink-soft">{member.role}</p>
                   </div>
-                ) : (
-                  <div className="aspect-[4/3] w-full bg-void/5" />
-                )}
-                <div className="pt-5">
-                  <h2 className="font-serif text-xl leading-snug transition group-hover:text-brass-dark md:text-[1.35rem]">
-                    {member.name}
-                  </h2>
-                  <p className="mt-1 text-sm text-ink-soft">{member.role}</p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        )}
+      </div>
     </main>
   );
 }

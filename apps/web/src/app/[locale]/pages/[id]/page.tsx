@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PlainTextBody } from '@/components/content/PlainTextBody';
+import { PageHero } from '@/components/ui/PageHero';
+import { Reveal } from '@/components/ui/Reveal';
 import { ApiError } from '@/lib/api/client';
 import { fetchPage } from '@/lib/api/content';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -45,14 +47,30 @@ export default async function CmsPage({ params }: PageProps) {
     throw error;
   }
 
+  const meta = await getTranslations('Meta');
+
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16" data-testid="cms-page">
-      {page.heroUrl !== null ? (
-        // eslint-disable-next-line @next/next/no-img-element -- remote demo URLs
-        <img src={page.heroUrl} alt="" className="mb-10 aspect-[21/9] w-full object-cover" />
-      ) : null}
-      <h1 className="font-serif text-4xl">{page.title}</h1>
-      <PlainTextBody text={page.body} testId="cms-page-body" />
+    <main data-testid="cms-page">
+      <PageHero
+        eyebrow={meta('siteName')}
+        title={page.title}
+        tall={page.heroUrl !== null}
+        media={
+          page.heroUrl !== null ? (
+            // eslint-disable-next-line @next/next/no-img-element -- remote demo URLs
+            <img src={page.heroUrl} alt="" className="hero-media size-full object-cover" />
+          ) : undefined
+        }
+      />
+      <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
+        <Reveal>
+          <PlainTextBody
+            text={page.body}
+            className="space-y-5 text-lg leading-relaxed text-ink-soft"
+            testId="cms-page-body"
+          />
+        </Reveal>
+      </div>
     </main>
   );
 }

@@ -53,7 +53,7 @@ export function ConsultationForm() {
       onSubmit={(event) => {
         void onSubmit(event);
       }}
-      className="grid gap-3 border border-line bg-paper p-4"
+      className="grid gap-4 border border-line border-t-2 border-t-brass bg-paper p-6 shadow-[0_30px_50px_-36px_rgba(20,22,28,0.35)]"
       data-testid="consultation-form"
     >
       <p className="text-xs tracking-[0.2em] uppercase text-brass">{t('title')}</p>
@@ -122,7 +122,7 @@ export function ConsultationForm() {
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="justify-self-start bg-brass px-5 py-2 text-sm tracking-wide text-void uppercase transition hover:bg-brass-dark disabled:opacity-60"
+        className="justify-self-start bg-brass px-6 py-3 text-xs tracking-[0.2em] text-void uppercase transition duration-300 hover:bg-brass-dark disabled:opacity-60"
         data-testid="consultation-submit"
       >
         {status === 'submitting' ? t('submitting') : t('submit')}

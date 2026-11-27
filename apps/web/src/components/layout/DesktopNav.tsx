@@ -87,7 +87,7 @@ function DesktopNavInner() {
           <Link
             key={item.href}
             href={item.href}
-            className="shrink-0 whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
+            className="nav-link shrink-0 whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
             data-testid={`nav-${item.key}`}
             onClick={closeMenu}
           >
@@ -122,7 +122,7 @@ function NavMenu({
     <div className="relative shrink-0" data-nav-menu={menuKey}>
       <button
         type="button"
-        className="cursor-pointer whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
+        className="nav-link cursor-pointer whitespace-nowrap px-0.5 text-[13px] tracking-[0.02em] text-stone/80 transition hover:text-brass 2xl:text-[15px]"
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
@@ -137,11 +137,11 @@ function NavMenu({
       {open ? (
         <div
           id={menuId}
-          className="absolute left-0 top-full z-30 min-w-[12rem] pt-3"
+          className="animate-fade-in absolute left-0 top-full z-30 min-w-[12rem] pt-4"
           data-testid={`${testId}-submenu`}
           role="menu"
         >
-          <ul className="border border-white/10 bg-void/95 py-2 backdrop-blur-md">
+          <ul className="border border-brass/20 bg-void/95 py-2 backdrop-blur-md">
             {childrenItems.map((child) => (
               <li key={child.href} role="none">
                 <Link

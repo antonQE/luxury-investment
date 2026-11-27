@@ -73,10 +73,8 @@ const rows = [
     primaryAreaLabelEn: 'Built-up area',
     constructionStage: 'act_16',
     badges: ['exclusive'],
-    imageUrls: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
-    ],
+    // Intentionally empty so the public site shows the animated media placeholder.
+    imageUrls: [],
     agentName: 'Demo Агент Петров',
     agentPhone: PHONE.petrov,
     publishedAt: new Date('2026-10-18T10:00:00Z'),
@@ -339,6 +337,7 @@ export const propertiesSeed: SeedModule = {
         set: {
           agentName: sql`excluded.agent_name`,
           agentPhone: sql`excluded.agent_phone`,
+          imageUrls: sql`excluded.image_urls`,
         },
       });
   },

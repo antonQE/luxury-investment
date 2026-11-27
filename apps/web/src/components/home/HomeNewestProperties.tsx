@@ -5,6 +5,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useState, useTransition } from 'react';
 
 import { PropertyCard } from '@/components/property/PropertyCard';
+import { Reveal } from '@/components/ui/Reveal';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Link } from '@/i18n/navigation';
 
 const PAGE_SIZE = 8;
@@ -76,33 +78,29 @@ export function HomeNewestProperties({
   };
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-newest">
-      <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
-        <div>
-          <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('newestTitle')}</p>
-          <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('newestLead')}</h2>
-        </div>
-        <Link
-          href="/properties"
-          className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
-          data-testid="home-view-all"
-        >
-          {t('viewAll')}
-        </Link>
-      </div>
+    <section className="mx-auto max-w-6xl px-6 pb-24 md:pb-32" data-testid="home-newest">
+      <SectionHeader
+        eyebrow={t('newestTitle')}
+        title={t('newestLead')}
+        action={
+          <Link
+            href="/properties"
+            className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+            data-testid="home-view-all"
+          >
+            {t('viewAll')}
+          </Link>
+        }
+      />
 
       <div
         className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5"
         data-testid="property-grid"
       >
-        {items.map((property) => (
-          <PropertyCard
-            key={property.id}
-            property={property}
-            locale={locale}
-            labels={labels}
-            compact
-          />
+        {items.map((property, index) => (
+          <Reveal key={property.id} delay={(index % 4) * 90} className="h-full">
+            <PropertyCard property={property} locale={locale} labels={labels} compact />
+          </Reveal>
         ))}
       </div>
 
@@ -113,10 +111,10 @@ export function HomeNewestProperties({
       ) : null}
 
       {hasMore ? (
-        <div className="mt-12 flex justify-center">
+        <div className="mt-14 flex justify-center">
           <button
             type="button"
-            className="cursor-pointer border border-ink bg-ink px-8 py-3 text-xs tracking-[0.18em] uppercase text-stone transition hover:border-brass hover:bg-brass-dark"
+            className="inline-flex min-w-60 cursor-pointer items-center justify-center gap-3 border border-ink px-12 py-4 text-xs leading-none tracking-[0.24em] uppercase text-ink transition duration-300 hover:bg-ink hover:text-stone disabled:cursor-wait disabled:opacity-60"
             onClick={loadMore}
             disabled={pending}
             data-testid="home-load-more"

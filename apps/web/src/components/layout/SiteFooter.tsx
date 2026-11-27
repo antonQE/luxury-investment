@@ -1,8 +1,10 @@
 import { toMailtoHref, toTelHref } from '@luxury-investment/shared';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
 import { CookieSettingsButton } from '@/components/consent/CookieSettingsButton';
 import { LegalLink } from '@/components/legal/LegalLink';
+import { Reveal } from '@/components/ui/Reveal';
 import { Link } from '@/i18n/navigation';
 import { fetchSiteSettings } from '@/lib/api/site-settings';
 
@@ -24,11 +26,20 @@ export async function SiteFooter() {
   const emailHref = toMailtoHref(emailLabel);
 
   return (
-    <footer className="border-t border-white/10 bg-void text-stone" data-testid="site-footer">
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-3">
+    <footer className="bg-void text-stone" data-testid="site-footer">
+      <span className="brass-rule mx-auto max-w-6xl opacity-60" aria-hidden />
+      <Reveal className="mx-auto grid max-w-6xl gap-14 px-6 py-20 md:grid-cols-3 md:gap-12 md:py-24">
         <div>
-          <p className="font-serif text-2xl tracking-[0.03em]">Luxury Investment</p>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-stone/60">{t('tagline')}</p>
+          <div className="aspect-[1024/181] w-60 overflow-hidden" data-testid="footer-logo">
+            <Image
+              src="/brand/logo-luxury-investment.png"
+              alt="Luxury Investment"
+              width={1024}
+              height={237}
+              className="-mt-[4.5%] -ml-[8%] h-auto w-[116%] max-w-none"
+            />
+          </div>
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-stone/60">{t('tagline')}</p>
         </div>
         <div>
           <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('office')}</p>
@@ -91,8 +102,8 @@ export async function SiteFooter() {
           </LegalLink>
           <CookieSettingsButton />
         </nav>
-      </div>
-      <div className="border-t border-brass/15 px-6 py-4 text-center text-xs text-stone/50">
+      </Reveal>
+      <div className="border-t border-stone/10 px-6 py-5 text-center text-xs tracking-[0.08em] text-stone/45">
         {t('rights', { year: new Date().getFullYear() })}
       </div>
     </footer>

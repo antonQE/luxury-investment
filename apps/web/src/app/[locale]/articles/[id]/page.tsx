@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PlainTextBody } from '@/components/content/PlainTextBody';
+import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
+import { PageHero } from '@/components/ui/PageHero';
+import { Reveal } from '@/components/ui/Reveal';
 import { Link } from '@/i18n/navigation';
 import { ApiError } from '@/lib/api/client';
 import { fetchArticle } from '@/lib/api/content';
@@ -47,30 +50,52 @@ export default async function ArticlePage({ params }: PageProps) {
     throw error;
   }
 
+  const meta = await getTranslations('Meta');
+
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16" data-testid="article-page">
-      <Link
-        href="/articles"
-        className="text-sm tracking-wide uppercase text-brass-dark transition hover:text-brass"
-      >
-        {t('back')}
-      </Link>
-      {article.coverUrl !== null ? (
-        // eslint-disable-next-line @next/next/no-img-element -- remote demo URLs
-        <img
-          src={article.coverUrl}
-          alt=""
-          className="mt-8 aspect-[16/9] w-full object-cover"
-          data-testid="article-cover"
-        />
-      ) : null}
-      <h1 className="mt-8 font-serif text-4xl">{article.title}</h1>
-      {article.authorName !== null ? (
-        <p className="mt-3 text-sm text-ink-soft">
-          {t('by')} {article.authorName}
-        </p>
-      ) : null}
-      <PlainTextBody text={article.body} testId="article-body" />
+    <main data-testid="article-page">
+      <PageHero
+        eyebrow={meta('siteName')}
+        title={article.title}
+        tall
+        media={
+          article.coverUrl !== null ? (
+            // eslint-disable-next-line @next/next/no-img-element -- remote demo URLs
+            <img
+              src={article.coverUrl}
+              alt=""
+              className="hero-media size-full object-cover"
+              data-testid="article-cover"
+            />
+          ) : (
+            <div className="size-full" data-testid="article-cover-placeholder">
+              <MediaPlaceholder />
+            </div>
+          )
+        }
+        lead={
+          article.authorName !== null ? (
+            <>
+              {t('by')} {article.authorName}
+            </>
+          ) : undefined
+        }
+      />
+      <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+        <Link
+          href="/articles"
+          className="text-xs tracking-[0.2em] uppercase text-brass-dark transition hover:text-brass"
+        >
+          {t('back')}
+        </Link>
+        <Reveal>
+          <PlainTextBody
+            text={article.body}
+            className="mt-10 space-y-5 text-lg leading-relaxed text-ink-soft"
+            testId="article-body"
+          />
+        </Reveal>
+      </div>
     </main>
   );
 }

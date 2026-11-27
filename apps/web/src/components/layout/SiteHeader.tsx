@@ -1,9 +1,10 @@
 import { toTelHref } from '@luxury-investment/shared';
 
-import { Link } from '@/i18n/navigation';
 import { fetchSiteSettings } from '@/lib/api/site-settings';
 
 import { DesktopNav } from './DesktopNav';
+import { HeaderChrome } from './HeaderChrome';
+import { HeaderLogo } from './HeaderLogo';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { MobileNav } from './MobileNav';
 
@@ -38,18 +39,9 @@ export async function SiteHeader() {
   const phoneHref = toTelHref(phoneLabel);
 
   return (
-    <header
-      className="sticky top-0 z-50 animate-fade-in border-b border-white/10 bg-void/95 text-stone shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-md"
-      data-testid="site-header"
-    >
-      <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-visible px-4 py-3.5 xl:gap-5 xl:px-6 xl:py-4">
-        <Link
-          href="/"
-          className="relative z-10 shrink-0 whitespace-nowrap font-serif text-lg tracking-[0.04em] text-stone xl:text-xl"
-          data-testid="site-logo"
-        >
-          Luxury Investment
-        </Link>
+    <HeaderChrome>
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 overflow-visible px-4 xl:h-[4.5rem] xl:gap-5 xl:px-6">
+        <HeaderLogo />
 
         <DesktopNav />
 
@@ -69,6 +61,6 @@ export async function SiteHeader() {
           <MobileNav />
         </div>
       </div>
-    </header>
+    </HeaderChrome>
   );
 }

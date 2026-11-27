@@ -48,13 +48,19 @@ export async function PropertyKeyFacts({
 
   return (
     <dl
-      className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-5 sm:grid-cols-4"
+      className="grid grid-cols-2 gap-x-8 gap-y-8 border border-line bg-paper px-7 py-7 shadow-[0_30px_50px_-34px_rgba(20,22,28,0.4)] sm:grid-cols-4 md:px-12 md:py-10"
       data-testid="property-key-facts"
     >
       {items.map((item) => (
-        <div key={item.testId} data-testid={item.testId}>
-          <dt className="text-[11px] tracking-[0.18em] uppercase text-brass">{item.label}</dt>
-          <dd className="mt-1 font-serif text-2xl">{item.value}</dd>
+        <div
+          key={item.testId}
+          className="sm:border-l sm:border-line sm:pl-7 sm:first:border-l-0 sm:first:pl-0"
+          data-testid={item.testId}
+        >
+          <dt className="text-[11px] tracking-[0.2em] uppercase text-brass">{item.label}</dt>
+          <dd className="mt-3 font-serif text-[1.65rem] leading-none md:text-[1.9rem]">
+            {item.value}
+          </dd>
         </div>
       ))}
     </dl>

@@ -121,6 +121,7 @@
     "bathrooms": "{count, plural, one {# баня} other {# бани}}",
     "description": "Описание",
     "details": "Детайли",
+    "price": "Цена",
     "agent": "Отговорен брокер",
     "call": "Обади се",
     "viber": "Viber",

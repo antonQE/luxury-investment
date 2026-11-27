@@ -44,6 +44,11 @@
   }
 }
 
+/** Delayed fade-in so quick navigations never flash a loader. */
+.loader-delayed {
+  animation: fade-in 0.4s ease-out 0.4s both;
+}
+
 @keyframes loader-spin {
   to {
     transform: rotate(360deg);
@@ -163,11 +168,311 @@ a {
     linear-gradient(180deg, #f6f3ed 0%, var(--color-stone) 28%, #efebe4 100%);
 }
 
+/* ------------------------------------------------------------------ */
+/* LI-128 cinematic polish — draft. Palette tokens above are untouched. */
+/* ------------------------------------------------------------------ */
+
+@keyframes hero-settle {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/** Slow one-time "settle" of the hero photograph (no loop). */
+.hero-media {
+  animation: hero-settle 18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform;
+}
+
+/** Hero scrim: darker at the top (header legibility), at the bottom and on the text side. */
+.hero-scrim {
+  background-image:
+    linear-gradient(90deg, rgba(18, 20, 26, 0.62) 0%, rgba(18, 20, 26, 0.18) 62%, transparent 100%),
+    linear-gradient(
+      180deg,
+      rgba(18, 20, 26, 0.72) 0%,
+      rgba(18, 20, 26, 0.28) 24%,
+      rgba(18, 20, 26, 0.4) 56%,
+      rgba(18, 20, 26, 0.94) 100%
+    );
+}
+
+/** Thin brass hairline that fades out to the right; draws itself in once. */
+.brass-rule {
+  display: block;
+  height: 1px;
+  width: 100%;
+  transform-origin: left center;
+  background-image: linear-gradient(90deg, var(--color-brass), rgba(166, 132, 69, 0));
+  animation: rule-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/*
+ * Scroll reveal. Content is visible by default (SSR, navigation, in-view blocks) so nothing
+ * flashes. Only blocks that start below the fold are marked data-reveal="pending" by <Reveal>
+ * before paint, then fade in once they scroll into view.
+ */
+.reveal {
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal[data-reveal='pending'] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+
+/* Rules inside a reveal block draw when the block enters. */
+.reveal .brass-rule {
+  animation: none;
+  transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--reveal-delay, 0ms) + 250ms);
+}
+
+.reveal[data-reveal='pending'] .brass-rule {
+  transform: scaleX(0);
+}
+
+/** Dark page-opening band for content pages (same language as the home hero). */
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--color-stone);
+  background-color: var(--color-void);
+  background-image: linear-gradient(
+    180deg,
+    var(--color-void) 0%,
+    color-mix(in srgb, var(--color-void) 93%, var(--color-stone)) 100%
+  );
+}
+
+/** Photographic stage that frames the property gallery. */
+.property-stage {
+  color: var(--color-stone);
+  background-color: var(--color-void);
+  background-image: linear-gradient(
+    180deg,
+    var(--color-void) 0%,
+    color-mix(in srgb, var(--color-void) 93%, var(--color-stone)) 100%
+  );
+}
+
+/** Missing-photo placeholder: quiet floating brass geometry on void. */
+@keyframes placeholder-drift-a {
+  0%,
+  100% {
+    transform: translate(-8%, -6%) scale(1);
+  }
+  50% {
+    transform: translate(10%, 8%) scale(1.08);
+  }
+}
+
+@keyframes placeholder-drift-b {
+  0%,
+  100% {
+    transform: translate(12%, 10%) scale(1.05);
+  }
+  50% {
+    transform: translate(-10%, -12%) scale(0.95);
+  }
+}
+
+@keyframes placeholder-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes placeholder-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+.media-placeholder__glow {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(
+      ellipse at 30% 40%,
+      color-mix(in srgb, var(--color-brass) 28%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 70% 65%,
+      color-mix(in srgb, var(--color-stone) 12%, transparent),
+      transparent 50%
+    );
+  animation: placeholder-pulse 7s ease-in-out infinite;
+}
+
+.media-placeholder__orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(18px);
+  opacity: 0.55;
+}
+
+.media-placeholder__orb--a {
+  width: 55%;
+  height: 55%;
+  left: 5%;
+  top: 10%;
+  background: color-mix(in srgb, var(--color-brass) 35%, transparent);
+  animation: placeholder-drift-a 11s ease-in-out infinite;
+}
+
+.media-placeholder__orb--b {
+  width: 45%;
+  height: 45%;
+  right: 0;
+  bottom: 5%;
+  background: color-mix(in srgb, var(--color-stone) 22%, transparent);
+  animation: placeholder-drift-b 14s ease-in-out infinite;
+}
+
+.media-placeholder__frame {
+  position: absolute;
+  inset: 14%;
+  border: 1px solid color-mix(in srgb, var(--color-brass) 45%, transparent);
+  animation: placeholder-pulse 5.5s ease-in-out infinite;
+}
+
+.media-placeholder__diamond {
+  position: absolute;
+  width: 28%;
+  max-width: 5.5rem;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--color-brass) 55%, transparent);
+  transform: rotate(45deg);
+  animation: placeholder-spin 28s linear infinite;
+}
+
+.media-placeholder__mark {
+  font-family: var(--font-serif, ui-serif, Georgia, serif);
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  letter-spacing: 0.28em;
+  color: color-mix(in srgb, var(--color-brass) 80%, var(--color-stone));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-placeholder__glow,
+  .media-placeholder__orb--a,
+  .media-placeholder__orb--b,
+  .media-placeholder__frame,
+  .media-placeholder__diamond {
+    animation: none;
+  }
+
+  .media-placeholder__diamond {
+    transform: rotate(45deg);
+  }
+}
+
+/** Gallery slides: slow cinematic cross-fade with a soft settle. */
+.gallery-slide {
+  transition:
+    opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/** Ruled list row: brass hairline grows under the row on hover. */
+.ruled-row {
+  position: relative;
+}
+
+.ruled-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--color-brass);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ruled-row:hover::after,
+.ruled-row:focus-within::after {
+  transform: scaleX(1);
+}
+
+/** Header link underline (desktop nav): hairline that draws in on hover. */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--color-brass);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .reveal,
+  .reveal[data-reveal='pending'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal[data-reveal='pending'] .brass-rule {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
   .animate-fade-up,
-  .page-enter {
+  .page-enter,
+  .loader-delayed,
+  .hero-media,
+  .brass-rule {
     animation: none;
+  }
+
+  .gallery-slide,
+  .ruled-row::after,
+  .nav-link::after {
+    transition: none;
   }
 }
 
@@ -175,6 +480,11 @@ a {
   body {
     background: #fff;
     color: #000;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .no-print,

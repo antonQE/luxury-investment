@@ -26,8 +26,8 @@ export async function LandingSections(props: {
       const payload = section.payload;
       if (section.type === 'hero') {
         return (
-          <section key={section.id} className="space-y-4" data-testid="landing-section-hero">
-            <h1 className="font-serif text-4xl md:text-5xl">
+          <section key={section.id} className="space-y-5" data-testid="landing-section-hero">
+            <h1 className="font-serif text-4xl leading-[1.08] md:text-[3.5rem]">
               {localized(props.locale, payload.headline)}
             </h1>
             {payload.subheadline !== undefined ? (
@@ -38,7 +38,7 @@ export async function LandingSections(props: {
             {typeof payload.ctaHref === 'string' && payload.ctaHref.length > 0 ? (
               <a
                 href={payload.ctaHref}
-                className="inline-flex border border-brass bg-brass px-5 py-2 text-sm tracking-wide text-void uppercase transition hover:bg-brass-dark"
+                className="inline-flex border border-brass bg-brass px-6 py-3 text-xs tracking-[0.2em] text-void uppercase transition duration-300 hover:bg-ink hover:text-stone"
               >
                 {localized(props.locale, payload.ctaLabel) || 'CTA'}
               </a>
@@ -52,7 +52,9 @@ export async function LandingSections(props: {
         return (
           <section key={section.id} className="space-y-6">
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             <ul className="grid gap-4 sm:grid-cols-2">
               {items.map((item) => {
@@ -62,7 +64,7 @@ export async function LandingSections(props: {
                 return (
                   <li
                     key={`${section.id}:${title}:${body}`}
-                    className="border border-line bg-paper p-5"
+                    className="border border-line border-t-2 border-t-brass bg-paper p-6"
                   >
                     <h3 className="font-serif text-xl">{title}</h3>
                     {row.body !== undefined ? (
@@ -81,7 +83,9 @@ export async function LandingSections(props: {
         return (
           <section key={section.id} className="space-y-6">
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             <ol className="grid gap-4 sm:grid-cols-2">
               {steps.map((step, index) => {
@@ -91,7 +95,7 @@ export async function LandingSections(props: {
                 return (
                   <li
                     key={`${section.id}:${title}:${body}`}
-                    className="border border-line bg-paper p-5"
+                    className="border border-line border-t-2 border-t-brass bg-paper p-6"
                   >
                     <p className="text-xs tracking-[0.2em] uppercase text-brass">
                       {String(index + 1).padStart(2, '0')}
@@ -113,7 +117,9 @@ export async function LandingSections(props: {
         return (
           <section key={section.id} className="space-y-4">
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             <dl className="space-y-4">
               {items.map((item) => {
@@ -123,7 +129,7 @@ export async function LandingSections(props: {
                 return (
                   <div
                     key={`${section.id}:${question}:${answer}`}
-                    className="border border-line bg-paper p-4"
+                    className="border border-line border-l-2 border-l-brass bg-paper p-5"
                   >
                     <dt className="font-medium">{question}</dt>
                     <dd className="mt-2 text-sm text-ink-soft whitespace-pre-line">{answer}</dd>
@@ -140,7 +146,9 @@ export async function LandingSections(props: {
         return (
           <section key={section.id} className="space-y-4">
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             <ul className="grid gap-4">
               {items.map((item) => {
@@ -154,7 +162,7 @@ export async function LandingSections(props: {
                 return (
                   <li
                     key={`${section.id}:${quote}:${author}`}
-                    className="border border-line bg-paper p-5"
+                    className="border border-line border-t-2 border-t-brass bg-paper p-6"
                   >
                     <p className="font-serif text-lg">“{quote}”</p>
                     <p className="mt-3 text-sm text-ink-soft">
@@ -201,7 +209,9 @@ export async function LandingSections(props: {
             data-testid="landing-section-related-listings"
           >
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             {items.length === 0 ? (
               <p className="text-sm text-ink-soft">—</p>
@@ -223,7 +233,9 @@ export async function LandingSections(props: {
             data-testid="landing-section-cta"
           >
             {payload.title !== undefined ? (
-              <h2 className="font-serif text-3xl">{localized(props.locale, payload.title)}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl">
+                {localized(props.locale, payload.title)}
+              </h2>
             ) : null}
             {payload.body !== undefined ? (
               <p className="text-ink-soft">{localized(props.locale, payload.body)}</p>
@@ -250,7 +262,7 @@ export async function LandingSections(props: {
   );
 
   return (
-    <div className="space-y-16" data-testid="landing-sections">
+    <div className="space-y-24" data-testid="landing-sections">
       {rendered}
     </div>
   );

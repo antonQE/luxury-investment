@@ -21,7 +21,8 @@ export class ListingsPage {
   async openFirstCard() {
     const card = this.page.locator('[data-testid^="property-card-"]').first();
     await expect(card).toBeVisible();
-    await card.click();
+    // Prefer the title link — image-only hits can miss when the cover is a placeholder.
+    await card.locator('h3 a').click();
   }
 
   async expectEmptyState() {

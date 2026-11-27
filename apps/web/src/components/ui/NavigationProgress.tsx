@@ -51,7 +51,7 @@ export function NavigationProgress() {
       return;
     }
     setDone(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
     hideTimer.current = setTimeout(() => {
       setActive(false);
       setDone(false);
@@ -68,7 +68,7 @@ export function NavigationProgress() {
       data-testid="nav-progress"
     >
       <div
-        className="h-full origin-left bg-brass shadow-[0_0_12px_rgba(166,132,69,0.55)] transition-[width] duration-300 ease-out"
+        className="h-full origin-left bg-brass transition-[width] duration-300 ease-out"
         style={{ width: done ? '100%' : '72%' }}
       />
     </div>

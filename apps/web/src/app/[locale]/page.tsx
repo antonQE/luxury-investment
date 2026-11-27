@@ -9,7 +9,10 @@ import {
   HomeNewestProperties,
 } from '@/components/home/HomeNewestProperties';
 import { SearchForm } from '@/components/search/SearchForm';
+import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
 import { RemoteImage } from '@/components/ui/RemoteImage';
+import { Reveal } from '@/components/ui/Reveal';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Link } from '@/i18n/navigation';
 import { fetchProperties } from '@/lib/api/catalog';
 import { fetchArticles } from '@/lib/api/content';
@@ -70,12 +73,21 @@ export default async function HomePage() {
   return (
     <main>
       <section
-        className="relative isolate min-h-[88vh] overflow-hidden text-stone"
+        className="relative isolate -mt-16 min-h-svh overflow-hidden text-stone xl:-mt-[4.5rem]"
         data-testid="home-hero"
       >
-        <RemoteImage src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-void/75 via-void/70 to-void/90" />
-        <div className="relative mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-6 pb-16 pt-28 md:pb-24 md:pt-32">
+        <div className="hero-media absolute inset-0 -z-20">
+          <RemoteImage
+            src={HERO_IMAGE}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+        <div className="hero-scrim absolute inset-0 -z-10" aria-hidden />
+        <div className="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-end px-6 pb-16 pt-32 md:pb-24 md:pt-40">
           <div className="animate-fade-up" data-testid="home-brand-logo">
             <Image
               src="/brand/logo-luxury-investment.png"
@@ -87,48 +99,50 @@ export default async function HomePage() {
             />
           </div>
           <h1
-            className="animate-fade-up mt-8 max-w-2xl font-serif text-2xl leading-snug text-stone/90 md:text-3xl md:leading-snug"
-            style={{ animationDelay: '80ms' }}
+            className="animate-fade-up mt-8 max-w-2xl font-serif text-3xl leading-snug text-stone md:text-[2.5rem] md:leading-[1.2]"
+            style={{ animationDelay: '120ms' }}
           >
             {t('title')}
           </h1>
           <p
-            className="animate-fade-up mt-4 max-w-xl text-base text-stone/65 md:text-lg"
-            style={{ animationDelay: '140ms' }}
+            className="animate-fade-up mt-5 max-w-xl text-base text-stone/70 md:text-lg"
+            style={{ animationDelay: '200ms' }}
           >
             {t('lead')}
           </p>
-          <div className="animate-fade-up mt-12 max-w-4xl" style={{ animationDelay: '220ms' }}>
+          <div
+            className="animate-fade-up mt-12 max-w-4xl border-t border-stone/20 pt-8 md:mt-14"
+            style={{ animationDelay: '300ms' }}
+          >
             <SearchForm variant="hero" testId="home-search" />
           </div>
         </div>
       </section>
 
-      <section
-        className="mx-auto max-w-6xl px-6 py-20 animate-fade-up"
-        style={{ animationDelay: '60ms' }}
-        data-testid="home-markets"
-      >
-        <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('marketsTitle')}</p>
-        <div className="mt-10 grid gap-10 md:grid-cols-3 md:gap-12">
+      <section className="mx-auto max-w-6xl px-6 py-24 md:py-32" data-testid="home-markets">
+        <SectionHeader eyebrow={t('marketsTitle')} />
+        <div className="grid gap-12 md:grid-cols-3 md:gap-14">
           {MARKETS.map((market, index) => (
-            <Link
-              key={market}
-              href={`/properties?market=${market}`}
-              className="group block border-t border-line pt-6 transition hover:border-brass"
-              style={{ animationDelay: `${String(100 + index * 60)}ms` }}
-              data-testid={`market-${market}`}
-            >
-              <h2 className="font-serif text-3xl transition group-hover:text-brass-dark">
-                {markets(market)}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-                {markets(`${market}Lead`)}
-              </p>
-              <span className="mt-5 inline-block text-xs tracking-[0.18em] uppercase text-brass opacity-0 transition group-hover:opacity-100">
-                {t('viewAll')} →
-              </span>
-            </Link>
+            <Reveal key={market} delay={index * 110}>
+              <Link
+                href={`/properties?market=${market}`}
+                className="ruled-row group block border-b border-line pb-10"
+                data-testid={`market-${market}`}
+              >
+                <span className="font-serif text-sm tracking-[0.2em] text-brass">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h2 className="mt-4 font-serif text-3xl transition-colors duration-500 group-hover:text-brass-dark md:text-4xl">
+                  {markets(market)}
+                </h2>
+                <p className="mt-4 text-sm leading-relaxed text-ink-soft">
+                  {markets(`${market}Lead`)}
+                </p>
+                <span className="mt-7 inline-flex items-center gap-2 text-xs tracking-[0.18em] uppercase text-brass opacity-60 transition-all duration-500 group-hover:gap-4 group-hover:opacity-100">
+                  {t('viewAll')} <span aria-hidden>→</span>
+                </span>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -144,88 +158,89 @@ export default async function HomePage() {
       )}
 
       {articles.length > 0 ? (
-        <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-articles">
-          <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
-            <div>
-              <p className="text-[11px] tracking-[0.22em] uppercase text-brass">
-                {t('articlesTitle')}
-              </p>
-              <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('articlesLead')}</h2>
-            </div>
-            <Link
-              href="/articles"
-              className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
-              data-testid="home-articles-view-all"
-            >
-              {t('articlesViewAll')}
-            </Link>
-          </div>
-          <ul className="grid gap-10 md:grid-cols-3 md:gap-12">
-            {articles.map((article) => (
-              <li key={article.id} className="border-t border-line pt-6">
+        <section className="mx-auto max-w-6xl px-6 pb-24 md:pb-32" data-testid="home-articles">
+          <SectionHeader
+            eyebrow={t('articlesTitle')}
+            title={t('articlesLead')}
+            action={
+              <Link
+                href="/articles"
+                className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+                data-testid="home-articles-view-all"
+              >
+                {t('articlesViewAll')}
+              </Link>
+            }
+          />
+          <ul className="grid gap-12 md:grid-cols-3 md:gap-14">
+            {articles.map((article, index) => (
+              <Reveal as="li" key={article.id} delay={index * 110}>
                 <Link
                   href={`/articles/${article.id}`}
-                  className="group block"
+                  className="ruled-row group block border-b border-line pb-8"
                   data-testid={`home-article-${article.slug}`}
                 >
-                  <h3 className="font-serif text-2xl transition group-hover:text-brass-dark">
-                    {article.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{article.excerpt}</p>
                   {article.publishedAt !== null ? (
-                    <p className="mt-4 text-[11px] tracking-[0.18em] uppercase text-brass">
+                    <p className="text-[11px] tracking-[0.18em] uppercase text-brass">
                       {new Date(article.publishedAt).toLocaleDateString(locale)}
                     </p>
                   ) : null}
+                  <h3 className="mt-3 font-serif text-2xl leading-snug transition-colors duration-500 group-hover:text-brass-dark">
+                    {article.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{article.excerpt}</p>
                 </Link>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </section>
       ) : null}
 
       {team.length > 0 ? (
-        <section className="mx-auto max-w-6xl px-6 pb-24" data-testid="home-team">
-          <div className="mb-10 flex items-end justify-between gap-4 border-b border-line pb-6">
-            <div>
-              <p className="text-[11px] tracking-[0.22em] uppercase text-brass">{t('teamTitle')}</p>
-              <h2 className="mt-2 font-serif text-3xl md:text-4xl">{t('teamLead')}</h2>
-            </div>
-            <Link
-              href="/team"
-              className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
-              data-testid="home-team-view-all"
-            >
-              {t('teamViewAll')}
-            </Link>
-          </div>
-          <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            {team.map((member) => (
-              <li key={member.id}>
+        <section className="mx-auto max-w-6xl px-6 pb-24 md:pb-32" data-testid="home-team">
+          <SectionHeader
+            eyebrow={t('teamTitle')}
+            title={t('teamLead')}
+            action={
+              <Link
+                href="/team"
+                className="shrink-0 text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+                data-testid="home-team-view-all"
+              >
+                {t('teamViewAll')}
+              </Link>
+            }
+          />
+          <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
+            {team.map((member, index) => (
+              <Reveal as="li" key={member.id} delay={index * 110}>
                 <Link
                   href={`/team/${member.id}`}
                   className="group block"
                   data-testid={`home-team-${member.slug}`}
                 >
                   {member.photoUrl !== null ? (
-                    <div className="relative aspect-[4/3] overflow-hidden bg-void/5">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-void/5">
                       <RemoteImage
                         src={member.photoUrl}
                         alt=""
                         fill
                         sizes="(max-width: 1024px) 50vw, 33vw"
-                        className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                        className="object-cover object-top transition duration-[1400ms] ease-out group-hover:scale-[1.04]"
                       />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/30 via-transparent to-transparent" />
                     </div>
                   ) : (
-                    <div className="aspect-[4/3] w-full bg-void/5" />
+                    <div className="aspect-[4/5] w-full overflow-hidden">
+                      <MediaPlaceholder />
+                    </div>
                   )}
-                  <h3 className="mt-5 font-serif text-xl transition group-hover:text-brass-dark md:text-[1.35rem]">
+                  <h3 className="mt-6 font-serif text-xl transition-colors duration-500 group-hover:text-brass-dark md:text-[1.4rem]">
                     {member.name}
                   </h3>
                   <p className="mt-1 text-sm text-ink-soft">{member.role}</p>
                 </Link>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </section>
@@ -233,22 +248,23 @@ export default async function HomePage() {
 
       {partners.length > 0 ? (
         <section
-          className="border-t border-line bg-paper/60 px-6 py-20 backdrop-blur-sm"
+          className="border-t border-line bg-paper/60 px-6 py-24 backdrop-blur-sm"
           data-testid="home-partners"
         >
-          <div className="mx-auto max-w-6xl">
-            <p className="text-[11px] tracking-[0.22em] uppercase text-brass">
+          <Reveal className="mx-auto max-w-6xl">
+            <p className="flex items-center gap-3 text-[11px] tracking-[0.24em] uppercase text-brass">
+              <span className="h-px w-8 bg-brass" aria-hidden />
               {t('partnersTitle')}
             </p>
-            <h2 className="mt-2 font-serif text-3xl">{t('partnersLead')}</h2>
-            <ul className="mt-12 flex flex-wrap items-center gap-x-12 gap-y-8">
+            <h2 className="mt-3 font-serif text-3xl md:text-[2.5rem]">{t('partnersLead')}</h2>
+            <ul className="mt-14 flex flex-wrap items-center gap-x-14 gap-y-10">
               {partners.map((partner) => (
                 <li key={partner.id}>
                   <a
                     href={partner.websiteUrl ?? '#'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative block h-10 w-[140px] opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0"
+                    className="relative block h-10 w-[140px] opacity-60 grayscale transition duration-500 hover:opacity-100 hover:grayscale-0"
                     data-testid={`partner-${partner.slug}`}
                   >
                     <RemoteImage
@@ -262,7 +278,7 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         </section>
       ) : null}
 

@@ -4,6 +4,9 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchForm } from '@/components/search/SearchForm';
 import { SearchRequestForm } from '@/components/search/SearchRequestForm';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHero } from '@/components/ui/PageHero';
+import { Reveal } from '@/components/ui/Reveal';
 import { Link } from '@/i18n/navigation';
 import { type CatalogFilters, fetchProperties } from '@/lib/api/catalog';
 import { buildPageMetadata } from '@/lib/seo/metadata';
@@ -27,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ListingsPage({ searchParams }: ListingsPageProps) {
   const filters = await searchParams;
   const t = await getTranslations('Listings');
+  const meta = await getTranslations('Meta');
   const locale = await getLocale();
 
   let result;
@@ -69,46 +73,68 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
   ).toString();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-12">
-      <h1 className="font-serif text-4xl">{t('title')}</h1>
-      <p className="mt-2 text-sm text-ink-soft" data-testid="listings-count">
-        {t('lead', { count: result.total })}
-      </p>
-      <div className="mt-8">
-        <SearchForm values={filters} testId="listings-search" />
-      </div>
-      <div className="mt-10">
-        {loadError ? (
-          <p data-testid="listings-error">{t('error')}</p>
-        ) : result.data.length === 0 ? (
-          <div className="mx-auto max-w-xl bg-paper p-10 text-center" data-testid="listings-empty">
-            <p>{t('empty')}</p>
-            <p className="mt-2 text-sm text-ink-soft">{t('emptyHint')}</p>
-            <Link href="/properties" className="mt-4 inline-block text-gold-dark">
-              {t('retry')}
-            </Link>
-            <SearchRequestForm filterSummary={filterSummary} />
-          </div>
-        ) : (
-          <PropertyGrid items={result.data} />
-        )}
-      </div>
-      {result.total > result.limit ? (
-        <nav className="mt-10 flex justify-between text-sm" data-testid="listings-pagination">
-          {result.offset > 0 ? (
-            <Link href={hrefFor(prevOffset)} data-testid="listings-prev">
-              {t('prev')}
-            </Link>
+    <main className="w-full" data-testid="listings-page">
+      <PageHero
+        eyebrow={meta('siteName')}
+        title={t('title')}
+        lead={t('lead', { count: result.total })}
+        leadTestId="listings-count"
+      />
+      <div className="mx-auto max-w-6xl px-6 pb-24">
+        <Reveal className="relative z-10 -mt-12 md:-mt-14">
+          <SearchForm values={filters} testId="listings-search" />
+        </Reveal>
+        <div className="mt-16">
+          {loadError ? (
+            <p data-testid="listings-error">{t('error')}</p>
+          ) : result.data.length === 0 ? (
+            <EmptyState
+              title={t('empty')}
+              hint={t('emptyHint')}
+              testId="listings-empty"
+              action={
+                <Link
+                  href="/properties"
+                  className="inline-block text-xs tracking-[0.18em] uppercase text-brass-dark transition hover:text-brass"
+                >
+                  {t('retry')}
+                </Link>
+              }
+            >
+              <SearchRequestForm filterSummary={filterSummary} />
+            </EmptyState>
           ) : (
-            <span />
+            <PropertyGrid items={result.data} />
           )}
-          {nextOffset < result.total ? (
-            <Link href={hrefFor(nextOffset)} data-testid="listings-next">
-              {t('next')}
-            </Link>
-          ) : null}
-        </nav>
-      ) : null}
+        </div>
+        {result.total > result.limit ? (
+          <nav
+            className="mt-16 flex justify-between border-t border-line pt-6 text-xs tracking-[0.18em] uppercase"
+            data-testid="listings-pagination"
+          >
+            {result.offset > 0 ? (
+              <Link
+                href={hrefFor(prevOffset)}
+                className="text-brass-dark transition hover:text-brass"
+                data-testid="listings-prev"
+              >
+                {t('prev')}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {nextOffset < result.total ? (
+              <Link
+                href={hrefFor(nextOffset)}
+                className="text-brass-dark transition hover:text-brass"
+                data-testid="listings-next"
+              >
+                {t('next')}
+              </Link>
+            ) : null}
+          </nav>
+        ) : null}
+      </div>
     </main>
   );
 }

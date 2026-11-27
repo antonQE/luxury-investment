@@ -1,17 +1,22 @@
-const STYLES: Record<string, string> = {
-  new: 'bg-brass/95 text-void',
-  exclusive: 'bg-void/80 text-stone ring-1 ring-brass/50',
-  investment: 'bg-stone/90 text-ink ring-1 ring-brass/35',
+/**
+ * Quiet label over a listing photo: small caps text with a brass tick, no coloured chip.
+ * Legibility comes from the soft top scrim the card draws behind the label row.
+ */
+const MARKER: Record<string, string> = {
+  new: 'bg-brass',
+  exclusive: 'bg-stone',
+  investment: 'bg-stone/60',
 };
 
 export function PropertyBadge({ badge, label }: { badge: string; label: string }) {
-  const style = STYLES[badge] ?? 'bg-void/75 text-stone backdrop-blur-sm';
+  const marker = MARKER[badge] ?? 'bg-stone/60';
 
   return (
     <li
-      className={`px-2.5 py-1 text-[10px] tracking-[0.16em] uppercase transition duration-300 ${style}`}
+      className="flex items-center gap-2 text-[10px] leading-none tracking-[0.22em] uppercase text-stone"
       data-testid={`property-badge-${badge}`}
     >
+      <span className={`h-px w-3 ${marker}`} aria-hidden />
       {label}
     </li>
   );

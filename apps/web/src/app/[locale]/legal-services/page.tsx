@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { PageHero } from '@/components/ui/PageHero';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,14 +17,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LegalServicesPage() {
   const t = await getTranslations('Investments');
+  const meta = await getTranslations('Meta');
 
   return (
-    <main
-      className="mx-auto max-w-3xl px-6 py-16 animate-fade-up"
-      data-testid="legal-services-page"
-    >
-      <h1 className="font-serif text-4xl">{t('legalTitle')}</h1>
-      <p className="mt-4 text-lg text-ink-soft">{t('legalLead')}</p>
+    <main data-testid="legal-services-page">
+      <PageHero eyebrow={meta('siteName')} title={t('legalTitle')} lead={t('legalLead')} />
+      <div className="h-24 md:h-40" aria-hidden />
     </main>
   );
 }

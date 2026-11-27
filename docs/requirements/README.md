@@ -17,3 +17,4 @@ Coverage of every requirement ID by epic and release: [traceability.md](traceabi
 | 04 | [Admin properties list: show broker](04-admin-properties-list-broker.md) | 2026-11-27 | [LI-124](../tracker/tasks/LI-124-admin-properties-list-broker.md) | Change request |
 | 05 | [English public URLs + IDs](05-english-section-urls.md) | 2026-11-27 | [LI-125](../tracker/tasks/LI-125-english-section-urls.md), [LI-126](../tracker/tasks/LI-126-public-detail-urls-by-id.md) | Change request |
 | 06 | [Public input focus underline](06-web-input-focus-underline.md) | 2026-11-27 | [LI-127](../tracker/tasks/LI-127-web-input-focus-underline.md) | Change request |
+| 07 | [Public site cinematic boutique polish](07-public-site-cinematic-polish.md) | 2026-11-27 | [LI-128](../tracker/tasks/LI-128-public-site-cinematic-polish.md) | Change request |

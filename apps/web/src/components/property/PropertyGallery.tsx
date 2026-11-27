@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
+import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
 import { RemoteImage } from '@/components/ui/RemoteImage';
 
 /** Widths that match typical gallery / lightbox `sizes` → `/_next/image` variants. */
@@ -147,14 +148,18 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
   }
 
   if (current === undefined) {
-    return <div className="aspect-[16/10] bg-line" data-testid="property-gallery-empty" />;
+    return (
+      <div className="aspect-[16/10] overflow-hidden" data-testid="property-gallery-empty">
+        <MediaPlaceholder />
+      </div>
+    );
   }
 
   const lightbox =
     lightboxOpen && portalReady
       ? createPortal(
           <div
-            className="fixed inset-0 z-[200] flex flex-col bg-void/95"
+            className="animate-fade-in fixed inset-0 z-[200] flex flex-col bg-void/96 backdrop-blur-md"
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
@@ -190,8 +195,8 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
                       key={`lightbox-${src}`}
                       className={
                         active
-                          ? 'absolute inset-0'
-                          : 'pointer-events-none absolute inset-0 opacity-0'
+                          ? 'gallery-slide absolute inset-0 opacity-100'
+                          : 'gallery-slide pointer-events-none absolute inset-0 opacity-0'
                       }
                       aria-hidden={!active}
                     >
@@ -214,21 +219,39 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
                 <>
                   <button
                     type="button"
-                    className="absolute top-1/2 left-2 -translate-y-1/2 bg-stone/10 px-3 py-2 text-2xl text-stone transition hover:bg-stone/20 md:left-4"
+                    className="absolute top-1/2 left-2 flex size-12 -translate-y-1/2 items-center justify-center border border-stone/25 text-stone transition hover:border-stone hover:bg-stone/10 md:left-4"
                     aria-label={t('prevImage')}
                     data-testid="gallery-lightbox-prev"
                     onClick={goPrev}
                   >
-                    ‹
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.25"
+                      className="size-5"
+                      aria-hidden
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 5 7.5 12l7 7" />
+                    </svg>
                   </button>
                   <button
                     type="button"
-                    className="absolute top-1/2 right-2 -translate-y-1/2 bg-stone/10 px-3 py-2 text-2xl text-stone transition hover:bg-stone/20 md:right-4"
+                    className="absolute top-1/2 right-2 flex size-12 -translate-y-1/2 items-center justify-center border border-stone/25 text-stone transition hover:border-stone hover:bg-stone/10 md:right-4"
                     aria-label={t('nextImage')}
                     data-testid="gallery-lightbox-next"
                     onClick={goNext}
                   >
-                    ›
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.25"
+                      className="size-5"
+                      aria-hidden
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 5l7 7-7 7" />
+                    </svg>
                   </button>
                 </>
               ) : null}
@@ -248,7 +271,7 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
     >
       <button
         type="button"
-        className="relative aspect-[16/10] w-full overflow-hidden bg-line text-left"
+        className="relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden bg-void text-left sm:aspect-[16/10] lg:aspect-[16/9]"
         onClick={() => {
           setLightboxOpen(true);
         }}
@@ -263,7 +286,9 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
             <div
               key={src}
               className={
-                active ? 'absolute inset-0' : 'pointer-events-none absolute inset-0 opacity-0'
+                active
+                  ? 'gallery-slide absolute inset-0 translate-y-0 scale-100 opacity-100'
+                  : 'gallery-slide pointer-events-none absolute inset-0 translate-y-1 scale-[1.03] opacity-0'
               }
               aria-hidden={!active}
             >
@@ -281,7 +306,12 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
       </button>
       {images.length > 1 ? (
         <>
-          <p className="pointer-events-none absolute bottom-3 left-3 bg-void/75 px-2 py-1 text-xs tracking-wide text-stone">
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-void/55 to-transparent"
+            aria-hidden
+          />
+          <p className="pointer-events-none absolute bottom-5 left-5 flex items-center gap-3 text-[11px] tracking-[0.24em] text-stone">
+            <span className="h-px w-6 bg-brass" aria-hidden />
             {t('galleryCounter', {
               current: String(index + 1),
               total: String(images.length),
@@ -289,7 +319,7 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
           </p>
           <button
             type="button"
-            className="absolute top-1/2 left-3 z-10 -translate-y-1/2 bg-void/70 px-3 py-2 text-stone transition hover:bg-void"
+            className="absolute top-1/2 left-4 z-10 flex size-11 -translate-y-1/2 items-center justify-center border border-stone/30 text-stone transition duration-300 hover:border-stone hover:bg-void/40"
             aria-label={t('prevImage')}
             data-testid="gallery-prev"
             onClick={(event) => {
@@ -298,11 +328,20 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
             }}
             onKeyDown={onInlineKeyDown}
           >
-            ‹
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              className="size-5"
+              aria-hidden
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 5 7.5 12l7 7" />
+            </svg>
           </button>
           <button
             type="button"
-            className="absolute top-1/2 right-3 z-10 -translate-y-1/2 bg-void/70 px-3 py-2 text-stone transition hover:bg-void"
+            className="absolute top-1/2 right-4 z-10 flex size-11 -translate-y-1/2 items-center justify-center border border-stone/30 text-stone transition duration-300 hover:border-stone hover:bg-void/40"
             aria-label={t('nextImage')}
             data-testid="gallery-next"
             onClick={(event) => {
@@ -311,7 +350,16 @@ export function PropertyGallery({ images, title }: { images: string[]; title: st
             }}
             onKeyDown={onInlineKeyDown}
           >
-            ›
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              className="size-5"
+              aria-hidden
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 5l7 7-7 7" />
+            </svg>
           </button>
         </>
       ) : null}
