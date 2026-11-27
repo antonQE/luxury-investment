@@ -32,10 +32,17 @@ test('old transliteration section URL is not served (no redirect required)', asy
   expect(response?.status()).toBe(404);
 });
 
-test('main navigation links point to English section paths', async ({ page }) => {
+test('main navigation links point to English section paths', async ({ page }, testInfo) => {
   const consent = new ConsentPage(page);
   await page.goto('/');
   await consent.acceptAllIfVisible();
+
+  // On phone, open the hamburger so mobile nav links are in the DOM and asserted.
+  if (testInfo.project.name === 'public-mobile') {
+    await page.getByTestId('mobile-nav-toggle').click({ force: true });
+    await expect(page.getByTestId('mobile-nav')).toBeVisible();
+  }
+
   const hrefs: string[] = [];
   for (const link of await page.locator('header a[href]').all()) {
     const href = await link.getAttribute('href');

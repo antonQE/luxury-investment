@@ -10,8 +10,8 @@ export class HomePage {
   }
 
   async expectBrandShell() {
-    await expect(this.page.getByTestId(homeElements.logo)).toBeVisible();
     await expect(this.page.getByTestId(homeElements.hero)).toBeVisible();
+    await expect(this.page.getByTestId(homeElements.brandLogo)).toBeVisible();
     await expect(this.page.getByTestId(homeElements.markets)).toBeVisible();
     await expect(this.page.getByTestId(homeElements.searchForm)).toBeVisible();
   }

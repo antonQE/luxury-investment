@@ -35,7 +35,7 @@ export function CookieConsentBanner() {
 
   return (
     <div
-      className="fixed inset-x-4 bottom-4 z-50 border border-line border-t-2 border-t-brass bg-paper px-6 py-6 shadow-[0_30px_50px_-30px_rgba(20,22,28,0.45)] md:right-auto md:bottom-6 md:left-6 md:max-w-md"
+      className="fixed inset-x-4 bottom-20 z-50 border border-line border-t-2 border-t-brass bg-paper px-6 py-6 shadow-[0_30px_50px_-30px_rgba(20,22,28,0.45)] md:right-auto md:bottom-6 md:left-6 md:max-w-md"
       role="dialog"
       aria-label={t('title')}
       data-testid="cookie-consent-banner"

@@ -21,7 +21,7 @@ export function MobileNav() {
     <div className="xl:hidden">
       <button
         type="button"
-        className="cursor-pointer border border-stone/35 px-3.5 py-1.5 text-sm tracking-[0.18em] uppercase text-stone"
+        className="relative z-20 cursor-pointer border border-stone/35 px-3.5 py-1.5 text-sm tracking-[0.18em] uppercase text-stone"
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
         data-testid="mobile-nav-toggle"

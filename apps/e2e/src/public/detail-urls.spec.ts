@@ -140,7 +140,7 @@ async function findPropertyWithAgent(
 test('property page links the agent to /team/{id} (desktop and mobile bar)', async ({
   page,
   request,
-}) => {
+}, testInfo) => {
   const withAgent = await findPropertyWithAgent(request);
   test.skip(withAgent === null, 'no published listing with a public agent in this dataset');
   if (withAgent === null) return;
@@ -152,9 +152,15 @@ test('property page links the agent to /team/{id} (desktop and mobile bar)', asy
   await expect(mobileBar).toHaveAttribute('href', new RegExp(`/team/${withAgent.agentId}/?$`));
   await expect(mobileBar.getAttribute('href')).resolves.not.toContain('undefined');
 
-  const link = page.getByTestId('agent-profile-link');
-  await expect(link).toHaveAttribute('href', new RegExp(`/team/${withAgent.agentId}/?$`));
-  await link.click();
+  const isMobile = testInfo.project.name === 'public-mobile';
+  if (isMobile) {
+    await expect(page.getByTestId('mobile-agent-bar')).toBeVisible();
+    await mobileBar.click();
+  } else {
+    const link = page.getByTestId('agent-profile-link');
+    await expect(link).toHaveAttribute('href', new RegExp(`/team/${withAgent.agentId}/?$`));
+    await link.click();
+  }
   await expect(page).toHaveURL(new RegExp(`/team/${withAgent.agentId}/?$`));
   await expect(page.getByTestId('team-member-page')).toBeVisible();
 });

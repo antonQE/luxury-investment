@@ -36,6 +36,16 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], baseURL: WEB_URL },
     },
     {
+      name: 'public-mobile',
+      testMatch: /public\/.*\.spec\.ts/,
+      // Phone viewport on Chromium (iPhone device presets default to WebKit).
+      use: {
+        ...devices['iPhone 13'],
+        browserName: 'chromium',
+        baseURL: WEB_URL,
+      },
+    },
+    {
       name: 'admin-setup',
       testMatch: /admin\/auth\.setup\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: ADMIN_URL },
