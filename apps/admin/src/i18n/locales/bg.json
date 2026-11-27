@@ -455,6 +455,7 @@
     "status_published": "Публикуван",
     "status_archived": "Архивиран",
     "market": "Пазар",
+    "broker": "Брокер",
     "viewsTotal": "Прегледи",
     "viewsUnique": "Уникални",
     "viewsSummary": "Прегледи: {{total}} общо · {{unique}} уникални",

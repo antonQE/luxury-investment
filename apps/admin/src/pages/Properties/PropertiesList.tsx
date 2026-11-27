@@ -11,6 +11,8 @@ import { Panel } from '@/components/ui/Panel';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ROUTES } from '@/constants/routes';
 
+import { formatBrokerName } from './brokerName';
+
 export default function PropertiesList() {
   const { t } = useTranslation();
   const listQuery = useQuery({
@@ -62,6 +64,7 @@ export default function PropertiesList() {
                 <Table.ColumnHeader>{t('properties.titleCol')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('properties.status')}</Table.ColumnHeader>
                 <Table.ColumnHeader>{t('properties.market')}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('properties.broker')}</Table.ColumnHeader>
                 <Table.ColumnHeader textAlign="end">
                   {t('properties.viewsTotal')}
                 </Table.ColumnHeader>
@@ -87,6 +90,9 @@ export default function PropertiesList() {
                       />
                     </Table.Cell>
                     <Table.Cell>{row.market}</Table.Cell>
+                    <Table.Cell data-testid={`property-broker-${row.slug}`}>
+                      {formatBrokerName(row.agentName)}
+                    </Table.Cell>
                     <Table.Cell textAlign="end" data-testid={`property-views-total-${row.slug}`}>
                       {views?.viewsTotal ?? (viewsQuery.isPending ? '…' : 0)}
                     </Table.Cell>

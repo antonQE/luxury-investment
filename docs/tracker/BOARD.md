@@ -6,7 +6,7 @@ Statuses: `Backlog` → `Ready` → `In Progress` → `Review` → `Done` (plus 
 
 Working mode (2026-10-25): the product owner asked to continue without stopping until a working site is visible. Tasks move to Done after verification; decisions that would normally wait for discussion are recorded as ADRs with status `Accepted (delegated)` and listed for review.
 
-Next IDs: `EPIC-21`, `LI-124`
+Next IDs: `EPIC-21`, `LI-125`
 
 
 ## Releases
@@ -55,6 +55,7 @@ Order follows the dependency list in the specification (`11_IMPLEMENTATION_BACKL
 
 | ID | Title | Epic | Size |
 |---|---|---|---|
+| [LI-124](tasks/LI-124-admin-properties-list-broker.md) | Show broker on admin properties list | EPIC-04 | S |
 
 ## Ready
 

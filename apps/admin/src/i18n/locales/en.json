@@ -455,6 +455,7 @@
     "status_published": "Published",
     "status_archived": "Archived",
     "market": "Market",
+    "broker": "Broker",
     "viewsTotal": "Views",
     "viewsUnique": "Unique",
     "viewsSummary": "Views: {{total}} total · {{unique}} unique",

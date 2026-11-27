@@ -54,7 +54,7 @@ Read-only API health: status, version, component map (`GET /health`). No CRUD.
 
 ## Properties (`/properties`) — R1
 
-**List:** reference, title (BG), listing status, market, Edit. Button → create.
+**List:** reference, title (BG), listing status, market, broker (name, “—” when empty), views, Edit. Button → create.
 
 **Editor** (`/properties/new`, `/properties/:id`):
 
